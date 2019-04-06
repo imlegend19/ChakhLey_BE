@@ -1,0 +1,15 @@
+
+[celery]
+celery
+
+[esendex]
+requests
+
+[rq]
+django_rq
+
+[smssluzbacz]
+smssluzbacz-api
+
+[twilio]
+twilio

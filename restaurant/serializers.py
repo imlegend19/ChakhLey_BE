@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from location.serializers import CountrySerializer, StateSerializer, AreaSerializer
+from location.serializers import AreaSerializer
 
 
 class RestaurantSerializer(serializers.ModelSerializer):

@@ -50,7 +50,7 @@ class Area(models.Model):
         verbose_name_plural = _('Areas')
 
 
-class BuildingComplex:
+class BuildingComplex(models.Model):
     building_name = models.CharField(verbose_name=_('Society / Complex Name'), unique=True, max_length=255)
     area = models.ForeignKey(verbose_name=_('Area'), to=Area, on_delete=models.PROTECT)
     flat_number = models.CharField(verbose_name=_('Flat Number'), max_length=255)
@@ -59,5 +59,6 @@ class BuildingComplex:
         return self.building_name
 
     class Meta:
+        unique_together = ('building_name', 'area')
         verbose_name = _('Building Complex')
         verbose_name_plural = _('Building Complexes')

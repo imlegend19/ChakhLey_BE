@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 
 .idea/
+ChakhLe_BE.local_settings.py

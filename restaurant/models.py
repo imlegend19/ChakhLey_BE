@@ -1,16 +1,15 @@
 from django.db import models
 from django.utils.text import gettext_lazy as _
 
+from drfaddons.models import CreateUpdateModel
+
 from ChakhLe_BE.variables import *
 from location.models import City, Country, State, Area
 
 
-class Restaurant(models.Model):
+class Restaurant(CreateUpdateModel):
     name = models.CharField(verbose_name=_('Name'), max_length=255, unique=True)
     pincode = models.CharField(verbose_name=_('ZIP (Primary Location'), max_length=6)
-    country = models.ForeignKey(verbose_name=_('Country'), to=Country, on_delete=models.PROTECT)
-    state = models.ForeignKey(verbose_name=_('State'), to=State, on_delete=models.PROTECT)
-    city = models.ForeignKey(verbose_name=_('City'), to=City, on_delete=models.PROTECT)
     area = models.ForeignKey(verbose_name=_('Area'), to=Area, on_delete=models.PROTECT)
     unit = models.CharField(verbose_name=_("Unit No"), max_length=255,
                             null=True, blank=True)
@@ -23,7 +22,7 @@ class Restaurant(models.Model):
                                     default=BASIC_COST)
     cuisine = models.CharField(verbose_name=_('Type of Cuisine'), choices=CUISINES, max_length=255)
     establishment = models.CharField(verbose_name=_('Establishment'), choices=ESTABLISHMENTS, max_length=255)
-    delivery_time = models.DecimalField(verbose_name=_('Delivery Time'), max_digits=10, decimal_places=2)
+    delivery_time = models.DurationField(verbose_name=_('Delivery Time'))
     is_veg = models.BooleanField(verbose_name=_('Is Veg?'), default=True)
 
     def __str__(self):
@@ -39,11 +38,11 @@ class Restaurant(models.Model):
         if self.area:
             address += ', ' + self.area.name
 
-        if self.city:
-            address += ', ' + self.city.name + ', ' + self.city.state.name
+        if self.area.city:
+            address += ', ' + self.area.city.name + ', ' + self.area.city.state.name
 
-        if self.country:
-            address += ', ' + self.country.name
+        if self.area.city.state.country:
+            address += ', ' + self.area.city.state.country.name
 
         if self.pincode:
             address += ', ' + self.pincode
@@ -55,13 +54,13 @@ class Restaurant(models.Model):
         verbose_name_plural = 'Restaurants'
 
 
-class RestaurantImage(models.Model):
+class RestaurantImage(CreateUpdateModel):
 
     from .utils import outlet_image_upload
 
     name = models.CharField(verbose_name=_('Image Name'), choices=IMAGE_TYPES, max_length=255, default=RESTAURANT)
     restaurant = models.ForeignKey(verbose_name=_('Restaurant'), on_delete=models.PROTECT, to=Restaurant)
-    image = models.ImageField(upload_to=outlet_image_upload)
+    image = models.ImageField(verbose_name=_('Select Image'), upload_to=outlet_image_upload)
 
     def __str__(self):
         return self.name

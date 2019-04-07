@@ -46,6 +46,7 @@ urlpatterns = [
     path('api/user/', include('drf_user.urls')),
     path('api/location/', include('location.urls', namespace='location')),
     path('api/restaurant/', include('restaurant.urls', namespace='restaurant')),
+    path('api/product/', include('product.urls', namespace='product')),
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('jet/', include('jet.urls', 'jet')),
     path('', admin.site.urls),

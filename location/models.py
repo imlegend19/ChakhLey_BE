@@ -53,7 +53,7 @@ class Area(models.Model):
 class BuildingComplex(models.Model):
     building_name = models.CharField(verbose_name=_('Society / Complex Name'), unique=True, max_length=255)
     area = models.ForeignKey(verbose_name=_('Area'), to=Area, on_delete=models.PROTECT)
-    flat_number = models.CharField(verbose_name=_('Flat Number'), max_length=255)
+    flat_number = models.CharField(verbose_name=_('Flat Number'), max_length=255, null=True)
 
     def __str__(self):
         return self.building_name

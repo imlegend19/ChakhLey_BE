@@ -22,7 +22,7 @@ class Restaurant(CreateUpdateModel):
                                     default=BASIC_COST)
     cuisine = models.CharField(verbose_name=_('Type of Cuisine'), choices=CUISINES, max_length=255)
     establishment = models.CharField(verbose_name=_('Establishment'), choices=ESTABLISHMENTS, max_length=255)
-    delivery_time = models.DurationField(verbose_name=_('Delivery Time'))
+    delivery_time = models.DecimalField(verbose_name="Delivery Time", default=40.00, max_digits=10, decimal_places=2)
     is_veg = models.BooleanField(verbose_name=_('Is Veg?'), default=True)
 
     def __str__(self):

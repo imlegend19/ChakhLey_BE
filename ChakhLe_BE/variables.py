@@ -1,12 +1,10 @@
 COST_FOR_TWO = [
-    ('1', '100'),
-    ('2', '100 - 400'),
-    ('3', '400 - 800'),
-    ('4', '800 - 1500'),
-    ('5', '1500+')
+    ('$', '100'),
+    ('$$', '100 - 400'),
+    ('$$$', '400 - 800'),
+    ('$$$$', '800 - 1500'),
+    ('$$$$$', '1500+')
 ]
-
-BASIC_COST = '100'
 
 CUISINES = [
     ('Af', 'Afghan'), ('Ar', 'African'), ('Am', 'American'), ('An', 'Andhra'), ('Aa', 'Arabian'),
@@ -35,7 +33,7 @@ CUISINES = [
     ('Sg', 'Singaporean'), ('So', 'South American'), ('Su', 'South Indian'), ('Sh', 'South-Western'), ('Sp', 'Spanish'),
     ('Sr', 'Sri Lankan'), ('Sk', 'Steak'), ('S ', 'Street Food'), ('Ss', 'Sushi'), ('Sw', 'Swiss'), ('Te', 'Tea'),
     ('Tx', 'Tex-Mex'), ('Th', 'Thai'), ('Ti', 'Tibetan'), ('Tu', 'Turkish'), ('Ve', 'Vegan'), ('Vg', 'Vegetarian'),
-    ('Vi', 'Vietnamese'), ('We', 'West Indian'), ('Wr', 'Wraps'), ('Yu', 'Yun Cha')
+    ('Vi', 'Vietnamese'), ('We', 'West Indian'), ('Wr', 'Wraps'), ('Yu', 'Yun Cha'), ('Ind', 'Indian'),
 ]
 
 ESTABLISHMENTS = [
@@ -47,9 +45,23 @@ ESTABLISHMENTS = [
 ]
 
 IMAGE_TYPES = [('Re', 'Restaurant'), ('Ki', 'Kitchen'), ('La', 'Landmark'), ('Fo', 'Food')]
-RESTAURANT = 'Restaurant'
+RESTAURANT = 'Re'
+
+ORDER_STATUS = [
+    ('Pe', 'Pending'), ('Ac', 'Accepted'), ('Pr', 'Preparing'), ('R', 'Ready'), ('Di', 'Dispatched'),
+    ('D', 'Delivered'), ('R', 'Rejected'), ('C', 'Cancelled')
+]
+
+DELIVERED = "D"
+PENDING = 'Pe'
+
+BUSINESS = [
+    ('H', 'Headquarters'),
+    ('F', 'Franchise')
+]
 
 # taken = []
+#
 #
 # def check(st, a, b, c, d):
 #     string = st[a:b] + st[c:d]
@@ -61,10 +73,10 @@ RESTAURANT = 'Restaurant'
 #     return string
 #
 #
-# for i in <LIST>:
+# for i in Order:
 #     s1 = check(i, 0, 1, 1, 2)
-#     <ORIGINAL_LIST>.append((s1, i))
+#     ORDER_STATUS.append((s1, i))
 #
-# print(<ORIGINAL_LIST>)
+# print(ORDER_STATUS)
 
 

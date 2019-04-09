@@ -1,14 +1,12 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.text import gettext_lazy as _
-from drfaddons.models import CreateUpdateModel
 
 
-class Category(CreateUpdateModel):
+class Category(models.Model):
     from restaurant.models import Restaurant
 
     name = models.CharField(verbose_name=_('Category'), max_length=200)
-    restaurant = models.ForeignKey(verbose_name=_('Restaurant'), to=Restaurant, on_delete=models.PROTECT)
+    restaurant = models.ForeignKey(verbose_name=_('Restaurant'), to=Restaurant, on_delete=models.PROTECT, unique=False)
 
     def __str__(self):
         return self.name
@@ -17,9 +15,10 @@ class Category(CreateUpdateModel):
         unique_together = ('name', 'restaurant')
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
+        ordering = ['id']
 
 
-class Product(CreateUpdateModel):
+class Product(models.Model):
     name = models.CharField(verbose_name=_('Product Name'), max_length=200)
     category = models.ForeignKey(verbose_name=_('Category'), to=Category, on_delete=models.PROTECT)
     is_veg = models.BooleanField(verbose_name=_('Is Veg ?'), default=True)
@@ -32,44 +31,10 @@ class Product(CreateUpdateModel):
         unique_together = ('name', 'category')
         verbose_name = _('Product')
         verbose_name_plural = _('Products')
+        ordering = ['id']
 
 
-class UserProductRating(CreateUpdateModel):
-    rating = models.DecimalField(verbose_name=_('Rating'), max_digits=1, decimal_places=1,
-                                 validators=[
-                                     MaxValueValidator(5.0),
-                                     MinValueValidator(0.0)
-                                 ])
-    product = models.ForeignKey(verbose_name=_('Product'), to=Product, on_delete=models.PROTECT)
-
-    def __str__(self):
-        return self.rating
-
-    class Meta:
-        verbose_name = _('Product Rating')
-        verbose_name_plural = _('Product Ratings')
-
-
-class UserRestaurantRating(CreateUpdateModel):
-    from restaurant.models import Restaurant
-
-    rating = models.DecimalField(verbose_name=_('Rating'), max_digits=1, decimal_places=1,
-                                 validators=[
-                                     MaxValueValidator(5.0),
-                                     MinValueValidator(0.0)
-                                 ])
-    restaurant = models.ForeignKey(verbose_name=_('Restaurant'), to=Restaurant,
-                                   on_delete=models.PROTECT)
-
-    def __str__(self):
-        return self.rating
-
-    class Meta:
-        verbose_name = _('Restaurant Rating')
-        verbose_name_plural = _('Restaurant Ratings')
-
-
-class ProductImage(CreateUpdateModel):
+class ProductImage(models.Model):
 
     from .utils import product_image_upload
 
@@ -83,3 +48,4 @@ class ProductImage(CreateUpdateModel):
     class Meta:
         verbose_name = _('Product Image')
         verbose_name_plural = _('Product Images')
+        ordering = ['id']

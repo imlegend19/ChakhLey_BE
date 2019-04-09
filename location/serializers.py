@@ -36,7 +36,7 @@ class AreaSerializer(serializers.ModelSerializer):
         from .models import Area
 
         model = Area
-        fields = ('id', 'city', 'pincode')
+        fields = ('id', 'name', 'city', 'pincode')
 
 
 class BuildingComplexSerializer(serializers.ModelSerializer):

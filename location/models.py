@@ -40,7 +40,7 @@ class City(models.Model):
 class Area(models.Model):
     name = models.CharField(verbose_name=_('Area'), max_length=255, unique=True)
     city = models.ForeignKey(verbose_name=_('City'), to=City, on_delete=models.PROTECT)
-    pincode = models.CharField(verbose_name=_('Pincode'), max_length=6, unique=True)
+    pincode = models.CharField(verbose_name=_('Pincode'), max_length=6, unique=False)
 
     def __str__(self):
         return self.name

@@ -25,7 +25,7 @@ admin.site.site_title = "Chakh Le Administration"
 
 schema_view = get_schema_view(
     openapi.Info(
-        title='Chakh Le',
+        title='Chakh Le API',
         default_version='v1',
         description="API based on DRF YASG for Chakh Le",
         contact=openapi.Contact(email="mahengandhi19@gmail.com"),
@@ -45,8 +45,11 @@ urlpatterns = [
          name='schema-redoc'),
     path('api/user/', include('drf_user.urls')),
     path('api/location/', include('location.urls', namespace='location')),
+    path('api/order/', include('order.urls', namespace='order')),
     path('api/restaurant/', include('restaurant.urls', namespace='restaurant')),
     path('api/product/', include('product.urls', namespace='product')),
+    path('api/business/', include('business.urls', namespace='business')),
+    path('api/user_rating/', include('user_rating.urls', namespace='user rating')),
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('jet/', include('jet.urls', 'jet')),
     path('', admin.site.urls),

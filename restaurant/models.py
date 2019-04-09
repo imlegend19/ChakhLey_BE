@@ -4,22 +4,22 @@ from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
 
 from ChakhLe_BE.variables import *
+from business.models import Business
 from location.models import City, Country, State, Area
 
 
 class Restaurant(CreateUpdateModel):
     name = models.CharField(verbose_name=_('Name'), max_length=255, unique=True)
-    pincode = models.CharField(verbose_name=_('ZIP (Primary Location'), max_length=6)
     area = models.ForeignKey(verbose_name=_('Area'), to=Area, on_delete=models.PROTECT)
     unit = models.CharField(verbose_name=_("Unit No"), max_length=255,
                             null=True, blank=True)
+    business = models.ForeignKey(verbose_name=_('Business'), to=Business, on_delete=models.PROTECT, default=1)
     phone = models.CharField(verbose_name=_('Phone Number'), max_length=255)
-    email = models.EmailField(verbose_name=_('Email'), max_length=255)
-    website = models.URLField(verbose_name=_('Website / Online Listing Link'), max_length=255, blank=True)
+    email = models.EmailField(verbose_name=_('Email'), max_length=255, blank=True, null=True)
+    website = models.URLField(verbose_name=_('Website / Online Listing Link'), max_length=255, blank=True, null=True)
     is_active = models.BooleanField(verbose_name=_("Is Active?"),
                                     default=True)
-    cost_for_two = models.CharField(verbose_name=_('Cost For Two'), choices=COST_FOR_TWO, max_length=255,
-                                    default=BASIC_COST)
+    cost_for_two = models.CharField(verbose_name=_('Cost For Two'), choices=COST_FOR_TWO, max_length=255)
     cuisine = models.CharField(verbose_name=_('Type of Cuisine'), choices=CUISINES, max_length=255)
     establishment = models.CharField(verbose_name=_('Establishment'), choices=ESTABLISHMENTS, max_length=255)
     delivery_time = models.DecimalField(verbose_name="Delivery Time", default=40.00, max_digits=10, decimal_places=2)
@@ -44,8 +44,8 @@ class Restaurant(CreateUpdateModel):
         if self.area.city.state.country:
             address += ', ' + self.area.city.state.country.name
 
-        if self.pincode:
-            address += ', ' + self.pincode
+        if self.area.pincode:
+            address += ', ' + self.area.pincode
 
         return address
 

@@ -1,10 +1,9 @@
-from drf_user.serializers import UserSerializer
 from rest_framework import serializers
-
-from location.serializers import CitySerializer
 
 
 class BusinessSerializer(serializers.ModelSerializer):
+    from location.serializers import CitySerializer
+
     city = CitySerializer(many=False, read_only=True)
 
     class Meta:
@@ -15,21 +14,25 @@ class BusinessSerializer(serializers.ModelSerializer):
 
 
 class DeliveryBoysSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=False, read_only=True)
+    from employee.serializers import EmployeeSerializer
+
+    employee = EmployeeSerializer(many=False, read_only=True)
 
     class Meta:
         from .models import DeliveryBoys
 
         model = DeliveryBoys
-        fields = ('id', 'user', 'salary', 'is_active', 'start_time', 'end_time')
+        fields = ('id', 'employee', 'salary', 'is_active', 'start_time', 'end_time')
 
 
 class ManagerSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=False, read_only=True)
+    from employee.serializers import EmployeeSerializer
+
+    employee = EmployeeSerializer(many=False, read_only=True)
     business = BusinessSerializer(many=False, read_only=True)
 
     class Meta:
         from .models import Manager
 
         model = Manager
-        fields = ('user', 'business')
+        fields = ('employee', 'business')

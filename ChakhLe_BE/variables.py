@@ -92,6 +92,31 @@ DESIGNATIONS = (
     ('DM', "Delivery Manager")
 )
 
+COD = "C"
+ONLINE = "O"
+
+PAYMENT_TYPE_CHOICES = (
+    (COD, "Cash On Delivery"),
+    (ONLINE, "Online"),
+)
+
+CREDIT_CARD = "CC"
+DEBIT_CARD = "DC"
+PAYTM = "PTM"
+CASH = "C"
+INSTAMOJO = "IMJ"
+PAYTM_GATEWAY = "PTMG"
+
+
+PAYMENT_MODE_CHOICES = (
+    (CREDIT_CARD, "Credit Card"),
+    (DEBIT_CARD, "Debit Card"),
+    (PAYTM, "PayTM"),
+    (CASH, "Cash"),
+    (INSTAMOJO, "Instamojo"),
+    (PAYTM_GATEWAY, "PayTM Payment Gateway"),
+)
+
 # taken = []
 #
 #

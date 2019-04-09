@@ -36,7 +36,7 @@ class DeliveryBoysViews(ListAPIView):
 
     filter_backends = (DjangoFilterBackend, SearchFilter, )
     search_fields = ('id', 'is_active')
-    filter_fields = ('user__username', 'user__id')
+    filter_fields = ('employee__name', 'employee__id')
 
 
 class ManagerViews(ListAPIView):
@@ -55,4 +55,4 @@ class ManagerViews(ListAPIView):
 
     filter_backends = (DjangoFilterBackend, SearchFilter, )
     search_fields = ('id', )
-    filter_fields = ('user__username', 'user__id', 'business__id')
+    filter_fields = ('employee__name', 'employee__id', 'business__id')

@@ -1,5 +1,4 @@
 import datetime
-from django.utils import timezone
 
 from django.db import models
 from django.utils.text import gettext_lazy as _
@@ -21,7 +20,7 @@ class Order(CreateUpdateModel):
     preparation_time = models.DurationField(verbose_name=_('Preparation Time'), default=datetime.timedelta(minutes=40))
     status = models.CharField(verbose_name=_('Order Status'), max_length=5, choices=ORDER_STATUS, default=PENDING)
     managed_by = models.ForeignKey(verbose_name=_('Managed By'), to=Manager, on_delete=models.PROTECT)
-    order_date = models.DateTimeField(_('Order Create Date'), default=timezone.now())
+    order_date = models.DateTimeField(_('Order Create Date'), max_length=255)
 
     @property
     def total(self):

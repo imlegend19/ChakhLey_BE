@@ -1,12 +1,12 @@
-COST_FOR_TWO = [
+COST_FOR_TWO = (
     ('$', '100'),
     ('$$', '100 - 400'),
     ('$$$', '400 - 800'),
     ('$$$$', '800 - 1500'),
     ('$$$$$', '1500+')
-]
+)
 
-CUISINES = [
+CUISINES = (
     ('Af', 'Afghan'), ('Ar', 'African'), ('Am', 'American'), ('An', 'Andhra'), ('Aa', 'Arabian'),
     ('Ae', 'Armenian'), ('As', 'Asian'), ('Ai', 'Asian Fusion'), ('A', 'Assamese'), ('Au', 'Australian'),
     ('Aw', 'Awadhi'), ('BB', 'BBQ'), ('Ba', 'Bakery'), ('Bn', 'Bangladeshi'), ('Br', 'Bar Food'),
@@ -34,31 +34,63 @@ CUISINES = [
     ('Sr', 'Sri Lankan'), ('Sk', 'Steak'), ('S ', 'Street Food'), ('Ss', 'Sushi'), ('Sw', 'Swiss'), ('Te', 'Tea'),
     ('Tx', 'Tex-Mex'), ('Th', 'Thai'), ('Ti', 'Tibetan'), ('Tu', 'Turkish'), ('Ve', 'Vegan'), ('Vg', 'Vegetarian'),
     ('Vi', 'Vietnamese'), ('We', 'West Indian'), ('Wr', 'Wraps'), ('Yu', 'Yun Cha'), ('Ind', 'Indian'),
-]
+)
 
-ESTABLISHMENTS = [
+ESTABLISHMENTS = (
     ('Ca', 'Casual Dining'), ('Fi', 'Fine Dining'), ('Fo', 'Food Court'), ('Qu', 'Quick Bites'),
     ('De', 'Dessert Parlor'), ('Ba', 'Bakery'), ('Sw', 'Sweet Shop'), ('Cf', 'Cafe'), ('Dh', 'Dhaba'),
     ('Br', 'Bar'), ('Me', 'Meat Shop'), ('Be', 'Beverage Shop'), ('Pu', 'Pub'), ('Ki', 'Kiosk'), ('Lo', 'Lounge'),
     ('Mi', 'Microbrewery'), ('Cl', 'Club'), ('Fd', 'Food Truck'), ('Co', 'Confectionery'), ('Cc', 'Cocktail'),
     ('Ir', 'Irani Cafe'), ('Ms', 'Mess'), ('Ju', 'Juice'), ('Wi', 'Wine Bar'), ('Po', 'Pop Up')
-]
+)
 
 IMAGE_TYPES = [('Re', 'Restaurant'), ('Ki', 'Kitchen'), ('La', 'Landmark'), ('Fo', 'Food')]
 RESTAURANT = 'Re'
 
-ORDER_STATUS = [
+ORDER_STATUS = (
     ('Pe', 'Pending'), ('Ac', 'Accepted'), ('Pr', 'Preparing'), ('R', 'Ready'), ('Di', 'Dispatched'),
     ('D', 'Delivered'), ('R', 'Rejected'), ('C', 'Cancelled')
-]
+)
 
 DELIVERED = "D"
 PENDING = 'Pe'
 
-BUSINESS = [
+BUSINESS = (
     ('H', 'Headquarters'),
     ('F', 'Franchise')
-]
+)
+
+
+PAN = "P"
+AADHAR = "A"
+DRIVING_LICENSE = "D"
+VOTER_ID = "V"
+PREVIOUS_EMPLOYER_CERTIFICATE = "PEC"
+EDUCATION_CERTIFICATE = "EDU"
+OFFER_LETTER = "OFR"
+NON_DISCLOSURE_AGREEMENT = "NDA"
+PICTURE = "PIC"
+
+EMPLOYEE_DOCUMENT_CHOICES = (
+    (PAN, "Pan Card"),
+    (AADHAR, "AADHAR Card"),
+    (DRIVING_LICENSE, "Driving License"),
+    (VOTER_ID, "Voter ID"),
+    (PREVIOUS_EMPLOYER_CERTIFICATE, "Previous Employer Certificate"),
+    (EDUCATION_CERTIFICATE, "Education Certificate"),
+    (OFFER_LETTER, "Offer Letter"),
+    (NON_DISCLOSURE_AGREEMENT, "Non Disclosure Agreement"),
+    (PICTURE, "Picture")
+)
+
+DESIGNATIONS = (
+    ('DB', "Delivery Boy"),
+    ('M', "Manager"),
+    ('CEO', "Chief Executive Officer"),
+    ('PM', "Project Manager"),
+    ('D', "Director"),
+    ('DM', "Delivery Manager")
+)
 
 # taken = []
 #

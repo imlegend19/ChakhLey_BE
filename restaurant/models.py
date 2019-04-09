@@ -4,11 +4,12 @@ from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
 
 from ChakhLe_BE.variables import *
-from business.models import Business
-from location.models import City, Country, State, Area
 
 
 class Restaurant(CreateUpdateModel):
+    from location.models import Area
+    from business.models import Business
+
     name = models.CharField(verbose_name=_('Name'), max_length=255, unique=True)
     area = models.ForeignKey(verbose_name=_('Area'), to=Area, on_delete=models.PROTECT)
     unit = models.CharField(verbose_name=_("Unit No"), max_length=255,

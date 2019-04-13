@@ -1,85 +1,96 @@
 from rest_framework import serializers
 
 from django.utils.text import gettext_lazy as _
-from restaurant.models import Restaurant
+
+from product.serializers import ProductSerializer
 
 
 class DeliverySerializer(serializers.ModelSerializer):
     class Meta:
         from .models import Delivery
 
-        fields = ('order', 'amount', 'area', 'unit_no', 'address_line_2', 'full_address')
+        fields = ('id', 'amount', 'area', 'unit_no', 'address_line_2', 'full_address')
         model = Delivery
-        read_only_fields = ('full_address', )
 
 
 class SubOrderSerializer(serializers.ModelSerializer):
+
+    product = ProductSerializer(many=False, read_only=True)
+
     class Meta:
         from .models import SubOrder
 
         model = SubOrder
-        fields = ('order', 'item', 'product', 'quantity', 'sub_total')
+        fields = ('id', 'item', 'product', 'quantity', 'sub_total')
         read_only_fields = ('product', 'sub_total')
         extra_kwargs = {
             "item": {"write_only": True}
         }
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    suborder_set = SubOrderSerializer(many=True)
+class OrderListSerializer(serializers.ModelSerializer):
+
+    delivery = DeliverySerializer(many=False, read_only=True)
+    suborder_set = SubOrderSerializer(many=True, read_only=True)
     status = serializers.CharField(source='get_status_display', read_only=True)
-    restaurant_id = serializers.PrimaryKeyRelatedField(
-        source='restaurant', queryset=Restaurant.objects.all(), write_only=True
-    )
-    restaurant = serializers.HyperlinkedRelatedField(
-        many=False, read_only=True, view_name='restaurant:restaurant-detail', lookup_field='pk'
-    )
-    delivery = DeliverySerializer(many=False, default=None)
+
+    class Meta:
+        from .models import Order
+
+        model = Order
+        fields = ('id', 'mobile', 'email', 'business', 'restaurant', 'preparation_time',
+                  'status', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set')
+
+
+class OrderCreateSerializer(serializers.ModelSerializer):
+
+    delivery = DeliverySerializer(many=False)
+    suborder_set = SubOrderSerializer(many=True)
 
     @staticmethod
     def validate_suborder_set(value):
-        if len(value) == 0:
-            raise serializers.ValidationError(_("Minimum 1 item required to place an Order."))
-
+        if len(value) is 0:
+            raise serializers.ValidationError(_("Minimum 1 item required to place an order."))
         return value
 
+    def create(self, validated_data):
+        from .models import SubOrder, Delivery
+
+        suborder_set = validated_data.pop('suborder_set')
+        delivery = validated_data.pop('delivery')
+
+        instance = super(OrderCreateSerializer, self).create(
+            validated_data=validated_data
+        )
+
+        for so in suborder_set:
+            SubOrder.objects.create(
+                order=instance,
+                **so
+            )
+
+        Delivery.objects.create(
+            order=instance,
+            **delivery
+        )
+
+        return instance
+
     class Meta:
         from .models import Order
 
         model = Order
-        fields = ('id', 'name', 'mobile', 'email', 'status', 'preparation_time',
-                  'restaurant_id', 'suborder_set', 'total', 'restaurant', 'create_date',
-                  'update_date', 'delivery')
-        read_only_fields = ('status', 'preparation_time', 'total', 'create_date', 'update_date')
-
-
-class OrderListSerializer(serializers.ModelSerializer):
-    restaurant = serializers.HyperlinkedRelatedField(
-        many=False, read_only=True, view_name='restaurant:restaurant-detail', lookup_field='pk'
-    )
-    detail = serializers.HyperlinkedRelatedField(
-        source='id', many=False, read_only=True, view_name='order:order-retrieve', lookup_field='pk'
-    )
-    update = serializers.HyperlinkedRelatedField(
-        source='id', many=False, read_only=True, view_name='order:order-update', lookup_field='pk'
-    )
-    status_display = serializers.CharField(source='get_status_display')
-    phone = serializers.CharField(source='restaurant.phone', read_only=True)
-
-    class Meta:
-        from .models import Order
-
-        model = Order
-        fields = ('id', 'name', 'mobile', 'email', 'status', 'create_date', 'preparation_time',
-                  'total', 'restaurant', 'status_display', 'update_date', 'phone', 'detail', 'update')
-        read_only_fields = fields
+        fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'status',
+                  'preparation_time', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set')
+        read_only_fields = ('status', 'preparation_time', 'total', 'payment_done')
 
 
 class OrderUpdateSerializer(serializers.ModelSerializer):
+
     suborder_set = SubOrderSerializer(many=True)
     restaurant = serializers.HyperlinkedRelatedField(
-        many=False, read_only=True, view_name='restaurant:restaurant-detail', lookup_field='pk'
-    )
+        many=False, read_only=True, view_name='restauran:restaurant-detail',
+        lookup_field='pk')
     delivery = DeliverySerializer(many=False)
 
     def update(self, instance, validated_data):
@@ -93,16 +104,14 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
             validated_data['preparation_time'] = preparation_time
 
         return super(OrderUpdateSerializer, self).update(
-            instance=instance, validated_data=validated_data
-        )
+            instance=instance, validated_data=validated_data)
 
     class Meta:
         from .models import Order
 
         model = Order
-        fields = ('id', 'name', 'mobile', 'email', 'status', 'preparation_time',
-                  'suborder_set', 'total', 'restaurant', 'create_date', 'update_date',
-                  'delivery')
+        fields = ('id', 'name', 'mobile', 'email', 'status',
+                  'preparation_time', 'suborder_set', 'total', 'restaurant',
+                  'order_date', 'payment_done', 'delivery')
         read_only_fields = ('id', 'name', 'mobile', 'email', 'suborder_set',
-                            'total', 'restaurant', 'delivery')
-
+                            'total', 'restaurant', 'payment_done', 'delivery')

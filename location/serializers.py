@@ -40,7 +40,7 @@ class AreaSerializer(serializers.ModelSerializer):
 
 
 class BuildingComplexSerializer(serializers.ModelSerializer):
-    area = AreaSerializer(many=True, read_only=True)
+    area = AreaSerializer(many=False, read_only=True)
 
     class Meta:
         from .models import BuildingComplex

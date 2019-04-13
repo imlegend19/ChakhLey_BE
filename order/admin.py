@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-from drfaddons.admin import CreateUpdateAdmin
-
 from .models import Order
 
 
@@ -21,7 +19,7 @@ class SubOrderInLine(admin.TabularInline):
     exclude = ('created_by', )
 
 
-class OrderAdmin(CreateUpdateAdmin):
+class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'restaurant', 'name', 'mobile', 'status', 'total')
     list_filter = ('status', 'restaurant', )
     readonly_fields = ('total', )

@@ -2,7 +2,6 @@ import datetime
 
 from django.db import models
 from django.utils.text import gettext_lazy as _
-from drfaddons.models import CreateUpdateModel
 
 from business.models import Business, DeliveryBoys
 
@@ -11,7 +10,7 @@ from location.models import Area
 from restaurant.models import Restaurant, ORDER_STATUS, PENDING
 
 
-class Order(CreateUpdateModel):
+class Order(models.Model):
     name = models.CharField(verbose_name=_("Buyer Name"), max_length=254)
     mobile = models.CharField(verbose_name=_("Mobile"), max_length=15)
     email = models.EmailField(verbose_name=_("Email"), max_length=255)
@@ -19,8 +18,7 @@ class Order(CreateUpdateModel):
     restaurant = models.ForeignKey(verbose_name=_('Restaurant'), to=Restaurant, on_delete=models.PROTECT)
     preparation_time = models.DurationField(verbose_name=_('Preparation Time'), default=datetime.timedelta(minutes=40))
     status = models.CharField(verbose_name=_('Order Status'), max_length=5, choices=ORDER_STATUS, default=PENDING)
-    managed_by = models.ForeignKey(verbose_name=_('Managed By'), to=Manager, on_delete=models.PROTECT)
-    order_date = models.DateTimeField(_('Order Create Date'), max_length=255)
+    order_date = models.DateTimeField(_('Order Create Date'), auto_now_add=True)
 
     @property
     def total(self):
@@ -31,16 +29,32 @@ class Order(CreateUpdateModel):
 
         return round(total, 2)
 
+    @property
+    def payment_done(self) -> bool:
+        from django.db.models.aggregates import Sum
+
+        payments = self.orderpayment_set.filter(is_credit=True).aggregate(
+            Sum('amount'))['amount__sum']
+        if payments:
+            return payments == self.total
+        else:
+            return self.total == 0
+
     class Meta:
-        ordering = ['-create_date', ]
+        ordering = ['-order_date', ]
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
 
-    def __str__(self):
-        return self.name
+    def __str__(self) -> str:
+        if self.name:
+            return self.name
+        elif self.id:
+            return str(self.id)
+        else:
+            return "{status} Order".format(status=self.get_status_display())
 
 
-class SubOrder(CreateUpdateModel):
+class SubOrder(models.Model):
 
     from product.models import Product
 
@@ -64,12 +78,15 @@ class SubOrder(CreateUpdateModel):
         verbose_name_plural = _('Sub Orders')
 
 
-class Delivery(CreateUpdateModel):
+class Delivery(models.Model):
     order = models.OneToOneField(to=Order, on_delete=models.PROTECT, verbose_name=_('Order'))
-    amount = models.DecimalField(verbose_name=_('Delivery Amount'), default=20, max_digits=10, decimal_places=2)
     area = models.ForeignKey(to=Area, on_delete=models.PROTECT, verbose_name=_('Area'))
     unit_no = models.CharField(verbose_name=_("Unit Number / Floor"), max_length=100)
     address_line_2 = models.CharField(verbose_name=_('Address Line 2'), max_length=255, null=True, blank=True)
+
+    @property
+    def amount(self):
+        return self.order.total
 
     @property
     def full_address(self):
@@ -92,7 +109,7 @@ class Delivery(CreateUpdateModel):
         return self.order.name
 
 
-class DeliveryBoysOrder(CreateUpdateModel):
+class DeliveryBoysOrder(models.Model):
     deliver_boy = models.ForeignKey(verbose_name=_('Delivery Boy'), to=DeliveryBoys, on_delete=models.PROTECT)
     order = models.ForeignKey(verbose_name=_('Order'), to=Order, on_delete=models.PROTECT)
 
@@ -101,4 +118,4 @@ class DeliveryBoysOrder(CreateUpdateModel):
         verbose_name_plural = _('Delivery Boys Order Data')
 
     def __str__(self):
-        return self.deliver_boy.user.name
+        return self.deliver_boy.employee.name

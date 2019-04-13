@@ -1,9 +1,7 @@
-from drfaddons.generics import OwnerCreateAPIView, OwnerRetrieveAPIView, OwnerListAPIView
-
-from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 
 
-class OrderListView(OwnerListAPIView):
+class OrderListView(ListAPIView):
     from .serializers import OrderListSerializer
     from .models import Order
 
@@ -11,19 +9,17 @@ class OrderListView(OwnerListAPIView):
     queryset = Order.objects.all()
 
 
-class CreateOrderView(OwnerCreateAPIView):
-    from .serializers import OrderSerializer
+class CreateOrderView(CreateAPIView):
+    from .serializers import OrderCreateSerializer
     from .models import Order
 
-    serializer_class = OrderSerializer
+    serializer_class = OrderCreateSerializer
     queryset = Order.objects.all()
 
 
-class RetrieveOrderView(OwnerRetrieveAPIView):
-    from .serializers import OrderSerializer
+class RetrieveOrderView(RetrieveAPIView):
+    from .serializers import OrderUpdateSerializer
     from .models import Order
 
-    serializer_class = OrderSerializer
+    serializer_class = OrderUpdateSerializer
     queryset = Order.objects.all()
-
-

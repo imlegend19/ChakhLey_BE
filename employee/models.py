@@ -12,7 +12,6 @@ class Employee(CreateUpdateModel):
     name = models.CharField(verbose_name=_("Full Name"), max_length=254)
     designation = models.CharField(verbose_name=_("Designation"), choices=DESIGNATIONS,
                                    max_length=10, null=True, blank=True)
-
     business = models.ForeignKey(to=Business, on_delete=models.PROTECT, default=1)
     is_active = models.BooleanField(verbose_name=_("Is Active?"),
                                     default=False)

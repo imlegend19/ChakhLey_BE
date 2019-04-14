@@ -36,6 +36,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('jet/', include('jet.urls', 'jet')),
+    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('api/user/', include('drf_user.urls')),
     path('api/location/', include('location.urls', namespace='location')),
     path('api/order/', include('order.urls', namespace='order')),

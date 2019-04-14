@@ -24,6 +24,10 @@ class Product(models.Model):
     is_veg = models.BooleanField(verbose_name=_('Is Veg ?'), default=True)
     price = models.DecimalField(verbose_name=_('Price'), max_digits=10, decimal_places=2)
 
+    @property
+    def restaurant(self):
+        return self.category.restaurant
+
     def __str__(self):
         return self.name
 

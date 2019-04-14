@@ -14,4 +14,4 @@ class ProductSerializer(serializers.ModelSerializer):
         from .models import Product
 
         model = Product
-        fields = ('id', 'name', 'category', 'is_veg', 'price')
+        fields = ('id', 'name', 'category', 'is_veg', 'price', 'restaurant')

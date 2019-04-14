@@ -4,6 +4,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 class RestaurantListView(ListAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
+    from django_filters.rest_framework.backends import DjangoFilterBackend
 
     from .serializers import RestaurantSerializer
     from .models import Restaurant
@@ -12,11 +13,12 @@ class RestaurantListView(ListAPIView):
     serializer_class = RestaurantSerializer
     queryset = Restaurant.objects.all()
 
-    filter_backends = (SearchFilter, )
+    filter_backends = (SearchFilter, DjangoFilterBackend, )
+    filter_fields = ('id', 'name', 'commission', 'is_veg')
     search_fields = ('name', 'id')
 
 
-class RetrieveRestaurntView(RetrieveAPIView):
+class RetrieveRestaurantView(RetrieveAPIView):
     from rest_framework.permissions import AllowAny
 
     from .models import Restaurant

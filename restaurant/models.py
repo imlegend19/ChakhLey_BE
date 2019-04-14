@@ -25,6 +25,7 @@ class Restaurant(CreateUpdateModel):
     establishment = models.CharField(verbose_name=_('Establishment'), choices=ESTABLISHMENTS, max_length=255)
     delivery_time = models.DecimalField(verbose_name="Delivery Time", default=40.00, max_digits=10, decimal_places=2)
     is_veg = models.BooleanField(verbose_name=_('Is Veg?'), default=True)
+    commission = models.IntegerField(verbose_name=_("Commission"), default=10)
 
     def __str__(self):
         return self.name
@@ -51,6 +52,7 @@ class Restaurant(CreateUpdateModel):
         return address
 
     class Meta:
+        ordering = ['-commission']
         verbose_name = 'Restaurant'
         verbose_name_plural = 'Restaurants'
 

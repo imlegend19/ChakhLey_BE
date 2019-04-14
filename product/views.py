@@ -31,5 +31,5 @@ class ProductListView(ListAPIView):
     serializer_class = ProductSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter, )
-    filter_fields = ('name', 'category__id', 'is_veg')
-    search_fields = ('name', 'category__id', 'is_veg')
+    filter_fields = ('name', 'category__id', 'is_veg', 'category__restaurant')
+    search_fields = ('name', 'category__id', 'is_veg', 'category__restaurant')

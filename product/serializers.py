@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from restaurant.serializers import RestaurantSerializer
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,6 +12,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
+
+    restaurant = RestaurantSerializer(many=False, read_only=True)
+
     class Meta:
         from .models import Product
 

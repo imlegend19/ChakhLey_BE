@@ -14,7 +14,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
         model = Restaurant
         fields = ('id', 'name', 'area', 'unit', 'phone', 'business', 'email', 'website', 'is_active',
                   'cost_for_two', 'cuisine', 'establishment', 'delivery_time',
-                  'is_veg', 'full_address', 'commission')
+                  'is_veg', 'full_address', 'commission', 'open')
 
 
 class RestaurantImageSerializer(serializers.ModelSerializer):

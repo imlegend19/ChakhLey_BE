@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import gettext_lazy as _
+import datetime
 
 from drfaddons.models import CreateUpdateModel
 
@@ -23,12 +24,22 @@ class Restaurant(CreateUpdateModel):
     cost_for_two = models.CharField(verbose_name=_('Cost For Two'), choices=COST_FOR_TWO, max_length=255)
     cuisine = models.CharField(verbose_name=_('Type of Cuisine'), choices=CUISINES, max_length=255)
     establishment = models.CharField(verbose_name=_('Establishment'), choices=ESTABLISHMENTS, max_length=255)
-    delivery_time = models.DecimalField(verbose_name="Delivery Time", default=40.00, max_digits=10, decimal_places=2)
+    delivery_time = models.IntegerField(verbose_name=_('Delivery Time'), default=40)
     is_veg = models.BooleanField(verbose_name=_('Is Veg?'), default=True)
     commission = models.IntegerField(verbose_name=_("Commission"), default=10)
+    open_from = models.TimeField(verbose_name=_("Open From"), default=datetime.time(hour=11, minute=30))
+    open_till = models.TimeField(verbose_name=_("Open Till"), default=datetime.time(hour=23))
 
     def __str__(self):
         return self.name
+
+    @property
+    def open(self):
+        now = datetime.datetime.now().time()
+        if self.open_from <= now <= self.open_till:
+            return True
+        else:
+            return False
 
     @property
     def full_address(self):

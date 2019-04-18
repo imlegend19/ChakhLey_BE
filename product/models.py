@@ -8,6 +8,10 @@ class Category(models.Model):
     name = models.CharField(verbose_name=_('Category'), max_length=200)
     restaurant = models.ForeignKey(verbose_name=_('Restaurant'), to=Restaurant, on_delete=models.PROTECT, unique=False)
 
+    @property
+    def product_count(self):
+        return Product.objects.all().filter(category_id=self.id).count()
+
     def __str__(self):
         return self.name
 

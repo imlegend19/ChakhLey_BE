@@ -34,8 +34,18 @@ class Restaurant(CreateUpdateModel):
         return self.name
 
     @property
+    def category_count(self):
+        from product.models import Category
+
+        return Category.objects.all().filter(restaurant_id=self.id).count()
+
+    @property
     def open(self):
-        now = datetime.datetime.now().time()
+        import pytz
+
+        tz = pytz.timezone('Asia/Kolkata')
+        now = datetime.datetime.now().astimezone(tz).time()
+
         if self.open_from <= now <= self.open_till:
             return True
         else:

@@ -11,7 +11,7 @@ class CustomPagination(pagination.PageNumberPagination):
 
         cursor = connection.cursor()
         cursor.execute('''select count(*) from restaurant_restaurant
-                       where current_time between open_from and open_till''')
+                       where addtime(current_time, '05:30') between open_from and open_till''')
 
         row = cursor.fetchone()
         open_restaurants = row[0]

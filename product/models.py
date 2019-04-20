@@ -30,7 +30,7 @@ class Product(models.Model):
 
     @property
     def restaurant(self):
-        return self.category.restaurant
+        return self.category.restaurant.id
 
     def __str__(self):
         return self.name

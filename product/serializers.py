@@ -13,8 +13,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
 
-    restaurant = RestaurantSerializer(many=False, read_only=True)
-
     class Meta:
         from .models import Product
 

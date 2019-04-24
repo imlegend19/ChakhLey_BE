@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-from restaurant.serializers import RestaurantSerializer
-
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

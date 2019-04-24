@@ -80,7 +80,7 @@ class SubOrder(models.Model):
 
 class Delivery(models.Model):
     order = models.OneToOneField(to=Order, on_delete=models.PROTECT, verbose_name=_('Order'))
-    area = models.ForeignKey(to=Area, on_delete=models.PROTECT, verbose_name=_('Area'))
+    location = models.CharField(verbose_name=_("Location"), max_length=255, default='NIIT University')
     unit_no = models.CharField(verbose_name=_("Unit Number / Floor"), max_length=100)
     address_line_2 = models.CharField(verbose_name=_('Address Line 2'), max_length=255, null=True, blank=True)
 
@@ -90,14 +90,12 @@ class Delivery(models.Model):
 
     @property
     def full_address(self):
-        address = str(self.unit_no)
+        address = ''
+        if self.unit_no:
+            address += str(self.unit_no)
         if self.address_line_2:
             address += ", {}".format(self.address_line_2)
-        address += ", {}".format(self.area.name)
-        address += ", {}".format(self.area.city.name)
-        address += ", {}".format(self.area.city.state.name)
-        address += ", {}".format(self.area.city.state.country.name)
-        address += ", {}".format(self.area.pincode)
+        address += ", {}".format(self.location)
 
         return address
 

@@ -155,11 +155,11 @@ user_settings = {
     'REGISTRATION': {
         'SEND_MAIL': False,
         'SEND_MESSAGE': False,
-        'MAIL_SUBJECT': 'Welcome to DRF-USER',
-        'SMS_BODY': 'Your account has been created',
+        'MAIL_SUBJECT': 'Welcome to Chakh Le',
+        'SMS_BODY': 'Your account has been created.',
         'TEXT_MAIL_BODY': 'Your account has been created.',
         'HTML_MAIL_BODY': 'Your account has been created.'
-    }
+    },
 }
 
 # Password validation

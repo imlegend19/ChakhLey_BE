@@ -9,7 +9,7 @@ class DeliverySerializer(serializers.ModelSerializer):
     class Meta:
         from .models import Delivery
 
-        fields = ('id', 'amount', 'area', 'unit_no', 'address_line_2', 'full_address')
+        fields = ('id', 'amount', 'location', 'unit_no', 'address_line_2', 'full_address')
         model = Delivery
 
 

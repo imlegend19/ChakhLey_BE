@@ -82,7 +82,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'status',
                   'preparation_time', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set')
-        read_only_fields = ('status', 'preparation_time', 'total', 'payment_done')
+        read_only_fields = ('status', 'total', 'payment_done')
 
 
 class OrderUpdateSerializer(serializers.ModelSerializer):

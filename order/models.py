@@ -22,7 +22,7 @@ class Order(models.Model):
 
     @property
     def total(self):
-        total = 0
+        total = Delivery.objects.get(order=self.id).amount
 
         for so in self.suborder_set.all():
             total += so.sub_total
@@ -83,10 +83,7 @@ class Delivery(models.Model):
     location = models.CharField(verbose_name=_("Location"), max_length=255, default='NIIT University')
     unit_no = models.CharField(verbose_name=_("Unit Number / Floor"), max_length=100)
     address_line_2 = models.CharField(verbose_name=_('Address Line 2'), max_length=255, null=True, blank=True)
-
-    @property
-    def amount(self):
-        return self.order.total
+    amount = models.DecimalField(verbose_name=_("Delivery Charge"), max_digits=10, decimal_places=2)
 
     @property
     def full_address(self):

@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
 from ChakhLe_BE.local_settings import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -96,8 +95,7 @@ JET_SIDE_MENU_COMPACT = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,7 +107,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 SWAGGER_SETTINGS = {
     'DEFAULT_FIELD_INSPECTORS': [
@@ -180,7 +177,6 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTHENTICATION_BACKENDS = [
     'drf_user.auth.MultiFieldModelBackend',
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

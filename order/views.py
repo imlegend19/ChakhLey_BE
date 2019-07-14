@@ -5,8 +5,17 @@ class OrderListView(ListAPIView):
     from .serializers import OrderListSerializer
     from .models import Order
 
+    from rest_framework.permissions import AllowAny
+    from rest_framework.filters import SearchFilter
+    from django_filters.rest_framework.backends import DjangoFilterBackend
+
+    permission_classes = (AllowAny,)
     serializer_class = OrderListSerializer
     queryset = Order.objects.all()
+
+    filter_backends = (DjangoFilterBackend, SearchFilter,)
+    search_fields = ('name', 'restaurant__id', 'mobile', 'status')
+    filter_fields = ('name', 'restaurant__id', 'id', 'mobile', 'status')
 
 
 class CreateOrderView(CreateAPIView):

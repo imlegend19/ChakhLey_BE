@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView
 
 
 class OrderListView(ListAPIView):
@@ -26,7 +26,7 @@ class CreateOrderView(CreateAPIView):
     queryset = Order.objects.all()
 
 
-class RetrieveOrderView(RetrieveAPIView):
+class RetrieveOrderView(RetrieveUpdateAPIView):
     from .serializers import OrderUpdateSerializer
     from .models import Order
 

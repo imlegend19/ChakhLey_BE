@@ -7,7 +7,7 @@ from business.models import Business, DeliveryBoys
 
 from business.models import Manager
 from location.models import Area
-from restaurant.models import Restaurant, ORDER_STATUS, PENDING
+from restaurant.models import Restaurant, ORDER_STATUS, PENDING, COMPLAINT, ORDER_FEEDBACK
 
 
 class Order(models.Model):
@@ -18,7 +18,7 @@ class Order(models.Model):
     restaurant = models.ForeignKey(verbose_name=_('Restaurant'), to=Restaurant, on_delete=models.PROTECT)
     preparation_time = models.DurationField(verbose_name=_('Preparation Time'), default=datetime.timedelta(minutes=40))
     status = models.CharField(verbose_name=_('Order Status'), max_length=5, choices=ORDER_STATUS, default=PENDING)
-    order_date = models.DateTimeField(_('Order Create Date'), auto_now_add=True)
+    order_date = models.DateTimeField(verbose_name=_('Order Create Date'), auto_now_add=True)
 
     @property
     def total(self):
@@ -114,3 +114,8 @@ class DeliveryBoysOrder(models.Model):
 
     def __str__(self):
         return self.deliver_boy.employee.name
+
+
+class OrderFeedback(models.Model):
+    order_id = models.ForeignKey(verbose_name=_("Order Id"), to=Order, on_delete=models.PROTECT)
+    type = models.CharField(verbose_name=_("Type"), choices=ORDER_FEEDBACK, max_length=100, default=COMPLAINT)

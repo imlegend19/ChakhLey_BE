@@ -88,9 +88,6 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 class OrderUpdateSerializer(serializers.ModelSerializer):
 
     suborder_set = SubOrderSerializer(many=True)
-    restaurant = serializers.HyperlinkedRelatedField(
-        many=False, read_only=True, view_name='restauran:restaurant-detail',
-        lookup_field='pk')
     delivery = DeliverySerializer(many=False)
 
     def update(self, instance, validated_data):

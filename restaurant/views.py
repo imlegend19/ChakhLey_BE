@@ -17,7 +17,6 @@ class CustomPagination(pagination.PageNumberPagination):
         open_restaurants = row[0]
 
         return Response({
-
             'next': self.get_next_link(),
             'previous': self.get_previous_link(),
             'count': self.page.paginator.count,
@@ -42,6 +41,7 @@ class RestaurantListView(ListAPIView):
     filter_backends = (SearchFilter, DjangoFilterBackend, )
     filter_fields = ('id', 'name', 'commission', 'is_veg')
     search_fields = ('name', 'id')
+    ordering = ['-discount']
 
 
 class RetrieveRestaurantView(RetrieveAPIView):

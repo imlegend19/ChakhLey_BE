@@ -7,41 +7,18 @@ COST_FOR_TWO = (
 )
 
 CUISINES = (
-    ('Af', 'Afghan'), ('Ar', 'African'), ('Am', 'American'), ('An', 'Andhra'), ('Aa', 'Arabian'),
-    ('Ae', 'Armenian'), ('As', 'Asian'), ('Ai', 'Asian Fusion'), ('A', 'Assamese'), ('Au', 'Australian'),
-    ('Aw', 'Awadhi'), ('BB', 'BBQ'), ('Ba', 'Bakery'), ('Bn', 'Bangladeshi'), ('Br', 'Bar Food'),
-    ('Be', 'Belgian'), ('Bg', 'Bengali'), ('Bv', 'Beverages'), ('Bi', 'Bihari'), ('By', 'Biryani'),
-    ('Bo', 'Bohri'), ('Bz', 'Brazilian'), ('Bt', 'British'), ('Bu', 'Bubble Tea'), ('B', 'Burger'),
-    ('Bm', 'Burmese'), ('Ca', 'Cafe'), ('Cn', 'Cantonese'), ('Ch', 'Charcoal Chicken'), ('Ce', 'Chettinad'),
-    ('Ci', 'Chili'), ('Cs', 'Chinese'), ('Co', 'Colombian'), ('Ct', 'Continental'), ('Cr', 'Crepes'),
-    ('Cu', 'Cuisine Varies'), ('De', 'Deli'), ('Ds', 'Desserts'), ('Dr', 'Drinks Only'), ('Du', 'Dumplings'),
-    ('Eg', 'Egyptian'), ('Et', 'Ethiopian'), ('Eu', 'European'), ('Fa', 'Falafel'), ('Fs', 'Fast Food'),
-    ('Fi', 'Filipino'), ('Fn', 'Finger Food'), ('Fh', 'Fish and Chips'), ('Fr', 'French'), ('Fo', 'Frozen Yogurt'),
-    ('Fu', 'Fusion'), ('Ge', 'German'), ('Go', 'Goan'), ('Gr', 'Greek'), ('Gi', 'Grill'), ('Gu', 'Gujarati'),
-    ('He', 'Healthy Food'), ('Ho', 'Hot Pot'), ('Hy', 'Hyderabadi'), ('Ic', 'Ice Cream'), ('In', 'Indonesian'),
-    ('It', 'International'), ('Ir', 'Iranian'), ('Ii', 'Irish'), ('Is', 'Israeli'), ('Ia', 'Italian'),
-    ('Ja', 'Japanese'), ('Je', 'Jewish'), ('Ju', 'Juices'), ('Ka', 'Kashmiri'), ('Ke', 'Kebab'), ('Kr', 'Kerala'),
-    ('Ko', 'Konkan'), ('Kn', 'Korean'), ('La', 'Latin American'), ('Le', 'Lebanese'), ('Lu', 'Lucknowi'),
-    ('Ma', 'Maharashtrian'), ('Ml', 'Malaysian'), ('Mw', 'Malwani'), ('Mn', 'Mangolorean'), ('Me', 'Mediterranean'),
-    ('Mx', 'Mexican'), ('Mi', 'Middle Eastern'), ('Ms', 'Mishti'), ('Mt', 'Mithai'), ('Mo', 'Modern Australian'),
-    ('Md', 'Modern European'), ('Mr', 'Modern Indian'), ('Mg', 'Mongolian'), ('Mc', 'Moroccan'), ('Mu', 'Mughlai'),
-    ('Mcu', 'Multi-Cuisine'), ('Na', 'Naga'), ('Ne', 'Nepalese'), ('No', 'North Eastern'), ('Nr', 'North Indian'),
-    ('Or', 'Oriental'), ('Oi', 'Oriya'), ('Ot', 'Other'), ('Pa', 'Pakistani'), ('Pn', 'Pan Asian'), ('Pi', 'Panini'),
-    ('Pr', 'Parsi'), ('Ps', 'Pastry'), ('Pt', 'Patisserie'), ('Pe', 'Peruvian'), ('Pz', 'Pizza'), ('Po', 'Portugese'),
-    ('Ra', 'Rajashthani'), ('Rm', 'Ramen'), ('Rw', 'Raw Meats'), ('Ro', 'Roast Chicken'), ('Rl', 'Rolls'),
-    ('Ru', 'Russian'), ('Sa', 'Sandwich'), ('St', 'Satay'), ('Se', 'Seafood'), ('Si', 'Sichuan'), ('Sn', 'Sindhi'),
-    ('Sg', 'Singaporean'), ('So', 'South American'), ('Su', 'South Indian'), ('Sh', 'South-Western'), ('Sp', 'Spanish'),
-    ('Sr', 'Sri Lankan'), ('Sk', 'Steak'), ('S ', 'Street Food'), ('Ss', 'Sushi'), ('Sw', 'Swiss'), ('Te', 'Tea'),
-    ('Tx', 'Tex-Mex'), ('Th', 'Thai'), ('Ti', 'Tibetan'), ('Tu', 'Turkish'), ('Ve', 'Vegan'), ('Vg', 'Vegetarian'),
-    ('Vi', 'Vietnamese'), ('We', 'West Indian'), ('Wr', 'Wraps'), ('Yu', 'Yun Cha'), ('Ind', 'Indian'),
+    ('As', 'Asian'), ('C', 'Cafe'), ('Ch', 'Chinese'), ('Co', 'Continental'), ('Ff', 'Fast Food'),
+    ('Fi', 'Finger Food'), ('G', 'Grill'), ('In', 'Indian'), ('It', 'Italian'), ('Ja', 'Japanese'),
+    ('Le', 'Lebanese'), ('Mi', 'Mithai'), ('Mu', 'Mughlai'), ('Ni', 'North Indian'), ('Ra', 'Rajasthani'),
+    ('Si', 'South Indian'), ('Sf', 'Street Food'), ('Su', 'Sushi')
 )
 
 ESTABLISHMENTS = (
     ('Ca', 'Casual Dining'), ('Fi', 'Fine Dining'), ('Fo', 'Food Court'), ('Qu', 'Quick Bites'),
-    ('De', 'Dessert Parlor'), ('Ba', 'Bakery'), ('Sw', 'Sweet Shop'), ('Cf', 'Cafe'), ('Dh', 'Dhaba'),
+    ('De', 'Dessert Parlor'), ('B', 'Bakery'), ('Sw', 'Sweet Shop'), ('Cf', 'Café'), ('Dh', 'Dhaba'),
     ('Br', 'Bar'), ('Me', 'Meat Shop'), ('Be', 'Beverage Shop'), ('Pu', 'Pub'), ('Ki', 'Kiosk'), ('Lo', 'Lounge'),
     ('Mi', 'Microbrewery'), ('Cl', 'Club'), ('Fd', 'Food Truck'), ('Co', 'Confectionery'), ('Cc', 'Cocktail'),
-    ('Ir', 'Irani Cafe'), ('Ms', 'Mess'), ('Ju', 'Juice'), ('Wi', 'Wine Bar'), ('Po', 'Pop Up')
+    ('Ir', 'Irani Café'), ('Ms', 'Mess'), ('Ju', 'Juice'), ('Wi', 'Wine Bar'), ('Po', 'Pop Up')
 )
 
 IMAGE_TYPES = [('Re', 'Restaurant'), ('Ki', 'Kitchen'), ('La', 'Landmark'), ('Fo', 'Food')]
@@ -117,6 +94,13 @@ PAYMENT_MODE_CHOICES = (
     (PAYTM_GATEWAY, "PayTM Payment Gateway"),
 )
 
+ORDER_FEEDBACK = (
+    ('C', 'Complaint'),
+    ('F', 'Feedback')
+)
+
+COMPLAINT = 'C'
+
 # taken = []
 #
 #
@@ -135,5 +119,3 @@ PAYMENT_MODE_CHOICES = (
 #     ORDER_STATUS.append((s1, i))
 #
 # print(ORDER_STATUS)
-
-

@@ -31,6 +31,7 @@ class Restaurant(CreateUpdateModel):
     open_till = models.TimeField(verbose_name=_("Open Till"), default=datetime.time(hour=23))
     latitude = models.DecimalField(verbose_name=_("Latitude"), max_digits=10, decimal_places=8, default=27.978237)
     longitude = models.DecimalField(verbose_name=_("Longitude"), max_digits=11, decimal_places=8, default=76.4000549)
+    discount = models.IntegerField(verbose_name=_("Discount"), default=0)
 
     def __str__(self):
         return self.name

@@ -119,3 +119,12 @@ class DeliveryBoysOrder(models.Model):
 class OrderFeedback(models.Model):
     order_id = models.ForeignKey(verbose_name=_("Order Id"), to=Order, on_delete=models.PROTECT)
     type = models.CharField(verbose_name=_("Type"), choices=ORDER_FEEDBACK, max_length=100, default=COMPLAINT)
+    description = models.TextField(verbose_name=_("Description"))
+    mobile = models.CharField(verbose_name=_("User mobile"), max_length=255)
+
+    class Meta:
+        verbose_name = _("Order Feedback")
+        verbose_name_plural = _("Order Feedback's")
+
+    def __str__(self):
+        return self.order_id

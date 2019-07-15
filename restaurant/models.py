@@ -13,8 +13,7 @@ class Restaurant(CreateUpdateModel):
 
     name = models.CharField(verbose_name=_('Name'), max_length=255, unique=True)
     area = models.ForeignKey(verbose_name=_('Area'), to=Area, on_delete=models.PROTECT)
-    unit = models.CharField(verbose_name=_("Unit No"), max_length=255,
-                            null=True, blank=True)
+    unit = models.CharField(verbose_name=_("Unit No"), max_length=255, null=True, blank=True)
     business = models.ForeignKey(verbose_name=_('Business'), to=Business, on_delete=models.PROTECT, default=1)
     phone = models.CharField(verbose_name=_('Phone Number'), max_length=255)
     email = models.EmailField(verbose_name=_('Email'), max_length=255, blank=True, null=True)
@@ -22,7 +21,6 @@ class Restaurant(CreateUpdateModel):
     is_active = models.BooleanField(verbose_name=_("Is Active?"),
                                     default=True)
     cost_for_two = models.CharField(verbose_name=_('Cost For Two'), choices=COST_FOR_TWO, max_length=255)
-    cuisine = models.CharField(verbose_name=_('Type of Cuisine'), choices=CUISINES, max_length=255)
     establishment = models.CharField(verbose_name=_('Establishment'), choices=ESTABLISHMENTS, max_length=255)
     delivery_time = models.IntegerField(verbose_name=_('Delivery Time'), default=40)
     is_veg = models.BooleanField(verbose_name=_('Is Veg?'), default=True)
@@ -75,6 +73,16 @@ class Restaurant(CreateUpdateModel):
 
         return address
 
+    @property
+    def cuisine(self):
+        from ChakhLe_BE.variables import CUISINES_DICT
+        cuisine = []
+
+        for i in RestaurantCuisine.objects.filter(restaurant=self.id):
+            cuisine.append(CUISINES_DICT[i.cuisine])
+
+        return cuisine
+
     class Meta:
         ordering = ['-commission']
         verbose_name = 'Restaurant'
@@ -95,3 +103,15 @@ class RestaurantImage(CreateUpdateModel):
     class Meta:
         verbose_name = 'Restaurant Image'
         verbose_name_plural = 'Restaurant Images'
+
+
+class RestaurantCuisine(models.Model):
+    restaurant = models.ForeignKey(verbose_name=_("Restaurant"), to=Restaurant, on_delete=models.PROTECT)
+    cuisine = models.CharField(verbose_name=_("Cuisine"), choices=CUISINES, max_length=255)
+
+    def __str__(self):
+        return self.restaurant.name
+
+    class Meta:
+        verbose_name = _("Restaurant Cuisine")
+        verbose_name_plural = _("Restaurant Cuisines")

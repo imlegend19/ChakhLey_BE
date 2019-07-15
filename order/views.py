@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView, ListCreateAPIView
 
 
 class OrderListView(ListAPIView):
@@ -32,3 +32,20 @@ class RetrieveOrderView(RetrieveUpdateAPIView):
 
     serializer_class = OrderUpdateSerializer
     queryset = Order.objects.all()
+
+
+class ListCreateOrderFeedbackView(ListCreateAPIView):
+    from .serializers import OrderFeedbackSerializer
+    from .models import OrderFeedback
+
+    from rest_framework.permissions import AllowAny
+    from rest_framework.filters import SearchFilter
+    from django_filters.rest_framework.backends import DjangoFilterBackend
+
+    permission_classes = (AllowAny,)
+    serializer_class = OrderFeedbackSerializer
+    queryset = OrderFeedback.objects.all()
+
+    filter_backends = (DjangoFilterBackend, SearchFilter,)
+    search_fields = ('type', 'mobile', 'order_id')
+    filter_fields = ('id', 'type', 'mobile', 'order_id')

@@ -112,3 +112,13 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
                   'order_date', 'payment_done', 'delivery')
         read_only_fields = ('id', 'name', 'mobile', 'email', 'suborder_set',
                             'total', 'restaurant', 'payment_done', 'delivery')
+
+
+class OrderFeedbackSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        from .models import OrderFeedback
+
+        model = OrderFeedback
+        fields = ('id', 'order_id', 'type', 'description', 'mobile')
+        read_only_fields = ('id', )

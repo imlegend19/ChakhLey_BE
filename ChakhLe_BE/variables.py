@@ -13,6 +13,13 @@ CUISINES = (
     ('Si', 'South Indian'), ('Sf', 'Street Food'), ('Su', 'Sushi')
 )
 
+CUISINES_DICT = {
+    'As': 'Asian', 'C': 'Cafe', 'Ch': 'Chinese', 'Co': 'Continental', 'Ff': 'Fast Food', 'Fi': 'Finger Food',
+    'G': 'Grill', 'In': 'Indian', 'It': 'Italian', 'Ja': 'Japanese', 'Le': 'Lebanese', 'Mi': 'Mithai', 'Mu': 'Mughlai',
+    'Ni': 'North Indian', 'Ra': 'Rajasthani', 'Si': 'South Indian', 'Sf': 'Street Food', 'Su': 'Sushi'
+}
+
+
 ESTABLISHMENTS = (
     ('Ca', 'Casual Dining'), ('Fi', 'Fine Dining'), ('Fo', 'Food Court'), ('Qu', 'Quick Bites'),
     ('De', 'Dessert Parlor'), ('B', 'Bakery'), ('Sw', 'Sweet Shop'), ('Cf', 'Café'), ('Dh', 'Dhaba'),
@@ -96,7 +103,8 @@ PAYMENT_MODE_CHOICES = (
 
 ORDER_FEEDBACK = (
     ('C', 'Complaint'),
-    ('F', 'Feedback')
+    ('F', 'Feedback'),
+    ('S', 'Suggestion')
 )
 
 COMPLAINT = 'C'

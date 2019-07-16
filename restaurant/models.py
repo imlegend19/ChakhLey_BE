@@ -18,8 +18,7 @@ class Restaurant(CreateUpdateModel):
     phone = models.CharField(verbose_name=_('Phone Number'), max_length=255)
     email = models.EmailField(verbose_name=_('Email'), max_length=255, blank=True, null=True)
     website = models.URLField(verbose_name=_('Website / Online Listing Link'), max_length=255, blank=True, null=True)
-    is_active = models.BooleanField(verbose_name=_("Is Active?"),
-                                    default=True)
+    is_active = models.BooleanField(verbose_name=_("Is Active?"), default=True)
     cost_for_two = models.CharField(verbose_name=_('Cost For Two'), choices=COST_FOR_TWO, max_length=255)
     establishment = models.CharField(verbose_name=_('Establishment'), choices=ESTABLISHMENTS, max_length=255)
     delivery_time = models.IntegerField(verbose_name=_('Delivery Time'), default=40)

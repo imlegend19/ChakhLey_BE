@@ -13,8 +13,7 @@ class Employee(CreateUpdateModel):
     designation = models.CharField(verbose_name=_("Designation"), choices=DESIGNATIONS,
                                    max_length=10, null=True, blank=True)
     business = models.ForeignKey(to=Business, on_delete=models.PROTECT, default=1)
-    is_active = models.BooleanField(verbose_name=_("Is Active?"),
-                                    default=False)
+    is_active = models.BooleanField(verbose_name=_("Is Active?"), default=True)
     joined_on = models.DateField(verbose_name=_("Join Date"), null=True,
                                  blank=True)
     left_on = models.DateField(verbose_name=_("Leave Date"), null=True,

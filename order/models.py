@@ -3,9 +3,8 @@ import datetime
 from django.db import models
 from django.utils.text import gettext_lazy as _
 
-from business.models import Business, DeliveryBoys
-
-from business.models import Manager
+from business.models import Business
+from employee.models import Employee
 from location.models import Area
 from restaurant.models import Restaurant, ORDER_STATUS, PENDING, COMPLAINT, ORDER_FEEDBACK
 
@@ -105,7 +104,7 @@ class Delivery(models.Model):
 
 
 class DeliveryBoysOrder(models.Model):
-    deliver_boy = models.ForeignKey(verbose_name=_('Delivery Boy'), to=DeliveryBoys, on_delete=models.PROTECT)
+    deliver_boy = models.ForeignKey(verbose_name=_('Delivery Boy'), to=Employee, on_delete=models.PROTECT)
     order = models.ForeignKey(verbose_name=_('Order'), to=Order, on_delete=models.PROTECT)
 
     class Meta:
@@ -113,7 +112,7 @@ class DeliveryBoysOrder(models.Model):
         verbose_name_plural = _('Delivery Boys Order Data')
 
     def __str__(self):
-        return self.deliver_boy.employee.name
+        return self.deliver_boy.name
 
 
 class OrderFeedback(models.Model):

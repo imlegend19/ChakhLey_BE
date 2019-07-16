@@ -26,7 +26,7 @@ class CreateOrderView(CreateAPIView):
     queryset = Order.objects.all()
 
 
-class RetrieveOrderView(RetrieveUpdateAPIView):
+class RetrieveUpdateOrderView(RetrieveUpdateAPIView):
     from .serializers import OrderUpdateSerializer
     from .models import Order
 

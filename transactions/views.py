@@ -1,6 +1,6 @@
+from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
-from django.utils.text import gettext_lazy as _
-from drfaddons.generics import OwnerListAPIView, OwnerListCreateAPIView
+from drfaddons.generics import OwnerListAPIView
 
 
 class TransactionStaticVariableView(APIView):
@@ -32,7 +32,7 @@ class TransactionListView(OwnerListAPIView):
     filter_fields = ('order', 'payment_mode', 'payment_type', 'is_credit')
 
 
-class AcceptTransactionView(OwnerListCreateAPIView):
+class AcceptTransactionView(CreateAPIView):
     from django_filters.rest_framework.backends import DjangoFilterBackend
 
     from .serializers import OrderPaymentSerializer
@@ -43,23 +43,4 @@ class AcceptTransactionView(OwnerListCreateAPIView):
 
     filter_backends = (DjangoFilterBackend, )
     filter_fields = ('order', 'payment_mode', 'payment_type', 'is_credit',
-                     'accepted_by__employee', 'order__restaurant')
-
-    def perform_create(self, serializer):
-        from business.models import Manager
-
-        from rest_framework.exceptions import PermissionDenied
-
-        restaurant = serializer.validated_data['order'].restaurant
-
-        try:
-            manager = Manager.objects.get(
-                business__manager__employee=self.request.user, business__employee__is_active=True,
-                business__restaurant=restaurant
-            )
-        except Manager.DoesNotExist:
-            raise PermissionDenied(
-                _("User doesn't have permission on provided restaurant.")
-            )
-
-        serializer.save(accepted_by=manager)
+                     'accepted_by', 'order__restaurant')

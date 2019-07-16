@@ -19,7 +19,6 @@ CUISINES_DICT = {
     'Ni': 'North Indian', 'Ra': 'Rajasthani', 'Si': 'South Indian', 'Sf': 'Street Food', 'Su': 'Sushi'
 }
 
-
 ESTABLISHMENTS = (
     ('Ca', 'Casual Dining'), ('Fi', 'Fine Dining'), ('Fo', 'Food Court'), ('Qu', 'Quick Bites'),
     ('De', 'Dessert Parlor'), ('B', 'Bakery'), ('Sw', 'Sweet Shop'), ('Cf', 'Café'), ('Dh', 'Dhaba'),
@@ -43,7 +42,6 @@ BUSINESS = (
     ('H', 'Headquarters'),
     ('F', 'Franchise')
 )
-
 
 PAN = "P"
 AADHAR = "A"
@@ -76,7 +74,7 @@ DESIGNATIONS = (
     ('DM', "Delivery Manager")
 )
 
-COD = "C"
+COD = "COD"
 ONLINE = "O"
 
 PAYMENT_TYPE_CHOICES = (
@@ -90,7 +88,6 @@ PAYTM = "PTM"
 CASH = "C"
 INSTAMOJO = "IMJ"
 PAYTM_GATEWAY = "PTMG"
-
 
 PAYMENT_MODE_CHOICES = (
     (CREDIT_CARD, "Credit Card"),

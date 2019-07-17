@@ -6,7 +6,7 @@ from django.utils.text import gettext_lazy as _
 from ChakhLe_BE.variables import COD, CASH
 
 
-class OrderPayment(CreateUpdateModel):
+class OrderPayment(models.Model):
     from ChakhLe_BE.variables import PAYMENT_MODE_CHOICES, PAYMENT_TYPE_CHOICES
 
     from order.models import Order
@@ -22,6 +22,8 @@ class OrderPayment(CreateUpdateModel):
                                     default=CASH, max_length=5)
     accepted_by = models.ForeignKey(to=Employee, on_delete=models.PROTECT, verbose_name=_("Payment Accepted By"),
                                     null=True, blank=True)
+    create_date = models.DateTimeField(_('Create Date/Time'), auto_now_add=True)
+    update_date = models.DateTimeField(_('Date/Time Modified'), auto_now=True)
 
     def __str__(self):
         return str(self.order) + " - " + str(self.amount)

@@ -1,7 +1,7 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 
-class CategoryListView(ListAPIView):
+class CategoryListView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
 
@@ -18,7 +18,18 @@ class CategoryListView(ListAPIView):
     filter_fields = ('name', 'restaurant__id', 'id')
 
 
-class ProductListView(ListAPIView):
+class CategoryUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    from rest_framework.permissions import AllowAny
+
+    from .models import Category
+    from .serializers import CategorySerializer
+
+    permission_classes = (AllowAny,)
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class ProductListView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
 
@@ -33,3 +44,13 @@ class ProductListView(ListAPIView):
     filter_backends = (DjangoFilterBackend, SearchFilter, )
     filter_fields = ('name', 'category__id', 'is_veg')
     search_fields = ('name', 'category__id', 'is_veg')
+
+
+class ProductUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    from rest_framework.permissions import AllowAny
+    from .models import Product
+    from .serializers import ProductSerializer
+
+    permission_classes = (AllowAny,)
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer

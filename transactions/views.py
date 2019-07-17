@@ -1,6 +1,6 @@
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
-from drfaddons.generics import OwnerListAPIView
 
 
 class TransactionStaticVariableView(APIView):
@@ -22,7 +22,7 @@ class TransactionStaticVariableView(APIView):
         return JsonResponse(content=data, status=200)
 
 
-class TransactionListView(OwnerListAPIView):
+class TransactionListView(ListAPIView):
     from .serializers import OrderPaymentSerializer
     from .models import OrderPayment
 
@@ -32,11 +32,21 @@ class TransactionListView(OwnerListAPIView):
     filter_fields = ('order', 'payment_mode', 'payment_type', 'is_credit')
 
 
+class TransactionDestroyView(DestroyAPIView):
+    from .serializers import OrderPaymentSerializer
+    from .models import OrderPayment
+
+    queryset = OrderPayment.objects.all()
+    serializer_class = OrderPaymentSerializer
+
+
 class AcceptTransactionView(CreateAPIView):
     from django_filters.rest_framework.backends import DjangoFilterBackend
 
     from .serializers import OrderPaymentSerializer
     from .models import OrderPayment
+
+    permission_classes = (AllowAny, )
 
     queryset = OrderPayment.objects.all()
     serializer_class = OrderPaymentSerializer

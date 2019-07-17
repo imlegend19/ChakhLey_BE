@@ -1,7 +1,7 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListCreateAPIView
 
 
-class ListCountryView(ListAPIView):
+class CountryView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
 
@@ -16,7 +16,7 @@ class ListCountryView(ListAPIView):
     search_fields = ('name', )
 
 
-class ListStateView(ListAPIView):
+class StateView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
 
@@ -35,7 +35,7 @@ class ListStateView(ListAPIView):
     search_fields = ('name', 'country__name')
 
 
-class ListCityView(ListAPIView):
+class CityView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
 
@@ -53,7 +53,7 @@ class ListCityView(ListAPIView):
     search_fields = ('name', 'state__country__name', 'state__name')
 
 
-class ListAreaView(ListAPIView):
+class AreaView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
 
@@ -71,7 +71,7 @@ class ListAreaView(ListAPIView):
     search_fields = ('name', 'pincode', 'city__name')
 
 
-class ListBuildingComplexView(ListAPIView):
+class BuildingComplexView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
 

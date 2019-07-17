@@ -1,6 +1,6 @@
 from rest_framework import pagination
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 
 
 class CustomPagination(pagination.PageNumberPagination):
@@ -25,7 +25,7 @@ class CustomPagination(pagination.PageNumberPagination):
         })
 
 
-class RestaurantListView(ListAPIView):
+class RestaurantListView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
     from django_filters.rest_framework.backends import DjangoFilterBackend
@@ -44,7 +44,7 @@ class RestaurantListView(ListAPIView):
     ordering = ['-discount']
 
 
-class RetrieveRestaurantView(RetrieveAPIView):
+class RetrieveRestaurantView(RetrieveUpdateAPIView):
     from rest_framework.permissions import AllowAny
 
     from .models import Restaurant
@@ -53,10 +53,9 @@ class RetrieveRestaurantView(RetrieveAPIView):
     permission_classes = (AllowAny, )
     queryset = Restaurant.objects.filter(is_active=True)
     serializer_class = RestaurantSerializer
-    filter_backends = ()
 
 
-class RestaurantImageListView(ListAPIView):
+class RestaurantImageListView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
 

@@ -31,11 +31,11 @@ class Order(models.Model):
     @property
     def payment_done(self) -> bool:
         from django.db.models.aggregates import Sum
+        from transactions.models import OrderPayment
 
-        payments = self.orderpayment_set.filter(is_credit=True).aggregate(
-            Sum('amount'))['amount__sum']
+        payments = OrderPayment.objects.filter(is_credit=True, order=self.id).aggregate(Sum('amount'))['amount__sum']
         if payments:
-            return payments == self.total
+            return payments >= self.total
         else:
             return self.total == 0
 

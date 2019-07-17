@@ -111,7 +111,7 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
                   'preparation_time', 'suborder_set', 'total', 'restaurant',
                   'order_date', 'payment_done', 'delivery')
         read_only_fields = ('id', 'name', 'mobile', 'email', 'suborder_set',
-                            'total', 'restaurant', 'payment_done', 'delivery')
+                            'total', 'restaurant', 'delivery')
 
 
 class OrderFeedbackSerializer(serializers.ModelSerializer):

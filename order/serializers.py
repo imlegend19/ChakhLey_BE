@@ -86,9 +86,11 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
 
 class OrderUpdateSerializer(serializers.ModelSerializer):
+    from restaurant.serializers import RestaurantSerializer
 
     suborder_set = SubOrderSerializer(many=True)
     delivery = DeliverySerializer(many=False)
+    restaurant = RestaurantSerializer(many=False)
 
     def update(self, instance, validated_data):
         from django.utils import timezone

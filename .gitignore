@@ -105,3 +105,4 @@ venv.bak/
 
 .idea/
 ChakhLe_BE.local_settings.py
+images/*

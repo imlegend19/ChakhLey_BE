@@ -27,7 +27,8 @@ ESTABLISHMENTS = (
     ('Ir', 'Irani Café'), ('Ms', 'Mess'), ('Ju', 'Juice'), ('Wi', 'Wine Bar'), ('Po', 'Pop Up')
 )
 
-IMAGE_TYPES = [('Re', 'Restaurant'), ('Ki', 'Kitchen'), ('La', 'Landmark'), ('Fo', 'Food')]
+IMAGE_TYPES = [('Re', 'Restaurant'), ('Ki', 'Kitchen'), ('La', 'Landmark'), ('Fo', 'Food'), ('L', 'Logo')]
+IMAGE_TYPES_DICT = {'Re': 'Restaurant', 'Ki': 'Kitchen', 'La': 'Landmark', 'Fo': 'Food', 'L': 'Logo'}
 RESTAURANT = 'Re'
 
 ORDER_STATUS = (

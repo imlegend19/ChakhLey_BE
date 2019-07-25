@@ -136,19 +136,19 @@ REST_FRAMEWORK = {
 }
 
 user_settings = {
-    'DEFAULT_ACTIVE_STATE': False,
+    'DEFAULT_ACTIVE_STATE': True,
     'OTP': {
         'LENGTH': 7,
         'ALLOWED_CHARS': '1234567890',
         'VALIDATION_ATTEMPTS': 3,
         'SUBJECT': 'OTP for Verification',
-        'COOLING_PERIOD': 3
+        'COOLING_PERIOD': 2
     },
     'MOBILE_VALIDATION': True,
     'EMAIL_VALIDATION': True,
     'REGISTRATION': {
-        'SEND_MAIL': False,
-        'SEND_MESSAGE': False,
+        'SEND_MAIL': True,
+        'SEND_MESSAGE': True,
         'MAIL_SUBJECT': 'Welcome to Chakh Le',
         'SMS_BODY': 'Your account has been created.',
         'TEXT_MAIL_BODY': 'Your account has been created.',
@@ -198,3 +198,6 @@ AUTH_USER_MODEL = 'drf_user.User'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
+MEDIA_URL = '/images/'

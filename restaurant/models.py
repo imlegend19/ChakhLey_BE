@@ -29,6 +29,7 @@ class Restaurant(CreateUpdateModel):
     latitude = models.DecimalField(verbose_name=_("Latitude"), max_digits=10, decimal_places=8, default=27.978237)
     longitude = models.DecimalField(verbose_name=_("Longitude"), max_digits=11, decimal_places=8, default=76.4000549)
     discount = models.IntegerField(verbose_name=_("Discount"), default=0)
+    # front_cover = models.ForeignKey(verbose_name=_("Front Cover"), to=RestaurantImage, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -82,6 +83,19 @@ class Restaurant(CreateUpdateModel):
 
         return cuisine
 
+    @property
+    def images(self):
+        import sys
+        images = []
+
+        for i in RestaurantImage.objects.filter(restaurant=self.id):
+            file = 'http://' + sys.argv[-1] + '/'
+            image_path = i.image.file.name
+            file += image_path[image_path.find('images/'):]
+            images.append(file)
+
+        return images
+
     class Meta:
         ordering = ['-commission']
         verbose_name = 'Restaurant'
@@ -89,15 +103,12 @@ class Restaurant(CreateUpdateModel):
 
 
 class RestaurantImage(CreateUpdateModel):
-
-    from .utils import outlet_image_upload
-
-    name = models.CharField(verbose_name=_('Image Name'), choices=IMAGE_TYPES, max_length=255, default=RESTAURANT)
+    image_type = models.CharField(verbose_name=_('Image Type'), choices=IMAGE_TYPES, max_length=255, default=RESTAURANT)
     restaurant = models.ForeignKey(verbose_name=_('Restaurant'), on_delete=models.PROTECT, to=Restaurant)
-    image = models.ImageField(verbose_name=_('Select Image'), upload_to=outlet_image_upload)
+    image = models.ImageField(verbose_name=_('Select Image'), upload_to='media/')
 
     def __str__(self):
-        return self.name
+        return self.restaurant.name + " - " + IMAGE_TYPES_DICT[self.image_type]
 
     class Meta:
         verbose_name = 'Restaurant Image'

@@ -6,8 +6,8 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 class CustomPagination(pagination.PageNumberPagination):
 
     def get_paginated_response(self, data):
-
         from django.db import connection
+        from ChakhLe_BE.variables import CUISINES
 
         cursor = connection.cursor()
         cursor.execute('''select count(*) from restaurant_restaurant
@@ -15,12 +15,17 @@ class CustomPagination(pagination.PageNumberPagination):
 
         row = cursor.fetchone()
         open_restaurants = row[0]
+        cuisines = []
+
+        for i in CUISINES:
+            cuisines.append(i[1])
 
         return Response({
             'next': self.get_next_link(),
             'previous': self.get_previous_link(),
             'count': self.page.paginator.count,
             "open_restaurants": open_restaurants,
+            "cuisines": cuisines,
             'results': data,
         })
 

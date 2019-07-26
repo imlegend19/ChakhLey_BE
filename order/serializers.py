@@ -29,10 +29,12 @@ class SubOrderSerializer(serializers.ModelSerializer):
 
 
 class OrderListSerializer(serializers.ModelSerializer):
+    from restaurant.serializers import RestaurantSerializer
 
     delivery = DeliverySerializer(many=False, read_only=True)
     suborder_set = SubOrderSerializer(many=True, read_only=True)
     status = serializers.CharField(source='get_status_display', read_only=True)
+    restaurant = RestaurantSerializer(many=False, read_only=True)
 
     class Meta:
         from .models import Order

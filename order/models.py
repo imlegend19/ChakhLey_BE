@@ -39,6 +39,16 @@ class Order(models.Model):
         else:
             return self.total == 0
 
+    @property
+    def transactions(self):
+        from transactions.models import OrderPayment
+        transactions = []
+
+        for i in OrderPayment.objects.filter(order=self.id):
+            transactions.append(i)
+
+        return transactions
+
     class Meta:
         ordering = ['-order_date', ]
         verbose_name = _('Order')

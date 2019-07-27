@@ -30,8 +30,8 @@ class Employee(CreateUpdateModel):
 
 
 class EmployeeDocument(CreateUpdateModel):
-
     from ChakhLe_BE.variables import EMPLOYEE_DOCUMENT_CHOICES
+    from drf_user.models import User
 
     employee = models.ForeignKey(to=Employee, on_delete=models.PROTECT,
                                  verbose_name=_("Employee"))
@@ -42,7 +42,7 @@ class EmployeeDocument(CreateUpdateModel):
                                  max_length=254, null=True, blank=True)
     is_verified = models.BooleanField(verbose_name=_("Is Verified?"),
                                       default=False)
-    verified_by = models.ForeignKey(to=Employee, on_delete=models.PROTECT,
+    verified_by = models.ForeignKey(to=User, on_delete=models.PROTECT,
                                     related_name="verified_document",
                                     null=True, blank=True)
     verified_on = models.DateField(verbose_name=_("Verified On"), null=True,

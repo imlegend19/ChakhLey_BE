@@ -44,7 +44,7 @@ class RestaurantListView(ListCreateAPIView):
     pagination_class = CustomPagination
 
     filter_backends = (SearchFilter, DjangoFilterBackend, )
-    filter_fields = ('id', 'name', 'commission', 'is_veg')
+    filter_fields = ('id', 'name', 'commission', 'is_veg', 'business')
     search_fields = ('name', 'id')
     ordering = ['-discount']
 

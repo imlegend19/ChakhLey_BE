@@ -40,7 +40,7 @@ class OrderListSerializer(serializers.ModelSerializer):
         from .models import Order
 
         model = Order
-        fields = ('id', 'mobile', 'email', 'business', 'restaurant', 'preparation_time',
+        fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'preparation_time',
                   'status', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set')
 
 

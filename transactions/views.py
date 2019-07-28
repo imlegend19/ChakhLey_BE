@@ -26,9 +26,16 @@ class TransactionListView(ListAPIView):
     from .serializers import OrderPaymentSerializer
     from .models import OrderPayment
 
+    from rest_framework.permissions import AllowAny
+    from rest_framework.filters import SearchFilter
+    from django_filters.rest_framework.backends import DjangoFilterBackend
+
+    permission_classes = (AllowAny,)
     queryset = OrderPayment.objects.all()
     serializer_class = OrderPaymentSerializer
 
+    filter_backends = (DjangoFilterBackend, SearchFilter,)
+    search_fields = ('id', 'order', 'payment_mode', 'payment_type', 'is_credit')
     filter_fields = ('order', 'payment_mode', 'payment_type', 'is_credit')
 
 

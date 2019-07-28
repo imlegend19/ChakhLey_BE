@@ -41,7 +41,7 @@ class OrderListSerializer(serializers.ModelSerializer):
 
         model = Order
         fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'preparation_time',
-                  'status', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set', 'transactions')
+                  'status', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set')
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):

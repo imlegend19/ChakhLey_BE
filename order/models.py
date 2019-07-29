@@ -40,7 +40,7 @@ class Order(models.Model):
             return self.total == 0
 
     @property
-    def transactions(self):
+    def transactions(self) -> list:
         from transactions.models import OrderPayment
         from django.forms.models import model_to_dict
 

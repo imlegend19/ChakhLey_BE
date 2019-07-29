@@ -10,4 +10,4 @@ class BusinessSerializer(serializers.ModelSerializer):
         from .models import Business
 
         model = Business
-        fields = ('id', 'name', 'type', 'city')
+        fields = ('id', 'name', 'type', 'city', 'latitude', 'longitude')

@@ -12,6 +12,16 @@ class Category(models.Model):
     def product_count(self):
         return Product.objects.all().filter(category_id=self.id).count()
 
+    @property
+    def products(self):
+        from django.forms.models import model_to_dict
+        res = []
+
+        for i in Product.objects.filter(category=self.id):
+            res.append(model_to_dict(i))
+
+        return res
+
     def __str__(self):
         return self.name
 
@@ -24,7 +34,8 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(verbose_name=_('Product Name'), max_length=200)
-    category = models.ForeignKey(verbose_name=_('Category'), to=Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(verbose_name=_('Category'), to=Category, on_delete=models.PROTECT,
+                                 related_name='product')
     is_veg = models.BooleanField(verbose_name=_('Is Veg ?'), default=True)
     price = models.DecimalField(verbose_name=_('Price'), max_digits=10, decimal_places=2)
 
@@ -43,7 +54,6 @@ class Product(models.Model):
 
 
 class ProductImage(models.Model):
-
     from .utils import product_image_upload
 
     name = models.CharField(verbose_name=_('Image Name'), max_length=255)

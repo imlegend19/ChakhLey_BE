@@ -6,7 +6,7 @@ class CategorySerializer(serializers.ModelSerializer):
         from .models import Category
 
         model = Category
-        fields = ('id', 'name', 'restaurant', 'product_count')
+        fields = ('id', 'name', 'restaurant', 'product_count', 'products')
 
 
 class ProductSerializer(serializers.ModelSerializer):

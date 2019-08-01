@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
     'django_filters',
     'drf_yasg',
@@ -56,6 +57,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'ChakhLe_BE.urls'
 
 JET_DEFAULT_THEME = 'light-gray'
+
+SITE_ID = 1
 
 JET_THEMES = [
     {

@@ -1,7 +1,5 @@
 from rest_framework import serializers
-
 from django.utils.text import gettext_lazy as _
-
 from product.serializers import ProductSerializer
 
 
@@ -41,7 +39,7 @@ class OrderListSerializer(serializers.ModelSerializer):
 
         model = Order
         fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'preparation_time',
-                  'status', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set', 'transactions')
+                  'status', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set')
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
@@ -112,9 +110,9 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('id', 'name', 'mobile', 'email', 'status',
                   'preparation_time', 'suborder_set', 'total', 'restaurant',
-                  'order_date', 'payment_done', 'delivery', 'transactions')
+                  'order_date', 'payment_done', 'delivery')
         read_only_fields = ('id', 'name', 'mobile', 'email', 'suborder_set',
-                            'total', 'restaurant', 'delivery', 'transactions')
+                            'total', 'restaurant', 'delivery')
 
 
 class OrderFeedbackSerializer(serializers.ModelSerializer):

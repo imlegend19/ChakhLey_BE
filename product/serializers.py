@@ -6,13 +6,13 @@ class CategorySerializer(serializers.ModelSerializer):
         from .models import Category
 
         model = Category
-        fields = ('id', 'name', 'restaurant', 'product_count', 'products')
+        fields = ('id', 'name', 'restaurant', 'active', 'product_count', 'products', 'veg_products', 'combos')
 
 
 class ProductSerializer(serializers.ModelSerializer):
-
     class Meta:
         from .models import Product
 
         model = Product
-        fields = ('id', 'name', 'category', 'is_veg', 'price', 'restaurant')
+        fields = ('id', 'name', 'category', 'is_veg', 'price', 'discount', 'inflation', 'restaurant', 'active',
+                  'recommended_product', 'image', 'display_price')

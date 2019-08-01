@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import product.utils
 
 
 class Migration(migrations.Migration):
@@ -49,7 +48,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, verbose_name='Image Name')),
-                ('image', models.ImageField(upload_to=product.utils.product_image_upload, verbose_name='Select Image')),
+                ('image', models.ImageField(upload_to='', verbose_name='Select Image')),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='product.Product', verbose_name='Product')),
             ],
             options={

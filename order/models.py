@@ -39,17 +39,6 @@ class Order(models.Model):
         else:
             return self.total == 0
 
-    @property
-    def transactions(self) -> list:
-        from transactions.models import OrderPayment
-        from django.forms.models import model_to_dict
-
-        tran = []
-        for i in OrderPayment.objects.filter(order=self.id):
-            tran.append(model_to_dict(i))
-
-        return tran
-
     class Meta:
         ordering = ['-order_date', ]
         verbose_name = _('Order')

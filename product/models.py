@@ -15,7 +15,6 @@ class Category(models.Model):
 
     @property
     def products(self) -> list:
-        from django.forms.models import model_to_dict
 
         products = []
         for i in Product.objects.filter(category=self.id):
@@ -40,7 +39,6 @@ class Category(models.Model):
 
     @property
     def veg_products(self):
-        from django.forms.models import model_to_dict
 
         veg_products = []
         for i in Product.objects.filter(category=self.id):

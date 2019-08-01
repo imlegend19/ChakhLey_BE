@@ -8,7 +8,7 @@ class DeliveryInLine(admin.TabularInline):
 
     model = Delivery
     extra = 0
-    exclude = ('created_by', )
+    exclude = ('created_by',)
 
 
 class SubOrderInLine(admin.TabularInline):
@@ -16,13 +16,13 @@ class SubOrderInLine(admin.TabularInline):
 
     model = SubOrder
     extra = 0
-    exclude = ('created_by', )
+    exclude = ('created_by',)
 
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'restaurant', 'name', 'mobile', 'status', 'total')
-    list_filter = ('status', 'restaurant', )
-    readonly_fields = ('total', )
+    list_filter = ('status', 'restaurant',)
+    readonly_fields = ('total',)
     inlines = (SubOrderInLine, DeliveryInLine)
 
     def get_changeform_initial_data(self, request):

@@ -40,5 +40,3 @@ class UserRestaurantRating(models.Model):
         verbose_name = _('Restaurant Rating')
         verbose_name_plural = _('Restaurant Ratings')
         ordering = ['id']
-
-

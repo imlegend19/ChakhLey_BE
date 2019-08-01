@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('restaurant', '0003_auto_20190715_1005'),
     ]
@@ -13,11 +12,23 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='restaurant',
             name='cuisine',
-            field=models.CharField(choices=[('As', 'Asian'), ('C', 'Cafe'), ('Ch', 'Chinese'), ('Co', 'Continental'), ('Ff', 'Fast Food'), ('Fi', 'Finger Food'), ('G', 'Grill'), ('In', 'Indian'), ('It', 'Italian'), ('Ja', 'Japanese'), ('Le', 'Lebanese'), ('Mi', 'Mithai'), ('Mu', 'Mughlai'), ('Ni', 'North Indian'), ('Ra', 'Rajasthani'), ('Si', 'South Indian'), ('Sf', 'Street Food'), ('Su', 'Sushi')], max_length=255, verbose_name='Type of Cuisine'),
+            field=models.CharField(
+                choices=[('As', 'Asian'), ('C', 'Cafe'), ('Ch', 'Chinese'), ('Co', 'Continental'), ('Ff', 'Fast Food'),
+                         ('Fi', 'Finger Food'), ('G', 'Grill'), ('In', 'Indian'), ('It', 'Italian'), ('Ja', 'Japanese'),
+                         ('Le', 'Lebanese'), ('Mi', 'Mithai'), ('Mu', 'Mughlai'), ('Ni', 'North Indian'),
+                         ('Ra', 'Rajasthani'), ('Si', 'South Indian'), ('Sf', 'Street Food'), ('Su', 'Sushi')],
+                max_length=255, verbose_name='Type of Cuisine'),
         ),
         migrations.AlterField(
             model_name='restaurant',
             name='establishment',
-            field=models.CharField(choices=[('Ca', 'Casual Dining'), ('Fi', 'Fine Dining'), ('Fo', 'Food Court'), ('Qu', 'Quick Bites'), ('De', 'Dessert Parlor'), ('B', 'Bakery'), ('Sw', 'Sweet Shop'), ('Cf', 'Café'), ('Dh', 'Dhaba'), ('Br', 'Bar'), ('Me', 'Meat Shop'), ('Be', 'Beverage Shop'), ('Pu', 'Pub'), ('Ki', 'Kiosk'), ('Lo', 'Lounge'), ('Mi', 'Microbrewery'), ('Cl', 'Club'), ('Fd', 'Food Truck'), ('Co', 'Confectionery'), ('Cc', 'Cocktail'), ('Ir', 'Irani Café'), ('Ms', 'Mess'), ('Ju', 'Juice'), ('Wi', 'Wine Bar'), ('Po', 'Pop Up')], max_length=255, verbose_name='Establishment'),
+            field=models.CharField(
+                choices=[('Ca', 'Casual Dining'), ('Fi', 'Fine Dining'), ('Fo', 'Food Court'), ('Qu', 'Quick Bites'),
+                         ('De', 'Dessert Parlor'), ('B', 'Bakery'), ('Sw', 'Sweet Shop'), ('Cf', 'Café'),
+                         ('Dh', 'Dhaba'), ('Br', 'Bar'), ('Me', 'Meat Shop'), ('Be', 'Beverage Shop'), ('Pu', 'Pub'),
+                         ('Ki', 'Kiosk'), ('Lo', 'Lounge'), ('Mi', 'Microbrewery'), ('Cl', 'Club'),
+                         ('Fd', 'Food Truck'), ('Co', 'Confectionery'), ('Cc', 'Cocktail'), ('Ir', 'Irani Café'),
+                         ('Ms', 'Mess'), ('Ju', 'Juice'), ('Wi', 'Wine Bar'), ('Po', 'Pop Up')], max_length=255,
+                verbose_name='Establishment'),
         ),
     ]

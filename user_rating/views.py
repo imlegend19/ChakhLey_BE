@@ -15,7 +15,7 @@ class UserProductRatingListView(ListAPIView):
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
     search_fields = ('rating', 'product__id')
-    filter_fields = ('product__id', )
+    filter_fields = ('product__id',)
 
 
 class UserRestaurantRatingListView(ListAPIView):
@@ -32,4 +32,4 @@ class UserRestaurantRatingListView(ListAPIView):
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
     search_fields = ('rating', 'restaurant__id')
-    filter_fields = ('restaurant__id', )
+    filter_fields = ('restaurant__id',)

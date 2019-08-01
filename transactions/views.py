@@ -53,11 +53,11 @@ class AcceptTransactionView(CreateAPIView):
     from .serializers import OrderPaymentSerializer
     from .models import OrderPayment
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     queryset = OrderPayment.objects.all()
     serializer_class = OrderPaymentSerializer
 
-    filter_backends = (DjangoFilterBackend, )
+    filter_backends = (DjangoFilterBackend,)
     filter_fields = ('order', 'payment_mode', 'payment_type', 'is_credit',
                      'accepted_by', 'order__restaurant')

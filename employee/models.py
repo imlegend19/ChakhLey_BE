@@ -6,7 +6,6 @@ from ChakhLe_BE.variables import DESIGNATIONS
 
 
 class Employee(CreateUpdateModel):
-
     from business.models import Business
 
     name = models.CharField(verbose_name=_("Full Name"), max_length=254)

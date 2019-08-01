@@ -4,7 +4,6 @@ from business.serializers import BusinessSerializer
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
-
     class Meta:
         from .models import Employee
 
@@ -16,7 +15,6 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
 
 class EmployeeDocumentSerializer(serializers.ModelSerializer):
-
     class Meta:
         from .models import EmployeeDocument
 

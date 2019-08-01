@@ -5,7 +5,6 @@ from location.serializers import AreaSerializer
 
 
 class RestaurantImageSerializer(serializers.ModelSerializer):
-
     class Meta:
         from .models import RestaurantImage
 

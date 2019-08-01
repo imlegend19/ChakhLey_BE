@@ -10,11 +10,11 @@ class BusinessView(ListAPIView):
     from .models import Business
     from .serializers import BusinessSerializer
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     queryset = Business.objects.all()
     serializer_class = BusinessSerializer
 
-    filter_backends = (DjangoFilterBackend, SearchFilter, )
+    filter_backends = (DjangoFilterBackend, SearchFilter,)
     search_fields = ('id', 'name')
-    filter_fields = ('city__id', )
+    filter_fields = ('city__id',)

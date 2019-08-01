@@ -54,7 +54,6 @@ class Order(models.Model):
 
 
 class SubOrder(models.Model):
-
     from product.models import Product
 
     order = models.ForeignKey(verbose_name=_('Order'), to=Order, on_delete=models.PROTECT)
@@ -83,6 +82,8 @@ class Delivery(models.Model):
     unit_no = models.CharField(verbose_name=_("Unit Number / Floor"), max_length=100)
     address_line_2 = models.CharField(verbose_name=_('Address Line 2'), max_length=255, null=True, blank=True)
     amount = models.DecimalField(verbose_name=_("Delivery Charge"), max_digits=10, decimal_places=2)
+    latitude = models.DecimalField(verbose_name=_("Latitude"), max_digits=10, decimal_places=8)
+    longitude = models.DecimalField(verbose_name=_("Longitude"), max_digits=11, decimal_places=8)
 
     @property
     def full_address(self):

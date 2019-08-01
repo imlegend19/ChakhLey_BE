@@ -1,7 +1,7 @@
-from django.db import models
-from django.utils.text import gettext_lazy as _
 import datetime
 
+from django.db import models
+from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
 
 from ChakhLe_BE.variables import *
@@ -29,6 +29,7 @@ class Restaurant(CreateUpdateModel):
     latitude = models.DecimalField(verbose_name=_("Latitude"), max_digits=10, decimal_places=8, default=27.978237)
     longitude = models.DecimalField(verbose_name=_("Longitude"), max_digits=11, decimal_places=8, default=76.4000549)
     discount = models.IntegerField(verbose_name=_("Discount"), default=0)
+
     # front_cover = models.ForeignKey(verbose_name=_("Front Cover"), to=RestaurantImage, on_delete=models.PROTECT)
 
     def __str__(self):

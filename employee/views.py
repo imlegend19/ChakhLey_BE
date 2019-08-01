@@ -11,15 +11,15 @@ class EmployeeView(ListAPIView):
 
     serializer_class = EmployeeSerializer
     queryset = Employee.objects.all()
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
-    filter_backends = (SearchFilter, DjangoFilterBackend, )
+    filter_backends = (SearchFilter, DjangoFilterBackend,)
     search_fields = ('id', 'designation')
-    filter_fields = ('designation', )
+    filter_fields = ('designation',)
 
 
 class RetrieveUpdateEmployeeView(RetrieveUpdateAPIView):
-    from.serializers import EmployeeSerializer
+    from .serializers import EmployeeSerializer
     from .models import Employee
 
     serializer_class = EmployeeSerializer

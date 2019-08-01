@@ -6,4 +6,4 @@ from .models import OrderPayment
 class OrderPaymentInline(admin.TabularInline):
     model = OrderPayment
     extra = 0
-    exclude = ('created_by', )
+    exclude = ('created_by',)

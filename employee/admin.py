@@ -13,7 +13,7 @@ class EmployeeDocumentInLine(admin.TabularInline):
 
 
 class EmployeeAdmin(CreateUpdateAdmin):
-    inlines = (EmployeeDocumentInLine, )
+    inlines = (EmployeeDocumentInLine,)
 
 
 admin.site.register(Employee, EmployeeAdmin)

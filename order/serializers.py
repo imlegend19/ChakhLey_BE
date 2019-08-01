@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from django.utils.text import gettext_lazy as _
+from rest_framework import serializers
+
 from product.serializers import ProductSerializer
 
 
@@ -7,12 +8,11 @@ class DeliverySerializer(serializers.ModelSerializer):
     class Meta:
         from .models import Delivery
 
-        fields = ('id', 'amount', 'location', 'unit_no', 'address_line_2', 'full_address')
+        fields = ('id', 'amount', 'location', 'unit_no', 'address_line_2', 'full_address', 'latitude', 'longitude')
         model = Delivery
 
 
 class SubOrderSerializer(serializers.ModelSerializer):
-
     product = ProductSerializer(many=False, read_only=True)
 
     class Meta:
@@ -116,10 +116,9 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
 
 
 class OrderFeedbackSerializer(serializers.ModelSerializer):
-
     class Meta:
         from .models import OrderFeedback
 
         model = OrderFeedback
         fields = ('id', 'order_id', 'type', 'description', 'mobile')
-        read_only_fields = ('id', )
+        read_only_fields = ('id',)

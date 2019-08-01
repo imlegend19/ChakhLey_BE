@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('restaurant', '0009_auto_20190720_1418'),
     ]
@@ -13,6 +12,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='restaurantimage',
             name='image_type',
-            field=models.CharField(choices=[('Re', 'Restaurant'), ('Ki', 'Kitchen'), ('La', 'Landmark'), ('Fo', 'Food'), ('L', 'Logo')], default='Re', max_length=255, verbose_name='Image Type'),
+            field=models.CharField(
+                choices=[('Re', 'Restaurant'), ('Ki', 'Kitchen'), ('La', 'Landmark'), ('Fo', 'Food'), ('L', 'Logo')],
+                default='Re', max_length=255, verbose_name='Image Type'),
         ),
     ]

@@ -8,12 +8,12 @@ class CountryView(ListCreateAPIView):
     from .models import Country
     from .serializers import CountrySerializer
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
 
-    filter_backends = (SearchFilter, )
-    search_fields = ('name', )
+    filter_backends = (SearchFilter,)
+    search_fields = ('name',)
 
 
 class StateView(ListCreateAPIView):
@@ -25,13 +25,13 @@ class StateView(ListCreateAPIView):
     from .models import State
     from .serializers import StateSerializer
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     queryset = State.objects.all()
     serializer_class = StateSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    filter_fields = ('country__name', )
+    filter_fields = ('country__name',)
     search_fields = ('name', 'country__name')
 
 
@@ -44,7 +44,7 @@ class CityView(ListCreateAPIView):
     from .models import City
     from .serializers import CitySerializer
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     queryset = City.objects.all()
     serializer_class = CitySerializer
 
@@ -62,7 +62,7 @@ class AreaView(ListCreateAPIView):
     from .models import Area
     from .serializers import AreaSerializer
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     queryset = Area.objects.all()
     serializer_class = AreaSerializer
 

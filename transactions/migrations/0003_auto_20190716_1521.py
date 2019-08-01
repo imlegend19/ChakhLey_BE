@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('transactions', '0002_auto_20190716_1456'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='orderpayment',
             name='payment_type',
-            field=models.CharField(choices=[('COD', 'Cash On Delivery'), ('O', 'Online')], default='COD', max_length=5, verbose_name='Payment Type'),
+            field=models.CharField(choices=[('COD', 'Cash On Delivery'), ('O', 'Online')], default='COD', max_length=5,
+                                   verbose_name='Payment Type'),
         ),
     ]

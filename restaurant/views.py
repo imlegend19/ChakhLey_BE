@@ -1,6 +1,6 @@
 from rest_framework import pagination
-from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+from rest_framework.response import Response
 
 
 class CustomPagination(pagination.PageNumberPagination):
@@ -38,12 +38,12 @@ class RestaurantListView(ListCreateAPIView):
     from .serializers import RestaurantSerializer
     from .models import Restaurant
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = RestaurantSerializer
     queryset = Restaurant.objects.all()
     pagination_class = CustomPagination
 
-    filter_backends = (SearchFilter, DjangoFilterBackend, )
+    filter_backends = (SearchFilter, DjangoFilterBackend,)
     filter_fields = ('id', 'name', 'commission', 'is_veg', 'business')
     search_fields = ('name', 'id')
     ordering = ['-discount']
@@ -55,7 +55,7 @@ class RetrieveRestaurantView(RetrieveUpdateAPIView):
     from .models import Restaurant
     from .serializers import RestaurantSerializer
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     queryset = Restaurant.objects.filter(is_active=True)
     serializer_class = RestaurantSerializer
 
@@ -67,9 +67,9 @@ class RestaurantImageListView(ListCreateAPIView):
     from .serializers import RestaurantImageSerializer
     from .models import RestaurantImage
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = RestaurantImageSerializer
     queryset = RestaurantImage.objects.all()
 
-    filter_backends = (SearchFilter, )
+    filter_backends = (SearchFilter,)
     search_fields = ('id', 'name')

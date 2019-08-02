@@ -29,6 +29,8 @@ class Restaurant(CreateUpdateModel):
     latitude = models.DecimalField(verbose_name=_("Latitude"), max_digits=10, decimal_places=8, default=27.978237)
     longitude = models.DecimalField(verbose_name=_("Longitude"), max_digits=11, decimal_places=8, default=76.4000549)
     discount = models.IntegerField(verbose_name=_("Discount"), default=0)
+    packaging_charge = models.DecimalField(verbose_name=_("Packaging Charge"), max_digits=10, decimal_places=2,
+                                           default=0)
 
     # front_cover = models.ForeignKey(verbose_name=_("Front Cover"), to=RestaurantImage, on_delete=models.PROTECT)
 
@@ -90,7 +92,7 @@ class Restaurant(CreateUpdateModel):
         images = []
 
         for i in RestaurantImage.objects.filter(restaurant=self.id):
-            file = 'http://' + sys.argv[-1] + '/'
+            file = URL
             image_path = i.image.file.name
             file += image_path[image_path.find('images/'):]
             images.append(file)

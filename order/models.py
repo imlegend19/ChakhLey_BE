@@ -20,8 +20,17 @@ class Order(models.Model):
     order_date = models.DateTimeField(verbose_name=_('Order Create Date'), auto_now_add=True)
 
     @property
+    def packaging_charge(self):
+        packaging_charge = float(self.restaurant.packaging_charge)
+
+        for sop in self.suborder_set.all():
+            packaging_charge += float(sop.item.packaging_charge)
+
+        return round(packaging_charge, 2)
+
+    @property
     def total(self):
-        total = Delivery.objects.get(order=self.id).amount
+        total = float(Delivery.objects.get(order=self.id).amount) + self.packaging_charge
 
         for so in self.suborder_set.all():
             total += so.sub_total
@@ -66,7 +75,7 @@ class SubOrder(models.Model):
 
     @property
     def sub_total(self):
-        return self.item.price * self.quantity
+        return self.item.display_price * self.quantity
 
     def __str__(self):
         return self.item.name

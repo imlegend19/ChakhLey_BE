@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import gettext_lazy as _
+from ChakhLe_BE.variables import URL
 
 
 class Category(models.Model):
@@ -71,7 +72,7 @@ class Product(models.Model):
     discount = models.IntegerField(verbose_name=_('Discount'), default=0)
     inflation = models.IntegerField(verbose_name=_('Inflation'), default=0)
     active = models.BooleanField(verbose_name=_('Active'), default=True)
-    image = models.ImageField(verbose_name=_('Select Image'), upload_to='products/')
+    image = models.ImageField(verbose_name=_('Select Image'), upload_to='products/', blank=True, null=True)
     description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
     packaging_charge = models.DecimalField(verbose_name=_("Packaging Charge"), default=0, max_digits=10,
                                            decimal_places=2)
@@ -82,13 +83,7 @@ class Product(models.Model):
 
     @property
     def image_url(self):
-        from django.contrib.sites.models import Site
-
-        domain = Site.objects.get_current().domain
-        url = 'http://{domain}'.format(domain=domain)
-
-        if self.image and hasattr(self.image, 'url'):
-            return url + self.image.url
+        return URL + self.image.url
 
     @property
     def recommended_product(self):
@@ -117,12 +112,12 @@ class ProductCombo(models.Model):
 
     name = models.CharField(verbose_name=_("Combo Name"), max_length=255)
     price = models.DecimalField(verbose_name=_('Combo Price'), max_digits=10, decimal_places=2)
-    products = models.ManyToManyField(verbose_name=_('Products'), to=Product)
     restaurant = models.ForeignKey(verbose_name=_("Restaurant"), to=Restaurant, on_delete=models.PROTECT)
+    products = models.ManyToManyField(verbose_name=_('Products'), to=Product)
     discount = models.IntegerField(verbose_name=_('Discount'), default=0)
     inflation = models.IntegerField(verbose_name=_('Inflation'), default=0)
     active = models.BooleanField(verbose_name=_('Active'), default=True)
-    image = models.ImageField(verbose_name=_('Select Image'), upload_to='combos/', default=None)
+    image = models.ImageField(verbose_name=_('Select Image'), upload_to='combos/', blank=True, null=True)
     description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
 
     @property

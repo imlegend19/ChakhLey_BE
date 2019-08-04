@@ -31,8 +31,7 @@ class Restaurant(CreateUpdateModel):
     discount = models.IntegerField(verbose_name=_("Discount"), default=0)
     packaging_charge = models.DecimalField(verbose_name=_("Packaging Charge"), max_digits=10, decimal_places=2,
                                            default=0)
-
-    # front_cover = models.ForeignKey(verbose_name=_("Front Cover"), to=RestaurantImage, on_delete=models.PROTECT)
+    # front_cover = models.ImageField(verbose_name=_("Front Cover"), upload_to='media/', blank=True, null=True)
 
     def __str__(self):
         return self.name

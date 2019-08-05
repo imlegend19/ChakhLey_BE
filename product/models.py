@@ -83,7 +83,8 @@ class Product(models.Model):
 
     @property
     def image_url(self):
-        return URL + self.image.url
+        if self.image:
+            return URL + self.image.url
 
     @property
     def recommended_product(self):

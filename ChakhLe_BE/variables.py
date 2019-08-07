@@ -33,7 +33,7 @@ RESTAURANT = 'Re'
 
 ORDER_STATUS = (
     ('Pe', 'Pending'), ('Ac', 'Accepted'), ('Pr', 'Preparing'), ('R', 'Ready'), ('Di', 'Dispatched'),
-    ('D', 'Delivered'), ('R', 'Rejected'), ('C', 'Cancelled')
+    ('D', 'Delivered'), ('C', 'Cancelled')
 )
 
 DELIVERED = "D"

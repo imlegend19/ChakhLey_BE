@@ -56,7 +56,7 @@ class RetrieveRestaurantView(RetrieveUpdateAPIView):
     from .serializers import RestaurantSerializer
 
     permission_classes = (AllowAny,)
-    queryset = Restaurant.objects.filter(is_active=True)
+    queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
 
 

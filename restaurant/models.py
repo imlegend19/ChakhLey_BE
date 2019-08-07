@@ -31,6 +31,7 @@ class Restaurant(CreateUpdateModel):
     discount = models.IntegerField(verbose_name=_("Discount"), default=0)
     packaging_charge = models.DecimalField(verbose_name=_("Packaging Charge"), max_digits=10, decimal_places=2,
                                            default=0)
+    gst = models.BooleanField(verbose_name=_("GST Charge"), default=False)
     # front_cover = models.ImageField(verbose_name=_("Front Cover"), upload_to='media/', blank=True, null=True)
 
     def __str__(self):
@@ -50,7 +51,10 @@ class Restaurant(CreateUpdateModel):
         now = datetime.datetime.now().astimezone(tz).time()
 
         if self.open_from <= now <= self.open_till:
-            return True
+            if self.is_active:
+                return True
+            else:
+                return False
         else:
             return False
 

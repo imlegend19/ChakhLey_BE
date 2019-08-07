@@ -38,21 +38,6 @@ class Category(models.Model):
 
             return combos
 
-    @property
-    def veg_products(self):
-
-        veg_products = []
-        for i in Product.objects.filter(category=self.id):
-            if i.is_veg:
-                x = {'id': i.id, 'name': i.name, 'category': i.category.id, 'is_veg': i.is_veg, 'price': i.price,
-                     'discount': i.discount, 'inflation': i.inflation, 'active': i.active, 'image_url': i.image_url,
-                     'description': i.description, 'restaurant': i.restaurant,
-                     'recommended_product': i.recommended_product, 'packaging_charge': i.packaging_charge,
-                     'display_price': i.display_price}
-                veg_products.append(x)
-
-        return veg_products
-
     def __str__(self):
         return self.name
 
@@ -74,8 +59,6 @@ class Product(models.Model):
     active = models.BooleanField(verbose_name=_('Active'), default=True)
     image = models.ImageField(verbose_name=_('Select Image'), upload_to='products/', blank=True, null=True)
     description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
-    packaging_charge = models.DecimalField(verbose_name=_("Packaging Charge"), default=0, max_digits=10,
-                                           decimal_places=2)
 
     @property
     def restaurant(self):

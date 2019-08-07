@@ -32,12 +32,12 @@ IMAGE_TYPES_DICT = {'Re': 'Restaurant', 'Ki': 'Kitchen', 'La': 'Landmark', 'Fo':
 RESTAURANT = 'Re'
 
 ORDER_STATUS = (
-    ('Pe', 'Pending'), ('Ac', 'Accepted'), ('Pr', 'Preparing'), ('R', 'Ready'), ('Di', 'Dispatched'),
+    ('N', 'New'), ('Ac', 'Accepted'), ('Pr', 'Preparing'), ('O', 'On its way'),
     ('D', 'Delivered'), ('C', 'Cancelled')
 )
 
 DELIVERED = "D"
-PENDING = 'Pe'
+NEW = 'N'
 
 BUSINESS = (
     ('H', 'Headquarters'),
@@ -77,26 +77,24 @@ DESIGNATIONS = (
 
 COD = "COD"
 ONLINE = "O"
+UPI = "UPI"
 
 PAYMENT_TYPE_CHOICES = (
     (COD, "Cash On Delivery"),
     (ONLINE, "Online"),
+    (UPI, "Upi")
 )
 
-CREDIT_CARD = "CC"
-DEBIT_CARD = "DC"
 PAYTM = "PTM"
 CASH = "C"
-INSTAMOJO = "IMJ"
-PAYTM_GATEWAY = "PTMG"
+GOOGLEPAY = "GP"
+BHIM = "B"
 
 PAYMENT_MODE_CHOICES = (
-    (CREDIT_CARD, "Credit Card"),
-    (DEBIT_CARD, "Debit Card"),
     (PAYTM, "PayTM"),
     (CASH, "Cash"),
-    (INSTAMOJO, "Instamojo"),
-    (PAYTM_GATEWAY, "PayTM Payment Gateway"),
+    (GOOGLEPAY, "Google Pay"),
+    (BHIM, "BHIM"),
 )
 
 ORDER_FEEDBACK = (

@@ -2,11 +2,11 @@ import datetime
 
 from django.db import models
 from django.utils.text import gettext_lazy as _
-
+from django.core.exceptions import ValidationError
 from business.models import Business
 from employee.models import Employee
 from location.models import Area
-from restaurant.models import Restaurant, ORDER_STATUS, PENDING, COMPLAINT, ORDER_FEEDBACK
+from restaurant.models import Restaurant, ORDER_STATUS, NEW, COMPLAINT, ORDER_FEEDBACK
 
 
 class Order(models.Model):
@@ -16,11 +16,21 @@ class Order(models.Model):
     business = models.ForeignKey(verbose_name=_("Business"), to=Business, on_delete=models.PROTECT)
     restaurant = models.ForeignKey(verbose_name=_('Restaurant'), to=Restaurant, on_delete=models.PROTECT)
     preparation_time = models.DurationField(verbose_name=_('Preparation Time'), default=datetime.timedelta(minutes=40))
-    status = models.CharField(verbose_name=_('Order Status'), max_length=5, choices=ORDER_STATUS, default=PENDING)
+    status = models.CharField(verbose_name=_('Order Status'), max_length=5, choices=ORDER_STATUS, default=NEW)
     order_date = models.DateTimeField(verbose_name=_('Order Create Date'), auto_now_add=True)
+    delivery_boy = models.ForeignKey(verbose_name=_("Delivery Boy"), to=Employee, on_delete=models.PROTECT, null=True,
+                                     blank=True)
+
+    def clean(self):
+        if self.status == 'Pr' and self.delivery_boy is None:
+            raise ValidationError(_('Delivery Boy has to be assigned is status is Preparing!'))
+
+        if self.delivery_boy is not None:
+            if self.delivery_boy.designation != 'DB':
+                raise ValidationError(_("Not a valid delivery boy!"))
 
     @property
-    def packaging_charge(self):
+    def packaging_charge(self) -> float:
         packaging_charge = float(self.restaurant.packaging_charge)
 
         for sop in self.suborder_set.all():
@@ -29,7 +39,14 @@ class Order(models.Model):
         return round(packaging_charge, 2)
 
     @property
-    def total(self):
+    def has_delivery_boy(self) -> bool:
+        if self.delivery_boy:
+            return True
+        else:
+            return False
+
+    @property
+    def total(self) -> float:
         total = float(Delivery.objects.get(order=self.id).amount) + self.packaging_charge
 
         for so in self.suborder_set.all():

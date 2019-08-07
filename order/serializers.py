@@ -1,6 +1,8 @@
+from django.core.exceptions import ValidationError
 from django.utils.text import gettext_lazy as _
 from rest_framework import serializers
 
+from employee.serializers import EmployeeSerializer
 from product.serializers import ProductSerializer
 
 
@@ -33,13 +35,15 @@ class OrderListSerializer(serializers.ModelSerializer):
     suborder_set = SubOrderSerializer(many=True, read_only=True)
     status = serializers.CharField(source='get_status_display', read_only=True)
     restaurant = RestaurantSerializer(many=False, read_only=True)
+    delivery_boy = EmployeeSerializer(many=False, read_only=True)
 
     class Meta:
         from .models import Order
 
         model = Order
         fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'preparation_time',
-                  'status', 'order_date', 'total', 'packaging_charge', 'payment_done', 'delivery', 'suborder_set')
+                  'status', 'order_date', 'total', 'packaging_charge', 'payment_done', 'delivery', 'suborder_set',
+                  'delivery_boy', 'has_delivery_boy')
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
@@ -79,7 +83,7 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         from .models import Order
 
         model = Order
-        fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'status',
+        fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'status', 'delivery_boy',
                   'preparation_time', 'order_date', 'total', 'payment_done', 'delivery', 'suborder_set')
         read_only_fields = ('status', 'total', 'payment_done')
 
@@ -101,6 +105,21 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
             preparation_time = etd - instance.create_date
             validated_data['preparation_time'] = preparation_time
 
+        if 'status' in validated_data:
+            status = validated_data.pop('status')
+            if status == 'Pr':
+                try:
+                    delivery_boy = validated_data.pop('delivery_boy')
+                    if delivery_boy is None:
+                        raise ValidationError(_('Delivery Boy has to be assigned if status is Preparing!'))
+                    elif delivery_boy.designation != 'DB':
+                        raise ValidationError(_("Not a valid delivery boy!"))
+                    else:
+                        validated_data['status'] = status
+                        validated_data['delivery_boy'] = delivery_boy
+                except KeyError:
+                    raise ValidationError(_('Delivery Boy has to be assigned if status is Preparing!'))
+
         return super(OrderUpdateSerializer, self).update(
             instance=instance, validated_data=validated_data)
 
@@ -110,7 +129,7 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('id', 'name', 'mobile', 'email', 'status',
                   'preparation_time', 'suborder_set', 'total', 'restaurant',
-                  'order_date', 'payment_done', 'delivery')
+                  'order_date', 'payment_done', 'delivery', 'delivery_boy')
         read_only_fields = ('id', 'name', 'mobile', 'email', 'suborder_set',
                             'total', 'restaurant', 'delivery')
 

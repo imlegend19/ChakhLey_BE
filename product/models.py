@@ -122,7 +122,7 @@ class ProductCombo(models.Model):
 
     def save(self, *args, **kwargs):
         is_new = self.id is None
-        super(ProductCombo, self).save(force_insert, force_update)
+        super(ProductCombo, self).save(force_insert=True, force_update=True)
         if is_new:
             if Category.objects.filter(name='Combos').exists():
                 print("Already exists!")

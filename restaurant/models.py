@@ -32,7 +32,6 @@ class Restaurant(CreateUpdateModel):
     packaging_charge = models.DecimalField(verbose_name=_("Packaging Charge"), max_digits=10, decimal_places=2,
                                            default=0)
     gst = models.BooleanField(verbose_name=_("GST Charge"), default=False)
-    # front_cover = models.ImageField(verbose_name=_("Front Cover"), upload_to='media/', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -91,7 +90,6 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def images(self):
-        import sys
         images = []
 
         for i in RestaurantImage.objects.filter(restaurant=self.id):

@@ -106,17 +106,14 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
             validated_data['preparation_time'] = preparation_time
 
         if 'status' in validated_data:
-            status = validated_data.pop('status')
+            status = validated_data.get('status')
             if status == 'Pr':
                 try:
-                    delivery_boy = validated_data.pop('delivery_boy')
+                    delivery_boy = validated_data.get('delivery_boy')
                     if delivery_boy is None:
                         raise ValidationError(_('Delivery Boy has to be assigned if status is Preparing!'))
                     elif delivery_boy.designation != 'DB':
                         raise ValidationError(_("Not a valid delivery boy!"))
-                    else:
-                        validated_data['status'] = status
-                        validated_data['delivery_boy'] = delivery_boy
                 except KeyError:
                     raise ValidationError(_('Delivery Boy has to be assigned if status is Preparing!'))
 

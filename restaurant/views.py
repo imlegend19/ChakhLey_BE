@@ -81,11 +81,11 @@ class RestaurantAnalysisView(ListAPIView):
     from django_filters.rest_framework.backends import DjangoFilterBackend
 
     from .serializers import RestaurantAnalysis
-    from .models import RestaurantImage
+    from .models import Restaurant
 
     permission_classes = (AllowAny,)
     serializer_class = RestaurantAnalysis
-    queryset = RestaurantImage.objects.all()
+    queryset = Restaurant.objects.all()
 
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ('id', 'name')

@@ -16,13 +16,12 @@ class Category(models.Model):
 
     @property
     def products(self) -> list:
-
         products = []
         for i in Product.objects.filter(category=self.id):
             x = {'id': i.id, 'name': i.name, 'category': i.category.id, 'is_veg': i.is_veg, 'price': i.price,
                  'discount': i.discount, 'inflation': i.inflation, 'active': i.active, 'image_url': i.image_url,
                  'description': i.description, 'restaurant': i.restaurant, 'recommended_product': i.recommended_product,
-                 'display_price': i.display_price, 'packaging_charge': i.packaging_charge}
+                 'display_price': i.display_price}
             products.append(x)
 
         return products

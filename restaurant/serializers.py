@@ -31,5 +31,5 @@ class RestaurantAnalysis(serializers.ModelSerializer):
         from .models import Restaurant
 
         model = Restaurant
-        fields = ('id', 'name', 'total_income', 'total_orders', 'orders_today', 'income_today',
-                  'most_liked_product', 'top_10_products', 'per_day_average')
+        fields = ('id', 'name', 'total_income', 'total_orders', 'orders_today', 'income_today', 'commission',
+                  'most_liked_product', 'top_10_products', 'income_month', 'orders_month', 'amount_after_commission')

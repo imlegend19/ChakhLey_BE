@@ -1,10 +1,7 @@
 import datetime
-
-from django.forms import model_to_dict
 from django.db import models
 from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
-from django.db.models import Sum, Count
 from ChakhLe_BE.variables import *
 
 
@@ -104,26 +101,58 @@ class Restaurant(CreateUpdateModel):
     @property
     def total_income(self):
         from order.models import Order
-        return Order.objects.all().filter(restaurant=self.id)\
-            .aggregate(Sum('total'))
 
-    @property
-    def total_orders(self):
-        from order.models import Order
-        return Order.objects.all().filter(restaurant=self.id)\
-            .count()
+        total = 0
+        for i in Order.objects.filter(restaurant=self.id):
+            total += i.total - float(i.delivery.amount) - float(i.packaging_charge)
 
-    @property
-    def orders_today(self):
-        from order.models import Order
-        return Order.objects.all().filter(restaurant=self.id, order_date=datetime.datetime.today())\
-            .count()
+        return total
 
     @property
     def income_today(self):
         from order.models import Order
-        return Order.objects.all().filter(restaurant=self.id, order_date=datetime.datetime.today())\
-            .aggregate(Sum('total'))
+
+        total = 0
+        for i in Order.objects.filter(restaurant=self.id,
+                                      order_date__gte=datetime.datetime.now().replace(hour=0, minute=0, second=0)):
+            total += i.total - float(i.delivery.amount) - float(i.packaging_charge)
+
+        return total
+
+    @property
+    def income_month(self):
+        from django.db import connection
+
+        cursor = connection.cursor()
+        cursor.execute('''select sum(price * quantity) from product_product inner join
+                   (select * from order_suborder where order_id in (select id from order_order 
+                   where month(order_date) = month(current_date))) as os on product_product.id = os.item_id''')
+
+        return cursor.fetchone()[0]
+
+    @property
+    def total_orders(self):
+        from order.models import Order
+        return Order.objects.filter(restaurant=self.id) \
+            .count()
+
+    @property
+    def orders_month(self):
+        from django.db import connection
+
+        cursor = connection.cursor()
+        cursor.execute('''select count(*) from order_order where month(order_date) = month(current_date)''')
+
+        return cursor.fetchone()[0]
+
+    @property
+    def orders_today(self):
+        from django.db import connection
+
+        cursor = connection.cursor()
+        cursor.execute('''select count(*) from order_order where day(order_date) = day(current_date)''')
+
+        return cursor.fetchone()[0]
 
     @property
     def most_liked_product(self):
@@ -131,7 +160,7 @@ class Restaurant(CreateUpdateModel):
         from order.models import SubOrder
 
         product_count = {}
-        for i in SubOrder.objects.all().filter(order__restaurant=self.id):
+        for i in SubOrder.objects.filter(order__restaurant=self.id):
             if i.item in product_count:
                 val = product_count[i.item] + i.quantity
                 product_count[i.item] = val
@@ -140,10 +169,19 @@ class Restaurant(CreateUpdateModel):
 
         sorted_x = sorted(product_count.items(), key=lambda kv: kv[1], reverse=True)
 
-        item = model_to_dict(Product.objects.all().get(id=sorted_x[0][0]))
-        item['total_sale'] = sorted_x[0][1]
+        try:
+            i = sorted_x[0][0]
+            item = {'id': i.id, 'name': i.name, 'category': i.category.id, 'is_veg': i.is_veg, 'price': i.price,
+                    'discount': i.discount, 'inflation': i.inflation, 'active': i.active,
+                    'image_url': i.image_url if not None else '',
+                    'description': i.description if not None else '', 'restaurant': i.restaurant,
+                    'recommended_product': i.recommended_product, 'display_price': i.display_price,
+                    'total_sale': sorted_x[0][1]}
 
-        return item
+            x = 123
+            return item
+        except IndexError as e:
+            print(e)
 
     @property
     def top_10_products(self):
@@ -151,7 +189,7 @@ class Restaurant(CreateUpdateModel):
         from order.models import SubOrder
 
         product_count = {}
-        for i in SubOrder.objects.all().filter(order__restaurant=self.id):
+        for i in SubOrder.objects.filter(order__restaurant=self.id):
             if i.item in product_count:
                 val = product_count[i.item] + i.quantity
                 product_count[i.item] = val
@@ -162,29 +200,40 @@ class Restaurant(CreateUpdateModel):
 
         products = []
         if len(sorted_x) > 10:
-            for i in range(10):
-                item = model_to_dict(Product.objects.all().get(id=sorted_x[i][0]))
-                item['total_sale'] = sorted_x[i][1]
+            for x in range(10):
+                i = sorted_x[x][0]
+                item = {'id': i.id, 'name': i.name, 'category': i.category.id, 'is_veg': i.is_veg, 'price': i.price,
+                        'discount': i.discount, 'inflation': i.inflation, 'active': i.active, 'image_url': i.image_url,
+                        'description': i.description, 'restaurant': i.restaurant,
+                        'recommended_product': i.recommended_product, 'display_price': i.display_price,
+                        'total_sale': sorted_x[i][1]}
 
                 products.append(item)
         else:
-            for i in range(len(sorted_x)):
-                item = model_to_dict(Product.objects.all().get(id=sorted_x[i][0]))
-                item['total_sale'] = sorted_x[i][1]
+            for x in range(len(sorted_x)):
+                i = sorted_x[x][0]
+                item = {'id': i.id, 'name': i.name, 'category': i.category.id, 'is_veg': i.is_veg, 'price': i.price,
+                        'discount': i.discount, 'inflation': i.inflation, 'active': i.active, 'image_url': i.image_url,
+                        'description': i.description, 'restaurant': i.restaurant,
+                        'recommended_product': i.recommended_product, 'display_price': i.display_price,
+                        'total_sale': sorted_x[x][1]}
 
                 products.append(item)
 
         return products
 
     @property
-    def per_day_average(self):
-        from order.models import Order
-        avg = Order.objects.all().filter(restaurant=self.id)\
-            .extra({'weekday': "dayofweek(order_date)"})\
-            .values('weekday')\
-            .annotate(Count('id'))
+    def amount_after_commission(self):
+        from django.db import connection
 
-        return avg
+        cursor = connection.cursor()
+        cursor.execute('''select sum(price * quantity) from product_product inner join
+           (select * from order_suborder where order_id in (select id from order_order 
+           where month(order_date) = month(current_date))) as os on product_product.id = os.item_id''')
+
+        income_month = cursor.fetchone()[0]
+        print(self.commission)
+        return income_month - (income_month * self.commission) / 100
 
     class Meta:
         ordering = ['-commission']

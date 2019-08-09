@@ -106,6 +106,7 @@ ORDER_FEEDBACK = (
 COMPLAINT = 'C'
 
 URL = "http://127.0.0.1:8000/"
+# URL = "http://13.233.179.130/"
 
 # taken = []
 #

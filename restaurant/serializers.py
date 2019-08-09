@@ -24,3 +24,12 @@ class RestaurantSerializer(serializers.ModelSerializer):
                   'cost_for_two', 'establishment', 'delivery_time', 'latitude', 'longitude', 'cuisine',
                   'is_veg', 'full_address', 'commission', 'open', 'category_count', 'discount', 'images',
                   'packaging_charge', 'gst')
+
+
+class RestaurantAnalysis(serializers.ModelSerializer):
+    class Meta:
+        from .models import Restaurant
+
+        model = Restaurant
+        fields = ('id', 'name', 'total_income', 'total_orders', 'orders_today', 'income_today',
+                  'most_liked_product', 'top_10_products', 'per_day_average')

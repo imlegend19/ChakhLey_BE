@@ -2,7 +2,6 @@ import datetime
 
 from django.db import models
 from django.utils.text import gettext_lazy as _
-from django.core.exceptions import ValidationError
 from business.models import Business
 from employee.models import Employee
 from location.models import Area
@@ -21,21 +20,9 @@ class Order(models.Model):
     delivery_boy = models.ForeignKey(verbose_name=_("Delivery Boy"), to=Employee, on_delete=models.PROTECT, null=True,
                                      blank=True)
 
-    def clean(self):
-        if self.status == 'Pr' and self.delivery_boy is None:
-            raise ValidationError(_('Delivery Boy has to be assigned is status is Preparing!'))
-
-        if self.delivery_boy is not None:
-            if self.delivery_boy.designation != 'DB':
-                raise ValidationError(_("Not a valid delivery boy!"))
-
     @property
     def packaging_charge(self) -> float:
         packaging_charge = float(self.restaurant.packaging_charge)
-
-        for sop in self.suborder_set.all():
-            packaging_charge += float(sop.item.packaging_charge)
-
         return round(packaging_charge, 2)
 
     @property

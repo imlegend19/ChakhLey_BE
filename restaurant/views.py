@@ -1,5 +1,5 @@
 from rest_framework import pagination
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, ListAPIView
 from rest_framework.response import Response
 
 
@@ -73,3 +73,20 @@ class RestaurantImageListView(ListCreateAPIView):
 
     filter_backends = (SearchFilter,)
     search_fields = ('id', 'name')
+
+
+class RestaurantAnalysisView(ListAPIView):
+    from rest_framework.permissions import AllowAny
+    from rest_framework.filters import SearchFilter
+    from django_filters.rest_framework.backends import DjangoFilterBackend
+
+    from .serializers import RestaurantAnalysis
+    from .models import RestaurantImage
+
+    permission_classes = (AllowAny,)
+    serializer_class = RestaurantAnalysis
+    queryset = RestaurantImage.objects.all()
+
+    filter_backends = (SearchFilter, DjangoFilterBackend)
+    search_fields = ('id', 'name')
+    filter_fields = ('id', 'name')

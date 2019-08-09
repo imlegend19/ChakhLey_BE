@@ -1,10 +1,27 @@
 import datetime
 
+from django.forms import model_to_dict
+from product.models import Product
+from order.models import Order, SubOrder
 from django.db import models
 from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
-
+from django.db.models import Sum, Count
 from ChakhLe_BE.variables import *
+
+
+def get_product_count(restaurant_id):
+    product_count = {}
+    for i in SubOrder.objects.all().filter(order__restaurant=restaurant_id):
+        if i.item in product_count:
+            val = product_count[i.item] + i.quantity
+            product_count[i.item] = val
+        else:
+            product_count[i.item] = i.quantity
+
+    sorted_x = sorted(product_count.items(), key=lambda kv: kv[1], reverse=True)
+
+    return sorted_x
 
 
 class Restaurant(CreateUpdateModel):
@@ -99,6 +116,62 @@ class Restaurant(CreateUpdateModel):
             images.append(file)
 
         return images
+
+    @property
+    def total_income(self):
+        return Order.objects.all().filter(restaurant=self.id)\
+            .aggregate(Sum('total'))
+
+    @property
+    def total_orders(self):
+        return Order.objects.all().filter(restaurant=self.id)\
+            .count()
+
+    @property
+    def orders_today(self):
+        return Order.objects.all().filter(restaurant=self.id, order_date=datetime.datetime.today())\
+            .count()
+
+    @property
+    def income_today(self):
+        return Order.objects.all().filter(restaurant=self.id, order_date=datetime.datetime.today())\
+            .aggregate(Sum('total'))
+
+    @property
+    def most_liked_product(self):
+        sorted_x = get_product_count(self.id)
+        item = model_to_dict(Product.objects.all().get(id=sorted_x[0][0]))
+        item['total_sale'] = sorted_x[0][1]
+
+        return item
+
+    @property
+    def top_10_products(self):
+        sorted_x = get_product_count(self.id)
+        products = []
+        if len(sorted_x) > 10:
+            for i in range(10):
+                item = model_to_dict(Product.objects.all().get(id=sorted_x[i][0]))
+                item['total_sale'] = sorted_x[i][1]
+
+                products.append(item)
+        else:
+            for i in range(len(sorted_x)):
+                item = model_to_dict(Product.objects.all().get(id=sorted_x[i][0]))
+                item['total_sale'] = sorted_x[i][1]
+
+                products.append(item)
+
+        return products
+
+    @property
+    def per_day_average(self):
+        avg = Order.objects.all().filter(restaurant=self.id)\
+            .extra({'weekday': "dayofweek(order_date)"})\
+            .values('weekday')\
+            .annotate(Count('id'))
+
+        return avg
 
     class Meta:
         ordering = ['-commission']

@@ -8,4 +8,5 @@ urlpatterns = [
     path('', RestaurantListView.as_view(), name="restaurant_list"),
     path('<int:pk>/', RetrieveRestaurantView.as_view(), name="restaurant_data_read"),
     path('image/', RestaurantImageListView.as_view(), name="restaurant_image_list"),
+    path('analysis/', RestaurantAnalysisView.as_view(), name="restaurant_analysis")
 ]

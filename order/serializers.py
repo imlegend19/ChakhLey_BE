@@ -124,7 +124,7 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
         from .models import Order
 
         model = Order
-        fields = ('id', 'name', 'mobile', 'email', 'status',
+        fields = ('id', 'name', 'mobile', 'email', 'status', 'total',
                   'preparation_time', 'suborder_set', 'total', 'restaurant',
                   'order_date', 'payment_done', 'delivery', 'delivery_boy')
         read_only_fields = ('id', 'name', 'mobile', 'email', 'suborder_set',

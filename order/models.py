@@ -5,10 +5,12 @@ from django.utils.text import gettext_lazy as _
 from business.models import Business
 from employee.models import Employee
 from location.models import Area
-from restaurant.models import Restaurant, ORDER_STATUS, NEW, COMPLAINT, ORDER_FEEDBACK
+from ChakhLe_BE.variables import ORDER_STATUS, NEW, COMPLAINT, ORDER_FEEDBACK
 
 
 class Order(models.Model):
+    from restaurant.models import Restaurant
+
     name = models.CharField(verbose_name=_("Buyer Name"), max_length=254)
     mobile = models.CharField(verbose_name=_("Mobile"), max_length=15)
     email = models.EmailField(verbose_name=_("Email"), max_length=255)

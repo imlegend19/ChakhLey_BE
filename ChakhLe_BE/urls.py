@@ -28,9 +28,9 @@ admin.site.index_title = 'Admin'
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Chakh Le API",
+        title="Chakh Le Beta API",
         default_version='v1',
-        description="API based on DRF YASG for Chakh Le",
+        description="API based on DRF YASG for Chakh Le Beta Development",
         contact=openapi.Contact(email="mahengandhi19@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),

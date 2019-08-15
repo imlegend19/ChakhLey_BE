@@ -42,7 +42,7 @@ class ProductListView(ListCreateAPIView):
     serializer_class = ProductSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
-    filter_fields = ('name', 'category__id', 'is_veg')
+    filter_fields = ('name', 'category__id', 'category__restaurant__id', 'is_veg')
     search_fields = ('name', 'category__id', 'is_veg')
 
 
@@ -54,3 +54,4 @@ class ProductUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     permission_classes = (AllowAny,)
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+

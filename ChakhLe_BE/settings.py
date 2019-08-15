@@ -181,6 +181,8 @@ AUTHENTICATION_BACKENDS = [
     'drf_user.auth.MultiFieldModelBackend',
 ]
 
+SENDSMS_BACKEND = 'employee.utils.Msg91SmsBackend'
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 

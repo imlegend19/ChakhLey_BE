@@ -35,7 +35,7 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     validators=['flex', 'ssv'],
-    public=True,
+    public=False,
     permission_classes=(AllowAny,),
 )
 

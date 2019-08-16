@@ -13,6 +13,11 @@ CUISINES = (
     ('Si', 'South Indian'), ('Sf', 'Street Food'), ('Su', 'Sushi')
 )
 
+RIBBONS = (
+    ('Ex', 'Exclusive'),
+    ('N', 'New'),
+)
+
 CUISINES_DICT = {
     'As': 'Asian', 'C': 'Cafe', 'Ch': 'Chinese', 'Co': 'Continental', 'Ff': 'Fast Food', 'Fi': 'Finger Food',
     'G': 'Grill', 'In': 'Indian', 'It': 'Italian', 'Ja': 'Japanese', 'Le': 'Lebanese', 'Mi': 'Mithai', 'Mu': 'Mughlai',

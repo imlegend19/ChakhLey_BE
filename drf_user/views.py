@@ -273,6 +273,7 @@ class OTPLoginView(APIView):
     name -- Required
     email -- Required
     mobile -- Required
+    is_delivery_boy -- Not Required (only for delivery boys -> default is False)
     verify_otp -- Not Required (only when verifying OTP)
 
     Author: Himanshu Shankar (https://himanshus.com)
@@ -301,6 +302,8 @@ class OTPLoginView(APIView):
         from .models import User
         from .variables import EMAIL, MOBILE
 
+        from django.http import JsonResponse
+
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -308,6 +311,7 @@ class OTPLoginView(APIView):
         name = serializer.validated_data.get('name')
         mobile = serializer.validated_data.get('mobile')
         email = serializer.validated_data.get('email')
+        is_delivery_boy = serializer.validated_data.get('is_delivery_boy')
         user = serializer.validated_data.get('user', None)
 
         message = {}
@@ -327,47 +331,101 @@ class OTPLoginView(APIView):
                             status=status.HTTP_202_ACCEPTED)
 
         else:
-            otp_obj_email = generate_otp(EMAIL, email)
-            otp_obj_mobile = generate_otp(MOBILE, mobile)
+            if is_delivery_boy:
+                try:
+                    user = User.objects.get(mobile=mobile)
+                except User.DoesNotExist:
+                    user = None
 
-            # Set same OTP for both Email & Mobile
-            otp_obj_mobile.otp = otp_obj_email.otp
-            otp_obj_mobile.save()
+                if user is not None and user.is_delivery_boy:
+                    otp_obj_email = generate_otp(EMAIL, email)
+                    otp_obj_mobile = generate_otp(MOBILE, mobile)
 
-            # Send OTP to Email & Mobile
-            sentotp_email = send_otp(email, otp_obj_email, email)
-            sentotp_mobile = send_otp(mobile, otp_obj_mobile, email)
+                    # Set same OTP for both Email & Mobile
+                    otp_obj_mobile.otp = otp_obj_email.otp
+                    otp_obj_mobile.save()
 
-            if sentotp_email['success']:
-                otp_obj_email.send_counter += 1
-                otp_obj_email.save()
-                message['email'] = {
-                    'otp': _("OTP has been sent successfully.")
-                }
+                    # Send OTP to Email & Mobile
+                    sentotp_email = send_otp(email, otp_obj_email, email)
+                    sentotp_mobile = send_otp(mobile, otp_obj_mobile, email)
+
+                    if sentotp_email['success']:
+                        otp_obj_email.send_counter += 1
+                        otp_obj_email.save()
+                        message['email'] = {
+                            'otp': _("OTP has been sent successfully.")
+                        }
+                    else:
+                        message['email'] = {
+                            'otp': _("OTP sending failed {}".format(
+                                sentotp_email['message']))
+                        }
+
+                    if sentotp_mobile['success']:
+                        otp_obj_mobile.send_counter += 1
+                        otp_obj_mobile.save()
+                        message['mobile'] = {
+                            'otp': _("OTP has been sent successfully.")
+                        }
+                    else:
+                        message['mobile'] = {
+                            'otp': _("OTP sending failed {}".format(
+                                sentotp_mobile['message']))
+                        }
+
+                    if sentotp_email['success'] or sentotp_mobile['success']:
+                        curr_status = status.HTTP_201_CREATED
+                    else:
+                        raise APIException(
+                            detail=_(
+                                'A Server Error occurred: ' + sentotp_mobile['message']
+                            ))
+
+                    return Response(data=message, status=curr_status)
+                else:
+                    return JsonResponse(data={'message': "Not a valid delivery boy."}, status=400)
             else:
-                message['email'] = {
-                    'otp': _("OTP sending failed {}".format(
-                        sentotp_email['message']))
-                }
+                otp_obj_email = generate_otp(EMAIL, email)
+                otp_obj_mobile = generate_otp(MOBILE, mobile)
 
-            if sentotp_mobile['success']:
-                otp_obj_mobile.send_counter += 1
+                # Set same OTP for both Email & Mobile
+                otp_obj_mobile.otp = otp_obj_email.otp
                 otp_obj_mobile.save()
-                message['mobile'] = {
-                    'otp': _("OTP has been sent successfully.")
-                }
-            else:
-                message['mobile'] = {
-                    'otp': _("OTP sending failed {}".format(
-                        sentotp_mobile['message']))
-                }
 
-            if sentotp_email['success'] or sentotp_mobile['success']:
-                curr_status = status.HTTP_201_CREATED
-            else:
-                raise APIException(
-                    detail=_(
-                        'A Server Error occurred: ' + sentotp_mobile['message']
-                    ))
+                # Send OTP to Email & Mobile
+                sentotp_email = send_otp(email, otp_obj_email, email)
+                sentotp_mobile = send_otp(mobile, otp_obj_mobile, email)
 
-            return Response(data=message, status=curr_status)
+                if sentotp_email['success']:
+                    otp_obj_email.send_counter += 1
+                    otp_obj_email.save()
+                    message['email'] = {
+                        'otp': _("OTP has been sent successfully.")
+                    }
+                else:
+                    message['email'] = {
+                        'otp': _("OTP sending failed {}".format(
+                            sentotp_email['message']))
+                    }
+
+                if sentotp_mobile['success']:
+                    otp_obj_mobile.send_counter += 1
+                    otp_obj_mobile.save()
+                    message['mobile'] = {
+                        'otp': _("OTP has been sent successfully.")
+                    }
+                else:
+                    message['mobile'] = {
+                        'otp': _("OTP sending failed {}".format(
+                            sentotp_mobile['message']))
+                    }
+
+                if sentotp_email['success'] or sentotp_mobile['success']:
+                    curr_status = status.HTTP_201_CREATED
+                else:
+                    raise APIException(
+                        detail=_(
+                            'A Server Error occurred: ' + sentotp_mobile['message']
+                        ))
+
+                return Response(data=message, status=curr_status)

@@ -1,14 +1,18 @@
 from django.db import models
 from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
-
+from drf_user.models import User
 from ChakhLe_BE.variables import DESIGNATIONS
 
 
-class Employee(CreateUpdateModel):
+class Employee(models.Model):
     from business.models import Business
 
-    name = models.CharField(verbose_name=_("Full Name"), max_length=254)
+    user = models.ForeignKey(verbose_name=_("User"), to=User, on_delete=models.PROTECT)
+    create_date = models.DateTimeField(_('Create Date/Time'),
+                                       auto_now_add=True)
+    update_date = models.DateTimeField(_('Date/Time Modified'),
+                                       auto_now=True)
     designation = models.CharField(verbose_name=_("Designation"), choices=DESIGNATIONS,
                                    max_length=10, null=True, blank=True)
     business = models.ForeignKey(to=Business, on_delete=models.PROTECT, default=1)
@@ -19,6 +23,11 @@ class Employee(CreateUpdateModel):
                                blank=True)
     salary = models.DecimalField(verbose_name=_("Salary"), default=0,
                                  decimal_places=2, max_digits=10)
+
+    def clean(self, *args, **kwargs):
+        if self.designation == 'DB' and not self.user.is_delivery_boy:
+            raise ValidationError('Not a valid delivery boy')
+        super(Employee, self).clean()
 
     def __str__(self):
         return self.name

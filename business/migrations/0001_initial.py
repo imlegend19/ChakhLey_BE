@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -18,10 +17,14 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('type', models.CharField(choices=[('H', 'Headquarters'), ('F', 'Franchise')], max_length=255, verbose_name='Type')),
-                ('latitude', models.DecimalField(decimal_places=8, default=27.988889, max_digits=10, verbose_name='Latitude')),
-                ('longitude', models.DecimalField(decimal_places=8, default=76.388333, max_digits=11, verbose_name='Longitude')),
-                ('city', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.City', verbose_name='City')),
+                ('type', models.CharField(choices=[('H', 'Headquarters'), ('F', 'Franchise')], max_length=255,
+                                          verbose_name='Type')),
+                ('latitude',
+                 models.DecimalField(decimal_places=8, default=27.988889, max_digits=10, verbose_name='Latitude')),
+                ('longitude',
+                 models.DecimalField(decimal_places=8, default=76.388333, max_digits=11, verbose_name='Longitude')),
+                ('city', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.City',
+                                           verbose_name='City')),
             ],
             options={
                 'verbose_name': 'Business',

@@ -8,7 +8,6 @@ import drf_user.managers
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -22,7 +21,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('password', models.CharField(max_length=128, verbose_name='password')),
                 ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
+                ('is_superuser', models.BooleanField(default=False,
+                                                     help_text='Designates that this user has all permissions without explicitly assigning them.',
+                                                     verbose_name='superuser status')),
                 ('username', models.CharField(max_length=254, unique=True, verbose_name='Unique UserName')),
                 ('email', models.EmailField(max_length=254, unique=True, verbose_name='EMail Address')),
                 ('mobile', models.CharField(max_length=150, unique=True, verbose_name='Mobile Number')),
@@ -47,12 +48,15 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('otp', models.CharField(max_length=10, verbose_name='OTP Code')),
-                ('destination', models.CharField(max_length=254, unique=True, verbose_name='Destination Address (Mobile/EMail)')),
+                ('destination',
+                 models.CharField(max_length=254, unique=True, verbose_name='Destination Address (Mobile/EMail)')),
                 ('create_date', models.DateTimeField(auto_now_add=True, verbose_name='Create Date')),
                 ('update_date', models.DateTimeField(auto_now=True, verbose_name='Date Modified')),
                 ('is_validated', models.BooleanField(default=False, verbose_name='Is Validated')),
                 ('validate_attempt', models.IntegerField(default=3, verbose_name='Attempted Validation')),
-                ('prop', models.CharField(choices=[('E', 'EMail Address'), ('M', 'Mobile Number')], default='E', max_length=3, verbose_name='Destination Property')),
+                ('prop',
+                 models.CharField(choices=[('E', 'EMail Address'), ('M', 'Mobile Number')], default='E', max_length=3,
+                                  verbose_name='Destination Property')),
                 ('send_counter', models.IntegerField(default=0, verbose_name='OTP Sent Counter')),
                 ('sms_id', models.CharField(blank=True, max_length=254, null=True, verbose_name='SMS ID')),
                 ('reactive_at', models.DateTimeField(verbose_name='ReActivate Sending OTP')),
@@ -87,7 +91,8 @@ class Migration(migrations.Migration):
                 ('session', models.TextField(verbose_name='Session Passed')),
                 ('create_date', models.DateTimeField(auto_now_add=True, verbose_name='Create Date/Time')),
                 ('update_date', models.DateTimeField(auto_now=True, verbose_name='Date/Time Modified')),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+                ('created_by',
+                 models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Authentication Transaction',
@@ -97,11 +102,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='groups',
-            field=models.ManyToManyField(blank=True, help_text='The roles this user belongs to. A user will get all permissions granted to each of their roles.', related_name='user_set', related_query_name='user', to='drf_user.Role', verbose_name='Roles'),
+            field=models.ManyToManyField(blank=True,
+                                         help_text='The roles this user belongs to. A user will get all permissions granted to each of their roles.',
+                                         related_name='user_set', related_query_name='user', to='drf_user.Role',
+                                         verbose_name='Roles'),
         ),
         migrations.AddField(
             model_name='user',
             name='user_permissions',
-            field=models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions'),
+            field=models.ManyToManyField(blank=True, help_text='Specific permissions for this user.',
+                                         related_name='user_set', related_query_name='user', to='auth.Permission',
+                                         verbose_name='user permissions'),
         ),
     ]

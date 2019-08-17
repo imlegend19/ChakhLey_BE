@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -24,12 +23,20 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=254, verbose_name='Buyer Name')),
                 ('mobile', models.CharField(max_length=15, verbose_name='Mobile')),
                 ('email', models.EmailField(max_length=255, verbose_name='Email')),
-                ('preparation_time', models.DurationField(default=datetime.timedelta(0, 2400), verbose_name='Preparation Time')),
-                ('status', models.CharField(choices=[('N', 'New'), ('Ac', 'Accepted'), ('Pr', 'Preparing'), ('O', 'On its way'), ('D', 'Delivered'), ('C', 'Cancelled')], default='N', max_length=5, verbose_name='Order Status')),
+                ('preparation_time',
+                 models.DurationField(default=datetime.timedelta(0, 2400), verbose_name='Preparation Time')),
+                ('status', models.CharField(
+                    choices=[('N', 'New'), ('Ac', 'Accepted'), ('Pr', 'Preparing'), ('O', 'On its way'),
+                             ('D', 'Delivered'), ('C', 'Cancelled')], default='N', max_length=5,
+                    verbose_name='Order Status')),
                 ('order_date', models.DateTimeField(auto_now_add=True, verbose_name='Order Create Date')),
-                ('business', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='business.Business', verbose_name='Business')),
-                ('delivery_boy', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='employee.Employee', verbose_name='Delivery Boy')),
-                ('restaurant', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='restaurant.Restaurant', verbose_name='Restaurant')),
+                ('business', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='business.Business',
+                                               verbose_name='Business')),
+                ('delivery_boy', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT,
+                                                   to='employee.Employee', verbose_name='Delivery Boy')),
+                ('restaurant',
+                 models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='restaurant.Restaurant',
+                                   verbose_name='Restaurant')),
             ],
             options={
                 'verbose_name': 'Order',
@@ -42,8 +49,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.PositiveIntegerField(verbose_name='Quantity')),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='product.Product', verbose_name='Product')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='order.Order', verbose_name='Order')),
+                ('item', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='product.Product',
+                                           verbose_name='Product')),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='order.Order',
+                                            verbose_name='Order')),
             ],
             options={
                 'verbose_name': 'Sub Order',
@@ -54,10 +63,13 @@ class Migration(migrations.Migration):
             name='OrderFeedback',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('C', 'Complaint'), ('F', 'Feedback'), ('S', 'Suggestion')], default='C', max_length=100, verbose_name='Type')),
+                ('type',
+                 models.CharField(choices=[('C', 'Complaint'), ('F', 'Feedback'), ('S', 'Suggestion')], default='C',
+                                  max_length=100, verbose_name='Type')),
                 ('description', models.TextField(verbose_name='Description')),
                 ('mobile', models.CharField(max_length=255, verbose_name='User mobile')),
-                ('order_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='order.Order', verbose_name='Order Id')),
+                ('order_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='order.Order',
+                                               verbose_name='Order Id')),
             ],
             options={
                 'verbose_name': 'Order Feedback',
@@ -68,8 +80,10 @@ class Migration(migrations.Migration):
             name='DeliveryBoysOrder',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('deliver_boy', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='employee.Employee', verbose_name='Delivery Boy')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='order.Order', verbose_name='Order')),
+                ('deliver_boy', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='employee.Employee',
+                                                  verbose_name='Delivery Boy')),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='order.Order',
+                                            verbose_name='Order')),
             ],
             options={
                 'verbose_name': 'Delivery Boys Order Data',
@@ -82,11 +96,13 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('location', models.CharField(default='NIIT University', max_length=255, verbose_name='Location')),
                 ('unit_no', models.CharField(max_length=100, verbose_name='Unit Number / Floor')),
-                ('address_line_2', models.CharField(blank=True, max_length=255, null=True, verbose_name='Address Line 2')),
+                ('address_line_2',
+                 models.CharField(blank=True, max_length=255, null=True, verbose_name='Address Line 2')),
                 ('amount', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Delivery Charge')),
                 ('latitude', models.DecimalField(decimal_places=8, max_digits=10, verbose_name='Latitude')),
                 ('longitude', models.DecimalField(decimal_places=8, max_digits=11, verbose_name='Longitude')),
-                ('order', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='order.Order', verbose_name='Order')),
+                ('order', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to='order.Order',
+                                               verbose_name='Order')),
             ],
             options={
                 'verbose_name': 'Delivery',

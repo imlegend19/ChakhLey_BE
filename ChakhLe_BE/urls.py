@@ -22,16 +22,16 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
 
-admin.site.site_header = "Chakh Le Administration"
-admin.site.site_title = "Chakh Le Administration"
+admin.site.site_header = "Chakh Ley Administration"
+admin.site.site_title = "Chakh Ley Administration"
 admin.site.index_title = 'Admin'
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Chakh Le API",
+        title="Chakh Ley API",
         default_version='v1',
-        description="API based on DRF YASG for Chakh Le",
-        contact=openapi.Contact(email="mahengandhi19@gmail.com"),
+        description="API based on DRF YASG for Chakh Ley",
+        contact=openapi.Contact(email="support@chakhley.co.in"),
         license=openapi.License(name="BSD License"),
     ),
     validators=['flex', 'ssv'],

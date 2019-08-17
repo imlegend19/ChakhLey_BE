@@ -154,6 +154,7 @@ class OTPView(APIView):
     is_login -- Set is_login true if trying to login via OTP
     destination -- Required. Place where sending OTP
     email -- Fallback in case of destination is a mobile number
+    is_delivery_boy -- For logging in delivery boy
     verify_otp -- OTP in the 2nd step of flow
 
     Examples
@@ -175,20 +176,29 @@ class OTPView(APIView):
     >>> {"destination": "me@himanshus.com", "is_login": True,
     >>>  "verify_otp": 1234232}
 
-    Author: Himanshu Shankar (https://himanshus.com)
-            Aditya Gupta (https://github.com/ag93999)
+    3. Login system for delivery boy
+    For signing in delivery boy set is_delivery_boy=True
+    >>> {"destination": "98xx7xx5xx", "is_login": True, "is_delivery_boy": True}
+
+    >>> {"destination": "me@himanshus.com", "is_login": True, "is_delivery_boy": True,
+    >>>  "verify_otp": 1234232}
+
+    Error object for wrong delivery boy:
+    >>> {
+    >>>     "non_field_errors": ["Not a valid delivery boy."]
+    >>> }
     """
     from .serializers import OTPSerializer
-
     from rest_framework.permissions import AllowAny
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = OTPSerializer
 
     def post(self, request, *args, **kwargs):
         from rest_framework.response import Response
         from rest_framework import status
-
+        from .models import User
+        from django.http import JsonResponse
         from rest_framework.exceptions import APIException
 
         from .utils import validate_otp, login_user, generate_otp, send_otp
@@ -200,6 +210,7 @@ class OTPView(APIView):
         prop = serializer.validated_data.get('prop')
         user = serializer.validated_data.get('user')
         email = serializer.validated_data.get('email')
+        is_delivery_boy = serializer.validated_data.get('is_delivery_boy')
         is_login = serializer.validated_data.get('is_login')
 
         if 'verify_otp' in request.data.keys():
@@ -213,16 +224,31 @@ class OTPView(APIView):
                         status=status.HTTP_202_ACCEPTED)
         else:
             otp_obj = generate_otp(prop, destination)
-            sentotp = send_otp(destination, otp_obj, email)
+            user = User.objects.get(mobile=destination)
 
-            if sentotp['success']:
-                otp_obj.send_counter += 1
-                otp_obj.save()
+            if is_delivery_boy:
+                if user.is_delivery_boy:
+                    sentotp = send_otp(destination, otp_obj, email)
+                    if sentotp['success']:
+                        otp_obj.send_counter += 1
+                        otp_obj.save()
 
-                return Response(sentotp, status=status.HTTP_201_CREATED)
+                        return Response(sentotp, status=status.HTTP_201_CREATED)
+                    else:
+                        raise APIException(
+                            detail=_('A Server Error occurred: ' + sentotp['message']))
+                else:
+                    return JsonResponse({'message': "Not a valid delivery boy."}, status=400)
             else:
-                raise APIException(
-                    detail=_('A Server Error occurred: ' + sentotp['message']))
+                sentotp = send_otp(destination, otp_obj, email)
+                if sentotp['success']:
+                    otp_obj.send_counter += 1
+                    otp_obj.save()
+
+                    return Response(sentotp, status=status.HTTP_201_CREATED)
+                else:
+                    raise APIException(
+                        detail=_('A Server Error occurred: ' + sentotp['message']))
 
 
 class RetrieveUpdateUserAccountView(RetrieveUpdateAPIView):
@@ -232,9 +258,6 @@ class RetrieveUpdateUserAccountView(RetrieveUpdateAPIView):
     get: Fetch Account Details
     put: Update all details
     patch: Update some details
-
-    Author: Himanshu Shankar (https://himanshus.com)
-            Aditya Gupta( https://github.com/ag93999)
     """
     from .serializers import UserSerializer
     from .models import User
@@ -274,9 +297,6 @@ class OTPLoginView(APIView):
     email -- Required
     mobile -- Required
     verify_otp -- Not Required (only when verifying OTP)
-
-    Author: Himanshu Shankar (https://himanshus.com)
-            Aditya Gupta (https://github.com/ag93999)
     """
 
     from rest_framework.permissions import AllowAny

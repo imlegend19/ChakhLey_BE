@@ -27,7 +27,7 @@ user_settings = {
 }
 
 
-def update_user_settings()->dict:
+def update_user_settings() -> dict:
     """
     Updates user setting from django default setting
 

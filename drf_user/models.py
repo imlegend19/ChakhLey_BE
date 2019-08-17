@@ -10,6 +10,7 @@ class Role(Group):
     """
     A proxy model for Group for renaming Group to Role.
     """
+
     class Meta:
         proxy = True
         verbose_name = _('Role')
@@ -42,8 +43,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(verbose_name=_('Activated'), default=False)
     is_staff = models.BooleanField(verbose_name=_('Staff Status'),
                                    default=False)
-    # is_employee = models.BooleanField(verbose_name=_('Is Employee'), default=False)
-    # is_delivery_boy = models.BooleanField(verbose_name=_('Is Delivery Boy'), default=False)
+    is_employee = models.BooleanField(verbose_name=_('Is Employee'), default=False)
+    is_delivery_boy = models.BooleanField(verbose_name=_('Is Delivery Boy'), default=False)
 
     # Renamed Groups to Roles
     groups = models.ManyToManyField(

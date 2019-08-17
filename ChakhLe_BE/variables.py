@@ -1,3 +1,5 @@
+HOST = 'admin.chakhley.co.in'
+
 COST_FOR_TWO = (
     ('$', '100'),
     ('$$', '100 - 400'),
@@ -11,6 +13,11 @@ CUISINES = (
     ('Fi', 'Finger Food'), ('G', 'Grill'), ('In', 'Indian'), ('It', 'Italian'), ('Ja', 'Japanese'),
     ('Le', 'Lebanese'), ('Mi', 'Mithai'), ('Mu', 'Mughlai'), ('Ni', 'North Indian'), ('Ra', 'Rajasthani'),
     ('Si', 'South Indian'), ('Sf', 'Street Food'), ('Su', 'Sushi')
+)
+
+RIBBONS = (
+    ('Ex', 'Exclusive'),
+    ('N', 'New'),
 )
 
 CUISINES_DICT = {

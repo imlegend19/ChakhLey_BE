@@ -30,6 +30,7 @@ class Restaurant(CreateUpdateModel):
     packaging_charge = models.DecimalField(verbose_name=_("Packaging Charge"), max_digits=10, decimal_places=2,
                                            default=0)
     gst = models.BooleanField(verbose_name=_("GST Charge"), default=False)
+    ribbon = models.CharField(verbose_name=_("Ribbon"), choices=RIBBONS, null=True, blank=True, max_length=255)
 
     def __str__(self):
         return self.name
@@ -178,7 +179,6 @@ class Restaurant(CreateUpdateModel):
                     'recommended_product': i.recommended_product, 'display_price': i.display_price,
                     'total_sale': sorted_x[0][1]}
 
-            x = 123
             return item
         except IndexError as e:
             print(e)
@@ -232,7 +232,7 @@ class Restaurant(CreateUpdateModel):
            where month(order_date) = month(current_date))) as os on product_product.id = os.item_id''')
 
         income_month = cursor.fetchone()[0]
-        print(self.commission)
+        # print(self.commission)
         return income_month - (income_month * self.commission) / 100
 
     class Meta:

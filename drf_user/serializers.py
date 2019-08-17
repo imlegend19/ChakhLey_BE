@@ -10,7 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
     UserRegisterSerializer is a model serializer which includes the
     attributes that are required for registering a user.
     """
-    def validate_email(self, value: str):
+
+    @staticmethod
+    def validate_email(value: str):
         """
         If pre-validated email is required, this function checks if
         the email is pre-validated using OTP.
@@ -37,7 +39,8 @@ class UserSerializer(serializers.ModelSerializer):
         else:
             return value
 
-    def validate_mobile(self, value: str):
+    @staticmethod
+    def validate_mobile(value: str):
         """
         If pre-validated mobile number is required, this function
         checks if the mobile is pre-validated using OTP.
@@ -84,8 +87,8 @@ class UserShowSerializer(serializers.ModelSerializer):
         from .models import User
 
         model = User
-        fields = ('id', 'username', 'name')
-        read_only_fields = ('username', 'name')
+        fields = ('id', 'username', 'name', 'is_delivery_boy')
+        read_only_fields = ('username', 'name', 'is_delivery_boy')
 
 
 class OTPSerializer(serializers.Serializer):
@@ -119,14 +122,16 @@ class OTPSerializer(serializers.Serializer):
     >>>                     "email": "me@himanshus.com",
     >>>                     "verify_otp": 2930433, "is_login": True})
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    3. For logging in delivery boy
+    >>>
     """
     email = serializers.EmailField(required=False)
     is_login = serializers.BooleanField(default=False)
+    is_delivery_boy = serializers.BooleanField(default=False)
     verify_otp = serializers.CharField(required=False)
     destination = serializers.CharField(required=True)
 
-    def get_user(self, prop: str, destination: str)->User:
+    def get_user(self, prop: str, destination: str) -> User:
         """
         Provides current user on the basis of property and destination
         provided.
@@ -157,7 +162,7 @@ class OTPSerializer(serializers.Serializer):
 
         return user
 
-    def validate(self, attrs: dict)->dict:
+    def validate(self, attrs: dict) -> dict:
         """
         Performs custom validation to check if any user exists with
         provided details.
@@ -175,9 +180,7 @@ class OTPSerializer(serializers.Serializer):
         ValidationError: Email field not provided
         """
         from django.core.validators import EmailValidator, ValidationError
-
         from rest_framework.exceptions import NotFound
-
         from .variables import EMAIL, MOBILE
 
         validator = EmailValidator()
@@ -199,8 +202,16 @@ class OTPSerializer(serializers.Serializer):
                     _("email field is compulsory while verifying a"
                       " non-existing user's OTP."))
         else:
-            attrs['email'] = user.email
-            attrs['user'] = user
+            if attrs['is_delivery_boy']:
+                if user.is_delivery_boy:
+                    attrs['email'] = user.email
+                    attrs['user'] = user
+                else:
+                    raise serializers.ValidationError(
+                        _("Not a valid delivery boy."))
+            else:
+                attrs['email'] = user.email
+                attrs['user'] = user
 
         return attrs
 
@@ -224,6 +235,7 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
     name: Name of user
     email: Email of user
     mobile: Mobile of user
+    is_delivery_boy: Is Delivery Boy?
     verify_otp: Required in step 2, OTP from user
     """
 
@@ -232,15 +244,16 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
     name = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     verify_otp = serializers.CharField(default=None, required=False)
+    is_delivery_boy = serializers.BooleanField(default=False, required=False)
     mobile = serializers.CharField(required=True)
 
     @staticmethod
-    def get_user(email: str, mobile: str):
+    def get_user(email: str, mobile: str, is_delivery_boy: bool):
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(email=email, is_delivery_boy=is_delivery_boy)
         except User.DoesNotExist:
             try:
-                user = User.objects.get(mobile=mobile)
+                user = User.objects.get(mobile=mobile, is_delivery_boy=is_delivery_boy)
             except User.DoesNotExist:
                 user = None
 
@@ -260,5 +273,6 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
 
     def validate(self, attrs: dict) -> dict:
         attrs['user'] = self.get_user(email=attrs.get('email'),
-                                      mobile=attrs.get('mobile'))
+                                      mobile=attrs.get('mobile'),
+                                      is_delivery_boy=attrs.get('is_delivery_boy'))
         return attrs

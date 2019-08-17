@@ -188,7 +188,7 @@ def send_otp(value, otpobj, recip):
     return rdata
 
 
-def login_user(user: User, request)->(dict, int):
+def login_user(user: User, request) -> (dict, int):
     """
     This function is used to login a user. It saves the authentication in
     AuthTransaction model.

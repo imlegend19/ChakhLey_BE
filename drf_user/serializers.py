@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     UserRegisterSerializer is a model serializer which includes the
     attributes that are required for registering a user.
     """
+
     @staticmethod
     def validate_email(value: str):
         """

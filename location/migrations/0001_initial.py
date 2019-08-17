@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -28,7 +27,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, unique=True, verbose_name='State')),
-                ('country', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.Country', verbose_name='Country')),
+                ('country', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.Country',
+                                              verbose_name='Country')),
             ],
             options={
                 'verbose_name': 'State',
@@ -40,7 +40,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, unique=True, verbose_name='City')),
-                ('state', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.State', verbose_name='State')),
+                ('state', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.State',
+                                            verbose_name='State')),
             ],
             options={
                 'verbose_name': 'City',
@@ -53,7 +54,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, unique=True, verbose_name='Area')),
                 ('pincode', models.CharField(max_length=6, verbose_name='Pincode')),
-                ('city', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.City', verbose_name='City')),
+                ('city', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.City',
+                                           verbose_name='City')),
             ],
             options={
                 'verbose_name': 'Area',
@@ -66,7 +68,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('building_name', models.CharField(max_length=255, unique=True, verbose_name='Society / Complex Name')),
                 ('flat_number', models.CharField(max_length=255, null=True, verbose_name='Flat Number')),
-                ('area', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.Area', verbose_name='Area')),
+                ('area', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='location.Area',
+                                           verbose_name='Area')),
             ],
             options={
                 'verbose_name': 'Building Complex',

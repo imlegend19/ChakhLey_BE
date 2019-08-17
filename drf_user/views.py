@@ -191,7 +191,7 @@ class OTPView(APIView):
     from .serializers import OTPSerializer
     from rest_framework.permissions import AllowAny
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = OTPSerializer
 
     def post(self, request, *args, **kwargs):

@@ -17,5 +17,5 @@ class DRFUserConfig(AppConfig):
         """
         from . import update_user_settings
         from .signals.handlers import post_register
-        
+
         update_user_settings()

@@ -30,7 +30,7 @@ class Employee(models.Model):
         super(Employee, self).clean()
 
     def __str__(self):
-        return self.name
+        return self.user.name + ' - ' + self.user.mobile
 
     class Meta:
         verbose_name = _("Employee")

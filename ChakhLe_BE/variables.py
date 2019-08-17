@@ -1,3 +1,5 @@
+HOST = 'admin.chakhley.co.in'
+
 COST_FOR_TWO = (
     ('$', '100'),
     ('$$', '100 - 400'),

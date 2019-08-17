@@ -180,6 +180,8 @@ def send_otp(value, otpobj, recip):
     except ValueError as err:
         raise APIException(_("Server configuration error occured: %s") %
                            str(err))
+    except Exception as e:
+        print(e.args)
 
     otpobj.reactive_at = timezone.now() + datetime.timedelta(
         minutes=otp_settings['COOLING_PERIOD'])

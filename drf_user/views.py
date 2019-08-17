@@ -224,7 +224,6 @@ class OTPView(APIView):
                         status=status.HTTP_202_ACCEPTED)
         else:
             otp_obj = generate_otp(prop, destination)
-            user = User.objects.get(mobile=destination)
 
             if is_delivery_boy:
                 if user.is_delivery_boy:
@@ -348,15 +347,15 @@ class OTPLoginView(APIView):
 
         else:
             otp_obj_email = generate_otp(EMAIL, email)
-            otp_obj_mobile = generate_otp(MOBILE, mobile)
+            # otp_obj_mobile = generate_otp(MOBILE, mobile)
 
             # Set same OTP for both Email & Mobile
-            otp_obj_mobile.otp = otp_obj_email.otp
-            otp_obj_mobile.save()
+            # otp_obj_mobile.otp = otp_obj_email.otp
+            # otp_obj_mobile.save()
 
             # Send OTP to Email & Mobile
             sentotp_email = send_otp(email, otp_obj_email, email)
-            sentotp_mobile = send_otp(mobile, otp_obj_mobile, email)
+            # sentotp_mobile = send_otp(mobile, otp_obj_mobile, email)
 
             if sentotp_email['success']:
                 otp_obj_email.send_counter += 1
@@ -370,17 +369,17 @@ class OTPLoginView(APIView):
                         sentotp_email['message']))
                 }
 
-            if sentotp_mobile['success']:
-                otp_obj_mobile.send_counter += 1
-                otp_obj_mobile.save()
-                message['mobile'] = {
-                    'otp': _("OTP has been sent successfully.")
-                }
-            else:
-                message['mobile'] = {
-                    'otp': _("OTP sending failed {}".format(
-                        sentotp_mobile['message']))
-                }
+            # if sentotp_mobile['success']:
+            #     otp_obj_mobile.send_counter += 1
+            #     otp_obj_mobile.save()
+            #     message['mobile'] = {
+            #         'otp': _("OTP has been sent successfully.")
+            #     }
+            # else:
+            #     message['mobile'] = {
+            #         'otp': _("OTP sending failed {}".format(
+            #             sentotp_mobile['message']))
+            #     }
 
             if sentotp_email['success'] or sentotp_mobile['success']:
                 curr_status = status.HTTP_201_CREATED

@@ -1,4 +1,4 @@
-HOST = 'adminbeta.chakhley.co.in'
+HOST = 'admin.chakhley.co.in'
 
 COST_FOR_TWO = (
     ('$', '100'),

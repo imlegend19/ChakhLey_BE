@@ -21,7 +21,7 @@ class DRFUserAdmin(UserAdmin):
     """
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('name', 'email', 'mobile')}),
+        (_('Personal info'), {'fields': ('name', 'email', 'mobile', 'is_delivery_boy')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff',
                                        'is_superuser', 'groups',
                                        'user_permissions')}),
@@ -32,11 +32,11 @@ class DRFUserAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('username', 'email', 'mobile', 'password1',
-                       'password2'),
+                       'password2', 'is_delivery_boy'),
         }),
     )
-    list_display = ('username', 'email', 'name', 'mobile', 'is_staff')
-    search_fields = ('username', 'name', 'email', 'mobile')
+    list_display = ('username', 'email', 'name', 'mobile', 'is_delivery_boy', 'is_staff')
+    search_fields = ('username', 'name', 'email', 'mobile', 'is_delivery_boy')
     readonly_fields = ('date_joined', 'last_login', 'update_date')
 
 

@@ -142,20 +142,15 @@ user_settings = {
     'DEFAULT_ACTIVE_STATE': True,
     'OTP': {
         'LENGTH': 7,
-        'ALLOWED_CHARS': '1234567890',
+        'ALLOWED_CHARS': '123456789',
         'VALIDATION_ATTEMPTS': 3,
         'SUBJECT': 'OTP for Verification',
         'COOLING_PERIOD': 2
     },
     'MOBILE_VALIDATION': True,
-    'EMAIL_VALIDATION': True,
     'REGISTRATION': {
-        'SEND_MAIL': True,
         'SEND_MESSAGE': True,
-        'MAIL_SUBJECT': 'Welcome to Chakh Le',
         'SMS_BODY': 'Your account has been created.',
-        'TEXT_MAIL_BODY': 'Your account has been created.',
-        'HTML_MAIL_BODY': 'Your account has been created.'
     },
 }
 

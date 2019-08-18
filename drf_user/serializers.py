@@ -12,34 +12,6 @@ class UserSerializer(serializers.ModelSerializer):
     """
 
     @staticmethod
-    def validate_email(value: str):
-        """
-        If pre-validated email is required, this function checks if
-        the email is pre-validated using OTP.
-        Parameters
-        ----------
-        value: str
-
-        Returns
-        -------
-        value: str
-
-        """
-
-        from . import user_settings
-
-        from .utils import check_validation
-
-        if user_settings['EMAIL_VALIDATION']:
-            if check_validation(value=value):
-                return value
-            else:
-                raise serializers.ValidationError('The email must be '
-                                                  'pre-validated via OTP.')
-        else:
-            return value
-
-    @staticmethod
     def validate_mobile(value: str):
         """
         If pre-validated mobile number is required, this function
@@ -96,36 +68,31 @@ class OTPSerializer(serializers.Serializer):
     This Serializer is for sending OTP & verifying destination via otp.
     is_login: Set is_login true if trying to login via OTP
     destination: Required. Place where sending OTP
-    email: Fallback in case of destination is a mobile number
     verify_otp: OTP in the 2nd step of flow
 
     Examples
     --------
     1. Request an OTP for verifying
-    >>> OTPSerializer(data={"destination": "me@himanshus.com"})
-    Or for mobile number as destination
-    >>> OTPSerializer(data={"destination": "88xx6xx5xx",
-    >>>                     "email": "me@himanshus.com"})
+    For mobile number as destination
+    >>> OTPSerializer(data={"destination": "88xx6xx5xx"})
 
     2. Send OTP to verify
-    >>> OTPSerializer(data={"destination": "me@himanshus.com",
-    >>>                     "verify_otp": 2930432})
-    Or for mobile number as destination
     >>> OTPSerializer(data={"destination": "88xx6xx5xx",
-    >>>                     "email": "me@himanshus.com",
-    >>>                     "verify_otp": 2930433})
+    >>>                     "verify_otp": 2930432})
 
     For log in, just add is_login to request
-    >>> OTPSerializer(data={"destination": "me@himanshus.com",
+    >>> OTPSerializer(data={"destination": "88xx6xx5xx",
     >>>                     "is_login": True})
     >>> OTPSerializer(data={"destination": "88xx6xx5xx",
-    >>>                     "email": "me@himanshus.com",
     >>>                     "verify_otp": 2930433, "is_login": True})
 
     3. For logging in delivery boy
-    >>>
+    >>> OTPSerializer(data={"destination": "88xx6xx5xx",
+    >>>                     "is_login": True, "is_delivery_boy": True})
+    >>> OTPSerializer(data={"destination": "88xx6xx5xx",
+    >>>                     "verify_otp": 2930433, "is_login": True, "is_delivery_boy": True})
     """
-    email = serializers.EmailField(required=False)
+
     is_login = serializers.BooleanField(default=False)
     is_delivery_boy = serializers.BooleanField(default=False)
     verify_otp = serializers.CharField(required=False)
@@ -138,7 +105,7 @@ class OTPSerializer(serializers.Serializer):
         Parameters
         ----------
         prop: str
-            Can be M or E
+            Can be M
         destination: str
             Provides value of property
         Returns
@@ -149,16 +116,10 @@ class OTPSerializer(serializers.Serializer):
         from .models import User
         from .variables import MOBILE
 
-        if prop == MOBILE:
-            try:
-                user = User.objects.get(mobile=destination)
-            except User.DoesNotExist:
-                user = None
-        else:
-            try:
-                user = User.objects.get(email=destination)
-            except User.DoesNotExist:
-                user = None
+        try:
+            user = User.objects.get(mobile=destination)
+        except User.DoesNotExist:
+            user = None
 
         return user
 
@@ -177,40 +138,33 @@ class OTPSerializer(serializers.Serializer):
         Raises
         ------
         NotFound: If user is not found
-        ValidationError: Email field not provided
         """
-        from django.core.validators import EmailValidator, ValidationError
+        from django.core.validators import ValidationError
         from rest_framework.exceptions import NotFound
-        from .variables import EMAIL, MOBILE
+        from .variables import MOBILE
 
-        validator = EmailValidator()
         try:
             validator(attrs['destination'])
         except ValidationError:
             attrs['prop'] = MOBILE
-        else:
-            attrs['prop'] = EMAIL
 
         user = self.get_user(attrs.get('prop'), attrs.get('destination'))
 
         if not user:
             if attrs['is_login']:
                 raise NotFound(_('No user exists with provided details'))
-            if ('email' not in attrs.keys()
-                    and 'verify_otp' not in attrs.keys()):
-                raise serializers.ValidationError(
-                    _("email field is compulsory while verifying a"
-                      " non-existing user's OTP."))
         else:
             if attrs['is_delivery_boy']:
                 if user.is_delivery_boy:
-                    attrs['email'] = user.email
                     attrs['user'] = user
                 else:
                     raise serializers.ValidationError(
                         _("Not a valid delivery boy."))
             else:
-                attrs['email'] = user.email
+                try:
+                    attrs['mobile'] = user.mobile
+                except Exception:
+                    pass
                 attrs['user'] = user
 
         return attrs
@@ -219,9 +173,9 @@ class OTPSerializer(serializers.Serializer):
 class CheckUniqueSerializer(serializers.Serializer):
     """
     This serializer is for checking the uniqueness of
-    username/email/mobile of user.
+    username/mobile of user.
     """
-    prop = serializers.ChoiceField(choices=('email', 'mobile', 'username'))
+    prop = serializers.ChoiceField(choices=('mobile', 'username'))
     value = serializers.CharField()
 
 
@@ -230,10 +184,8 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
     Registers a new user with auto generated password or login user if
     already exists
 
-    This will also set same OTP for mobile & email for easy process.
     Params
     name: Name of user
-    email: Email of user
     mobile: Mobile of user
     is_delivery_boy: Is Delivery Boy?
     verify_otp: Required in step 2, OTP from user
@@ -242,37 +194,21 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
     from rest_framework import serializers
 
     name = serializers.CharField(required=True)
-    email = serializers.EmailField(required=True)
     verify_otp = serializers.CharField(default=None, required=False)
     is_delivery_boy = serializers.BooleanField(default=False, required=False)
     mobile = serializers.CharField(required=True)
 
     @staticmethod
-    def get_user(email: str, mobile: str, is_delivery_boy: bool):
+    def get_user(mobile: str, is_delivery_boy: bool):
         try:
-            user = User.objects.get(email=email, is_delivery_boy=is_delivery_boy)
+            user = User.objects.get(mobile=mobile, is_delivery_boy=is_delivery_boy)
         except User.DoesNotExist:
-            try:
-                user = User.objects.get(mobile=mobile, is_delivery_boy=is_delivery_boy)
-            except User.DoesNotExist:
-                user = None
+            user = None
 
-        if user:
-            if user.email != email:
-                raise serializers.ValidationError(_(
-                    "Your account is registered with {mobile} does not has "
-                    "{email} as registered email. Please login directly via "
-                    "OTP with your mobile.".format(mobile=mobile, email=email)
-                ))
-            if user.mobile != mobile:
-                raise serializers.ValidationError(_(
-                    "Your account is registered with {email} does not has "
-                    "{mobile} as registered mobile. Please login directly via "
-                    "OTP with your email.".format(mobile=mobile, email=email)))
         return user
 
     def validate(self, attrs: dict) -> dict:
-        attrs['user'] = self.get_user(email=attrs.get('email'),
-                                      mobile=attrs.get('mobile'),
-                                      is_delivery_boy=attrs.get('is_delivery_boy'))
+        attrs['user'] = self.get_user(
+            mobile=attrs.get('mobile'),
+            is_delivery_boy=attrs.get('is_delivery_boy'))
         return attrs

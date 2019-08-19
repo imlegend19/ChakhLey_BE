@@ -7,8 +7,8 @@ class TransactionStaticVariableView(APIView):
 
     @staticmethod
     def get(request):
-        from ChakhLe_BE.variables import PAYMENT_MODE_CHOICES
-        from ChakhLe_BE.variables import PAYMENT_TYPE_CHOICES
+        from ChakhLey_BE.variables import PAYMENT_MODE_CHOICES
+        from ChakhLey_BE.variables import PAYMENT_TYPE_CHOICES
 
         from drfaddons.utils import JsonResponse
 

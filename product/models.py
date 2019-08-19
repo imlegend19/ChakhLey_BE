@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import gettext_lazy as _
-from ChakhLe_BE.variables import URL
+from ChakhLey_BE.variables import URL
 
 
 class Category(models.Model):

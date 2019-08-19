@@ -10,7 +10,7 @@ class RegisterView(CreateAPIView):
     Register View
 
     Register a new user to the system.
-    The data required are username, email, name, password and mobile.
+    The data required are username, name, password and mobile.
 
     Author: Himanshu Shankar (https://himanshus.com)
             Aditya Gupta (https://github.com/ag93999)
@@ -28,7 +28,6 @@ class RegisterView(CreateAPIView):
 
         user = User.objects.create_user(
             username=serializer.validated_data['username'],
-            email=serializer.validated_data['email'],
             name=serializer.validated_data['name'],
             password=serializer.validated_data['password'],
             mobile=serializer.validated_data['mobile'])
@@ -42,7 +41,7 @@ class LoginView(APIView):
     This is used to Login into system.
     The data required are 'username' and 'password'.
 
-    username -- Either username or mobile or email address.
+    username -- Either username or mobile
     password -- Password of the user.
 
     Author: Himanshu Shankar (https://himanshus.com)
@@ -108,7 +107,7 @@ class CheckUniqueView(APIView):
 
     This view checks if the given property -> value pair is unique (or
     doesn't exists yet)
-    'prop' -- A property to check for uniqueness (username/email/mobile)
+    'prop' -- A property to check for uniqueness (username/mobile)
     'value' -- Value against property which is to be checked for.
 
      Author: Himanshu Shankar (https://himanshus.com)
@@ -153,34 +152,31 @@ class OTPView(APIView):
     ----------------
     is_login -- Set is_login true if trying to login via OTP
     destination -- Required. Place where sending OTP
-    email -- Fallback in case of destination is a mobile number
     is_delivery_boy -- For logging in delivery boy
     verify_otp -- OTP in the 2nd step of flow
 
     Examples
     --------
     1. Request an OTP for verifying
-    >>> {"destination": "me@himanshus.com"}
-    Or for mobile number as destination
-    >>> {"destination": "88xx6xx5xx", "email": "me@himanshus.com"}
+    For mobile number as destination
+    >>> {"destination": "98xx64x3x4"}
 
     2. Send OTP to verify
-    >>> {"destination": "me@himanshus.com", "verify_otp": 2930432}
+    >>> {"destination": "98xx64x3x4", "verify_otp": 2930432}
     Or for mobile number as destination
-    >>> {"destination": "88xx6xx5xx", "email": "me@himanshus.com",
-    >>>  "verify_otp": 2930433})
+    >>> {"destination": "98xx64x3x4", "verify_otp": 2930433})
 
     For log in, just add is_login to request
-    >>> {"destination": "me@himanshus.com", "is_login": True}
+    >>> {"destination": "98xx64x3x4", "is_login": True}
 
-    >>> {"destination": "me@himanshus.com", "is_login": True,
+    >>> {"destination": "98xx64x3x4", "is_login": True,
     >>>  "verify_otp": 1234232}
 
     3. Login system for delivery boy
     For signing in delivery boy set is_delivery_boy=True
     >>> {"destination": "98xx7xx5xx", "is_login": True, "is_delivery_boy": True}
 
-    >>> {"destination": "me@himanshus.com", "is_login": True, "is_delivery_boy": True,
+    >>> {"destination": "98xx64x3x4", "is_login": True, "is_delivery_boy": True,
     >>>  "verify_otp": 1234232}
 
     Error object for wrong delivery boy:
@@ -197,7 +193,6 @@ class OTPView(APIView):
     def post(self, request, *args, **kwargs):
         from rest_framework.response import Response
         from rest_framework import status
-        from .models import User
         from django.http import JsonResponse
         from rest_framework.exceptions import APIException
 
@@ -209,7 +204,6 @@ class OTPView(APIView):
         destination = serializer.validated_data.get('destination')
         prop = serializer.validated_data.get('prop')
         user = serializer.validated_data.get('user')
-        email = serializer.validated_data.get('email')
         is_delivery_boy = serializer.validated_data.get('is_delivery_boy')
         is_login = serializer.validated_data.get('is_login')
 
@@ -224,11 +218,10 @@ class OTPView(APIView):
                         status=status.HTTP_202_ACCEPTED)
         else:
             otp_obj = generate_otp(prop, destination)
-            user = User.objects.get(mobile=destination)
 
             if is_delivery_boy:
                 if user.is_delivery_boy:
-                    sentotp = send_otp(destination, otp_obj, email)
+                    sentotp = send_otp(destination, otp_obj)
                     if sentotp['success']:
                         otp_obj.send_counter += 1
                         otp_obj.save()
@@ -240,7 +233,7 @@ class OTPView(APIView):
                 else:
                     return JsonResponse({'message': "Not a valid delivery boy."}, status=400)
             else:
-                sentotp = send_otp(destination, otp_obj, email)
+                sentotp = send_otp(destination, otp_obj)
                 if sentotp['success']:
                     otp_obj.send_counter += 1
                     otp_obj.save()
@@ -290,11 +283,9 @@ class OTPLoginView(APIView):
     to pre-login but needs to login in later stage or while doing a
     transaction.
 
-    View ensures a smooth flow by sending same OTP on mobile as well as
-    email.
+    View ensures a smooth flow by sending same OTP on mobile.
 
     name -- Required
-    email -- Required
     mobile -- Required
     verify_otp -- Not Required (only when verifying OTP)
     """
@@ -319,7 +310,7 @@ class OTPLoginView(APIView):
         from .utils import validate_otp, generate_otp, send_otp
         from .utils import login_user
         from .models import User
-        from .variables import EMAIL, MOBILE
+        from .variables import MOBILE
 
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -327,16 +318,15 @@ class OTPLoginView(APIView):
         verify_otp = serializer.validated_data.get('verify_otp', None)
         name = serializer.validated_data.get('name')
         mobile = serializer.validated_data.get('mobile')
-        email = serializer.validated_data.get('email')
         user = serializer.validated_data.get('user', None)
 
         message = {}
 
         if verify_otp:
-            if validate_otp(email, verify_otp):
+            if validate_otp(mobile, verify_otp):
                 if not user:
                     user = User.objects.create_user(
-                        name=name, mobile=mobile, email=email, username=mobile,
+                        name=name, mobile=mobile, username=mobile,
                         password=User.objects.make_random_password()
                     )
                     user.is_active = True
@@ -347,29 +337,15 @@ class OTPLoginView(APIView):
                             status=status.HTTP_202_ACCEPTED)
 
         else:
-            otp_obj_email = generate_otp(EMAIL, email)
             otp_obj_mobile = generate_otp(MOBILE, mobile)
 
-            # Set same OTP for both Email & Mobile
-            otp_obj_mobile.otp = otp_obj_email.otp
+            # Set same OTP for Mobile
+            otp_obj_mobile.otp = otp_obj_mobile.otp
             otp_obj_mobile.save()
 
-            # Send OTP to Email & Mobile
-            sentotp_email = send_otp(email, otp_obj_email, email)
-            sentotp_mobile = send_otp(mobile, otp_obj_mobile, email)
+            sentotp_mobile = send_otp(mobile, otp_obj_mobile)
 
-            if sentotp_email['success']:
-                otp_obj_email.send_counter += 1
-                otp_obj_email.save()
-                message['email'] = {
-                    'otp': _("OTP has been sent successfully.")
-                }
-            else:
-                message['email'] = {
-                    'otp': _("OTP sending failed {}".format(
-                        sentotp_email['message']))
-                }
-
+            # Send OTP to Mobile
             if sentotp_mobile['success']:
                 otp_obj_mobile.send_counter += 1
                 otp_obj_mobile.save()
@@ -382,7 +358,7 @@ class OTPLoginView(APIView):
                         sentotp_mobile['message']))
                 }
 
-            if sentotp_email['success'] or sentotp_mobile['success']:
+            if sentotp_mobile['success']:
                 curr_status = status.HTTP_201_CREATED
             else:
                 raise APIException(

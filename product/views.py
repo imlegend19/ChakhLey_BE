@@ -54,3 +54,4 @@ class ProductUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     permission_classes = (AllowAny,)
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+

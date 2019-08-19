@@ -2,7 +2,7 @@ import datetime
 from django.db import models
 from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
-from ChakhLe_BE.variables import *
+from ChakhLey_BE.variables import *
 
 
 class Restaurant(CreateUpdateModel):
@@ -79,7 +79,7 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def cuisine(self):
-        from ChakhLe_BE.variables import CUISINES_DICT
+        from ChakhLey_BE.variables import CUISINES_DICT
         cuisine = []
 
         for i in RestaurantCuisine.objects.filter(restaurant=self.id):

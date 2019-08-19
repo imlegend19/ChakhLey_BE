@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
 from drf_user.models import User
-from ChakhLe_BE.variables import DESIGNATIONS
+from ChakhLey_BE.variables import DESIGNATIONS
 
 
 class Employee(models.Model):
@@ -38,7 +38,7 @@ class Employee(models.Model):
 
 
 class EmployeeDocument(CreateUpdateModel):
-    from ChakhLe_BE.variables import EMPLOYEE_DOCUMENT_CHOICES
+    from ChakhLey_BE.variables import EMPLOYEE_DOCUMENT_CHOICES
     from drf_user.models import User
 
     employee = models.ForeignKey(to=Employee, on_delete=models.PROTECT,

@@ -50,6 +50,7 @@ coverage.xml
 # Translations
 *.mo
 *.pot
+*.zip
 
 # Django stuff:
 *.log
@@ -99,6 +100,9 @@ location/migrations
 employee/migrations
 drf_user/migrations
 business/migrations
+
+zappa_settings.json
+chakhle-be-dev-1566201764.zip
 
 # Spyder project settings
 .spyderproject

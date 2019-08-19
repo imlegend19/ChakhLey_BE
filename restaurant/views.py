@@ -7,7 +7,7 @@ class CustomPagination(pagination.PageNumberPagination):
 
     def get_paginated_response(self, data):
         from django.db import connection
-        from ChakhLe_BE.variables import CUISINES
+        from ChakhLey_BE.variables import CUISINES
 
         cursor = connection.cursor()
         cursor.execute('''select count(*) from restaurant_restaurant

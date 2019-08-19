@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import gettext_lazy as _
 from drf_user.models import User
 
-from ChakhLe_BE.variables import BUSINESS
+from ChakhLey_BE.variables import BUSINESS
 
 
 class Business(models.Model):

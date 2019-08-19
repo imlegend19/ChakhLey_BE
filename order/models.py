@@ -5,7 +5,7 @@ from django.utils.text import gettext_lazy as _
 from business.models import Business
 from employee.models import Employee
 from location.models import Area
-from ChakhLe_BE.variables import ORDER_STATUS, NEW, COMPLAINT, ORDER_FEEDBACK
+from ChakhLey_BE.variables import ORDER_STATUS, NEW, COMPLAINT, ORDER_FEEDBACK
 
 
 class Order(models.Model):

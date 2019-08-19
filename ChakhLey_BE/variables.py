@@ -1,4 +1,4 @@
-HOST = 'adminbeta.chakhley.co.in'
+HOST = 'admin.chakhley.co.in'
 
 COST_FOR_TWO = (
     ('$', '100'),
@@ -112,7 +112,9 @@ ORDER_FEEDBACK = (
 
 COMPLAINT = 'C'
 
-URL = "http://127.0.0.1:8000/"
+URL = "http://admin.chakhley.co.in/"
+
+# URL = "http://127.0.0.1:8000/"
 # URL = "http://13.233.179.130/"
 
 # taken = []

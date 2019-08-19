@@ -4,7 +4,6 @@ from .models import User
 from django.utils.text import gettext_lazy as _
 
 user_settings = update_user_settings()
-otp_settings = user_settings['OTP']
 
 
 def datetime_passed_now(source):
@@ -18,8 +17,6 @@ def datetime_passed_now(source):
     Returns
     -------
     bool
-
-    Author: Himanshu Shankar (https://himanshus.com)
     """
     import datetime
 
@@ -40,7 +37,6 @@ def check_unique(prop, value):
     ----------
     prop: str
         The model property to check for. Can be::
-            email
             mobile
             username
     value: str
@@ -52,9 +48,9 @@ def check_unique(prop, value):
         True if the data sent is doesn't exist, False otherwise.
     Examples
     --------
-    To check if test@testing.com email address is already present in
+    To check if 98xx64x3x4 mobile is already present in
     Database
-    >>> print(check_unique('email', 'test@testing.com'))
+    >>> print(check_unique('mobile', '98xx64x3x4'))
     True
     """
     user = User.objects.extra(where=[prop + ' = \'' + value + '\''])
@@ -72,8 +68,7 @@ def generate_otp(prop, value):
     Parameters
     ----------
     prop: str
-        This specifies the type for which OTP is being created. Can be::
-            email
+        This specifies the type for which OTP is being created. Can be:
             mobile
     value: str
         This specifies the value for which OTP is being created.
@@ -84,11 +79,11 @@ def generate_otp(prop, value):
         This is the instance of OTP that is created.
     Examples
     --------
-    To create an OTP for an Email test@testing.com
-    >>> print(generate_otp('email', 'test@testing.com'))
+    To create an OTP for an Mobile 98xx64x3x4
+    >>> print(generate_otp('mobile', '98xx64x3x4'))
     OTPValidation object
 
-    >>> print(generate_otp('email', 'test@testing.com').otp)
+    >>> print(generate_otp('mobile', '98xx64x3x4').otp)
     5039164
     """
 
@@ -138,7 +133,7 @@ def generate_otp(prop, value):
     return otp_object
 
 
-def send_otp(value, otpobj, recip):
+def send_otp(value, otpobj):
     """
     This function sends OTP to specified value.
     Parameters
@@ -147,21 +142,13 @@ def send_otp(value, otpobj, recip):
         This is the value at which and for which OTP is to be sent.
     otpobj: OTPValidation
         This is the OTP or One Time Passcode that is to be sent to user.
-    recip: str
-        This is the recipient to whom EMail is being sent. This will be
-        deprecated once SMS feature is brought in.
 
     Returns
     -------
-
     """
-
     import datetime
-
     from django.utils import timezone
-
     from drfaddons.utils import send_message
-
     from rest_framework.exceptions import PermissionDenied, APIException
 
     otp = otpobj.otp
@@ -175,11 +162,12 @@ def send_otp(value, otpobj, recip):
                + value + " is " + otp + ". Don't share this with anyone!")
 
     try:
-        rdata = send_message(message, otp_settings['SUBJECT'], [value],
-                             [recip])
+        rdata = send_message(message, [value])
     except ValueError as err:
         raise APIException(_("Server configuration error occured: %s") %
                            str(err))
+    except Exception as e:
+        print(e.args)
 
     otpobj.reactive_at = timezone.now() + datetime.timedelta(
         minutes=otp_settings['COOLING_PERIOD'])

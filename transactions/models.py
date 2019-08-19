@@ -2,11 +2,11 @@ from django.db import models
 from django.utils.text import gettext_lazy as _
 from drfaddons.models import CreateUpdateModel
 
-from ChakhLe_BE.variables import COD, CASH
+from ChakhLey_BE.variables import COD, CASH
 
 
 class OrderPayment(models.Model):
-    from ChakhLe_BE.variables import PAYMENT_MODE_CHOICES, PAYMENT_TYPE_CHOICES
+    from ChakhLey_BE.variables import PAYMENT_MODE_CHOICES, PAYMENT_TYPE_CHOICES
 
     from order.models import Order
     from employee.models import Employee

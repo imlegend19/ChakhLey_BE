@@ -31,7 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(verbose_name=_('Unique UserName'),
                                 max_length=254, unique=True)
-    email = models.EmailField(verbose_name=_('EMail Address'), unique=True)
+    email = models.EmailField(verbose_name=_('Email Address'), unique=True, null=True, blank=True)
     mobile = models.CharField(verbose_name=_('Mobile Number'), max_length=150,
                               unique=True)
     name = models.CharField(verbose_name=_('Full Name'), max_length=500,
@@ -106,14 +106,12 @@ class AuthTransaction(models.Model):
 class OTPValidation(models.Model):
     """
     Represents all OTP Validation in the System.
-
-    Author: Himanshu Shankar (https://himanshus.com)
     """
-    from .variables import EMAIL, DESTINATION_CHOICES
+    from .variables import MOBILE, DESTINATION_CHOICES
 
     otp = models.CharField(verbose_name=_('OTP Code'), max_length=10)
     destination = models.CharField(
-        verbose_name=_('Destination Address (Mobile/EMail)'), max_length=254,
+        verbose_name=_('Destination Address (Mobile)'), max_length=254,
         unique=True)
     create_date = models.DateTimeField(verbose_name=_('Create Date'),
                                        auto_now_add=True)
@@ -124,7 +122,7 @@ class OTPValidation(models.Model):
     validate_attempt = models.IntegerField(
         verbose_name=_('Attempted Validation'), default=3)
     prop = models.CharField(verbose_name=_('Destination Property'),
-                            default=EMAIL, max_length=3,
+                            default=MOBILE, max_length=3,
                             choices=DESTINATION_CHOICES)
     send_counter = models.IntegerField(verbose_name=_('OTP Sent Counter'),
                                        default=0)

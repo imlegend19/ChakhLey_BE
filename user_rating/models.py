@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import gettext_lazy as _
-from rest_framework.compat import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from product.models import Product
 

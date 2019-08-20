@@ -4,6 +4,7 @@ from .models import User
 from django.utils.text import gettext_lazy as _
 
 user_settings = update_user_settings()
+otp_settings = user_settings['OTP']
 
 
 def datetime_passed_now(source):
@@ -163,17 +164,17 @@ def send_otp(value, otpobj):
 
     try:
         rdata = send_message(message, [value])
+
+        otpobj.reactive_at = timezone.now() + datetime.timedelta(
+            minutes=otp_settings['COOLING_PERIOD'])
+        otpobj.save()
+
+        return rdata
     except ValueError as err:
         raise APIException(_("Server configuration error occured: %s") %
                            str(err))
     except Exception as e:
         print(e.args)
-
-    otpobj.reactive_at = timezone.now() + datetime.timedelta(
-        minutes=otp_settings['COOLING_PERIOD'])
-    otpobj.save()
-
-    return rdata
 
 
 def login_user(user: User, request) -> (dict, int):

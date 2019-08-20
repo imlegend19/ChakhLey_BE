@@ -63,3 +63,4 @@ class EmployeeDocument(CreateUpdateModel):
     class Meta:
         verbose_name = _("Employee's Document")
         verbose_name_plural = _("Employee's Documents")
+

@@ -367,3 +367,4 @@ class OTPLoginView(APIView):
                     ))
 
             return Response(data=message, status=curr_status)
+

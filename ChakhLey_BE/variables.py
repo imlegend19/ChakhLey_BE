@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 HOST = 'adminbeta.chakhley.co.in'
+=======
+HOST = '13.232.23.156'
+>>>>>>> production
 
 COST_FOR_TWO = (
     ('$', '100'),

@@ -4,12 +4,13 @@ from business.serializers import BusinessSerializer
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    class Meta:
-        from drf_user.serializers import UserSerializer
-        from .models import Employee
+    from drf_user.serializers import UserShowSerializer
 
-        business = BusinessSerializer(many=False, read_only=True)
-        user = UserSerializer(many=False, read_only=True)
+    business = BusinessSerializer(many=False, read_only=True)
+    user = UserShowSerializer(many=False, read_only=True)
+
+    class Meta:
+        from .models import Employee
 
         model = Employee
         fields = ('id', 'user', 'designation', 'business', 'is_active', 'joined_on', 'left_on', 'salary')

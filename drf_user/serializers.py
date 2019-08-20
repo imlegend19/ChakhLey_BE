@@ -59,8 +59,8 @@ class UserShowSerializer(serializers.ModelSerializer):
         from .models import User
 
         model = User
-        fields = ('id', 'username', 'name', 'is_delivery_boy')
-        read_only_fields = ('username', 'name', 'is_delivery_boy')
+        fields = ('id', 'username', 'name', 'mobile', 'is_delivery_boy')
+        read_only_fields = ('username', 'name', 'mobile', 'is_delivery_boy')
 
 
 class OTPSerializer(serializers.Serializer):

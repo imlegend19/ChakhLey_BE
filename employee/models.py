@@ -35,6 +35,7 @@ class Employee(models.Model):
     class Meta:
         verbose_name = _("Employee")
         verbose_name_plural = _("Employees")
+        unique_together = ('user', 'designation')
 
 
 class EmployeeDocument(CreateUpdateModel):

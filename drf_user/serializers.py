@@ -143,10 +143,7 @@ class OTPSerializer(serializers.Serializer):
         from rest_framework.exceptions import NotFound
         from .variables import MOBILE
 
-        try:
-            validator(attrs['destination'])
-        except ValidationError:
-            attrs['prop'] = MOBILE
+        attrs['prop'] = MOBILE
 
         user = self.get_user(attrs.get('prop'), attrs.get('destination'))
 

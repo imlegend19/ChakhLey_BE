@@ -15,7 +15,7 @@ class OrderListView(ListAPIView):
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
     search_fields = ('name', 'restaurant__id', 'mobile', 'status')
-    filter_fields = ('name', 'restaurant__id', 'id', 'mobile', 'status', 'delivery_boy')
+    filter_fields = ('name', 'restaurant__id', 'id', 'mobile', 'status', 'delivery_boy', 'delivery_boy__user__id')
 
 
 class CreateOrderView(CreateAPIView):

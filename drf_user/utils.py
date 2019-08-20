@@ -292,3 +292,4 @@ def validate_otp(value, otp):
         raise NotFound(
             detail=_('No pending OTP validation request found for provided'
                      'destination. Kindly send an OTP first'))
+

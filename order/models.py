@@ -13,7 +13,7 @@ class Order(models.Model):
 
     name = models.CharField(verbose_name=_("Buyer Name"), max_length=254)
     mobile = models.CharField(verbose_name=_("Mobile"), max_length=15)
-    email = models.EmailField(verbose_name=_("Email"), max_length=255)
+    email = models.EmailField(verbose_name=_("Email"), max_length=255, null=True, blank=True)
     business = models.ForeignKey(verbose_name=_("Business"), to=Business, on_delete=models.PROTECT)
     restaurant = models.ForeignKey(verbose_name=_('Restaurant'), to=Restaurant, on_delete=models.PROTECT)
     preparation_time = models.DurationField(verbose_name=_('Preparation Time'), default=datetime.timedelta(minutes=40))
@@ -97,8 +97,8 @@ class Delivery(models.Model):
     unit_no = models.CharField(verbose_name=_("Unit Number / Floor"), max_length=100)
     address_line_2 = models.CharField(verbose_name=_('Address Line 2'), max_length=255, null=True, blank=True)
     amount = models.DecimalField(verbose_name=_("Delivery Charge"), max_digits=10, decimal_places=2)
-    latitude = models.DecimalField(verbose_name=_("Latitude"), max_digits=10, decimal_places=8)
-    longitude = models.DecimalField(verbose_name=_("Longitude"), max_digits=11, decimal_places=8)
+    latitude = models.DecimalField(verbose_name=_("Latitude"), max_digits=10, decimal_places=8, null=True, blank=True)
+    longitude = models.DecimalField(verbose_name=_("Longitude"), max_digits=11, decimal_places=8, null=True, blank=True)
 
     @property
     def full_address(self):

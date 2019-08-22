@@ -94,7 +94,7 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
     suborder_set = SubOrderSerializer(many=True)
     delivery = DeliverySerializer(many=False)
     restaurant = RestaurantSerializer(many=False)
-    delivery_boy = EmployeeSerializer(many=False, read_only=True)
+    delivery_boy = EmployeeSerializer(many=False)
 
     def update(self, instance, validated_data):
         from django.utils import timezone

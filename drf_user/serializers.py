@@ -185,6 +185,7 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
     name: Name of user
     mobile: Mobile of user
     is_delivery_boy: Is Delivery Boy?
+    email: Email of the user (Not required)
     verify_otp: Required in step 2, OTP from user
     """
 

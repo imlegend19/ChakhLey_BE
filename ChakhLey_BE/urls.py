@@ -21,16 +21,17 @@ from django.urls import path, include, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import AllowAny
+from .local_settings import HEADER, SUB_HEADER
 
-admin.site.site_header = "Chakh Ley Beta Administration"
-admin.site.site_title = "Chakh Ley Beta Administration"
-admin.site.index_title = 'Admin Beta'
+admin.site.site_header = HEADER + " Administration"
+admin.site.site_title = HEADER + " Administration"
+admin.site.index_title = 'Admin ' + SUB_HEADER
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Chakh Ley Beta API",
+        title="Chakh Ley " + SUB_HEADER + "API",
         default_version='v1',
-        description="API based on DRF YASG for Chakh Ley Beta",
+        description="API based on DRF YASG for " + HEADER + " " + SUB_HEADER,
         contact=openapi.Contact(email="support@chakhley.co.in"),
         license=openapi.License(name="BSD License"),
     ),

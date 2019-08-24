@@ -319,7 +319,7 @@ class OTPLoginView(APIView):
         verify_otp = serializer.validated_data.get('verify_otp', None)
         name = serializer.validated_data.get('name')
         mobile = serializer.validated_data.get('mobile')
-        email = serializer.validated_data.get('email')
+        email = serializer.validated_data.get('email', None)
         user = serializer.validated_data.get('user', None)
 
         message = {}
@@ -327,10 +327,16 @@ class OTPLoginView(APIView):
         if verify_otp:
             if validate_otp(mobile, verify_otp):
                 if not user:
-                    user = User.objects.create_user(
-                        name=name, mobile=mobile, username=mobile,
-                        email=email, password=User.objects.make_random_password()
-                    )
+                    if email == "":
+                        user = User.objects.create_user(
+                            name=name, mobile=mobile, username=mobile,
+                            password=User.objects.make_random_password()
+                        )
+                    else:
+                        user = User.objects.create_user(
+                            name=name, mobile=mobile, username=mobile, email=email,
+                            password=User.objects.make_random_password()
+                        )
                     user.is_active = True
                     user.save()
                 return Response(login_user(user, self.request),

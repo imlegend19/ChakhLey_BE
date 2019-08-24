@@ -17,4 +17,4 @@ class BusinessView(ListAPIView):
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
     search_fields = ('id', 'name')
-    filter_fields = ('city__id',)
+    filter_fields = ('city__id', 'is_active')

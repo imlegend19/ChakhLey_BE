@@ -13,6 +13,7 @@ class Business(models.Model):
     city = models.ForeignKey(verbose_name=_('City'), to=City, on_delete=models.PROTECT)
     latitude = models.DecimalField(verbose_name=_("Latitude"), max_digits=10, decimal_places=8, default=27.988889)
     longitude = models.DecimalField(verbose_name=_("Longitude"), max_digits=11, decimal_places=8, default=76.388333)
+    is_active = models.BooleanField(verbose_name=_("Is Active?"), default=True)
 
     def __str__(self):
         return self.name

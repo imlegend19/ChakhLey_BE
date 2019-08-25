@@ -302,7 +302,7 @@ class OTPLoginView(APIView):
     parser_classes = (JSONParser,)
     serializer_class = OTPLoginRegisterSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         from rest_framework.response import Response
         from rest_framework import status
 
@@ -327,6 +327,7 @@ class OTPLoginView(APIView):
         if verify_otp:
             if validate_otp(mobile, verify_otp):
                 if not user:
+<<<<<<< HEAD
                     if email == "":
                         user = User.objects.create_user(
                             name=name, mobile=mobile, username=mobile,
@@ -337,6 +338,12 @@ class OTPLoginView(APIView):
                             name=name, mobile=mobile, username=mobile, email=email,
                             password=User.objects.make_random_password()
                         )
+=======
+                    user = User.objects.create_user(
+                        name=name, mobile=mobile, username=mobile, email=email,
+                        password=User.objects.make_random_password()
+                    )
+>>>>>>> develop
                     user.is_active = True
                     user.save()
                 return Response(login_user(user, self.request),

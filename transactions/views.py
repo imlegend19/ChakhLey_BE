@@ -31,7 +31,7 @@ class TransactionListView(ListAPIView):
     from django_filters.rest_framework.backends import DjangoFilterBackend
 
     permission_classes = (AllowAny,)
-    queryset = OrderPayment.objects.all()
+    queryset = OrderPayment.objects.prefetch_related('accepted_by', 'order')
     serializer_class = OrderPaymentSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)

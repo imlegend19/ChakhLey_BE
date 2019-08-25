@@ -27,7 +27,7 @@ class StateView(ListCreateAPIView):
 
     permission_classes = (AllowAny,)
 
-    queryset = State.objects.all()
+    queryset = State.objects.prefetch_related('country')
     serializer_class = StateSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter)
@@ -45,7 +45,7 @@ class CityView(ListCreateAPIView):
     from .serializers import CitySerializer
 
     permission_classes = (AllowAny,)
-    queryset = City.objects.all()
+    queryset = City.objects.prefetch_related('state')
     serializer_class = CitySerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter)
@@ -63,7 +63,7 @@ class AreaView(ListCreateAPIView):
     from .serializers import AreaSerializer
 
     permission_classes = (AllowAny,)
-    queryset = Area.objects.all()
+    queryset = Area.objects.prefetch_related('city')
     serializer_class = AreaSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter)
@@ -74,14 +74,12 @@ class AreaView(ListCreateAPIView):
 class BuildingComplexView(ListCreateAPIView):
     from rest_framework.permissions import AllowAny
     from rest_framework.filters import SearchFilter
-
     from django_filters.rest_framework.backends import DjangoFilterBackend
-
     from .models import BuildingComplex
     from .serializers import BuildingComplexSerializer
 
     permission_classes = (AllowAny,)
-    queryset = BuildingComplex.objects.all()
+    queryset = BuildingComplex.objects.prefetch_related('area')
     serializer_class = BuildingComplexSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter)

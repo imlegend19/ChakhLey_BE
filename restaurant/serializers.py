@@ -13,16 +13,15 @@ class RestaurantImageSerializer(serializers.ModelSerializer):
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
-    area = AreaSerializer(many=False, read_only=True)
-    business = BusinessSerializer(many=False, read_only=True)
+    business_id = serializers.IntegerField(source='business.id')
 
     class Meta:
         from .models import Restaurant
 
         model = Restaurant
-        fields = ('id', 'name', 'area', 'unit', 'phone', 'business', 'email', 'website', 'is_active',
-                  'cost_for_two', 'establishment', 'delivery_time', 'latitude', 'longitude', 'cuisine',
-                  'is_veg', 'full_address', 'commission', 'open', 'category_count', 'discount', 'images',
+        fields = ('id', 'name', 'is_active', 'business_id',
+                  'cost_for_two', 'delivery_time', 'cuisine',
+                  'is_veg', 'open', 'category_count', 'discount', 'images',
                   'packaging_charge', 'gst', 'ribbon')
 
 

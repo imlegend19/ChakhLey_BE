@@ -40,20 +40,20 @@ class RestaurantListView(ListCreateAPIView):
 
     permission_classes = (AllowAny,)
     serializer_class = RestaurantSerializer
-    queryset = Restaurant.objects.prefetch_related('business', 'area')
+    queryset = Restaurant.objects.prefetch_related('business')
     pagination_class = CustomPagination
 
-    filter_backends = (SearchFilter, DjangoFilterBackend,)
-    filter_fields = ('id', 'name', 'commission', 'is_veg', 'business')
+    filter_backends = (SearchFilter, DjangoFilterBackend, )
+    filter_fields = ('id', 'name', 'is_veg', 'business')
     search_fields = ('name', 'id')
     ordering = ['-discount']
 
-    def dispatch(self, *args, **kwargs):
-        from django.db import connection
-
-        response = super().dispatch(*args, **kwargs)
-        print('Queries Counted: {}'.format(len(connection.queries)))
-        return response
+    # def dispatch(self, *args, **kwargs):
+    #     from django.db import connection
+    #
+    #     response = super().dispatch(*args, **kwargs)
+    #     print('Queries Counted: {}'.format(len(connection.queries)))
+    #     return response
 
 
 class RetrieveRestaurantView(RetrieveUpdateAPIView):
@@ -63,7 +63,7 @@ class RetrieveRestaurantView(RetrieveUpdateAPIView):
     from .serializers import RestaurantSerializer
 
     permission_classes = (AllowAny,)
-    queryset = Restaurant.objects.all()
+    queryset = Restaurant.objects.prefetch_related('business')
     serializer_class = RestaurantSerializer
 
 
@@ -76,7 +76,7 @@ class RestaurantImageListView(ListCreateAPIView):
 
     permission_classes = (AllowAny,)
     serializer_class = RestaurantImageSerializer
-    queryset = RestaurantImage.objects.all()
+    queryset = RestaurantImage.objects.prefetch_related('restaurant')
 
     filter_backends = (SearchFilter,)
     search_fields = ('id', 'name')
@@ -92,7 +92,7 @@ class RestaurantAnalysisView(ListAPIView):
 
     permission_classes = (AllowAny,)
     serializer_class = RestaurantAnalysis
-    queryset = Restaurant.objects.all()
+    queryset = Restaurant.objects.prefetch_related('business')
 
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ('id', 'name')

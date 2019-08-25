@@ -16,3 +16,12 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id', 'name', 'category', 'is_veg', 'price', 'discount', 'inflation', 'restaurant', 'active',
                   'recommended_product', 'image', 'display_price')
+
+
+class ProductOrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        from .models import Product
+
+        model = Product
+        fields = ('id', 'name', 'is_veg', 'price', 'discount', 'inflation', 'active', 'display_price')

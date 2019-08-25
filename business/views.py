@@ -11,10 +11,16 @@ class BusinessView(ListAPIView):
     from .serializers import BusinessSerializer
 
     permission_classes = (AllowAny,)
-
-    queryset = Business.objects.all()
+    queryset = Business.objects.prefetch_related('city')
     serializer_class = BusinessSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
     search_fields = ('id', 'name')
-    filter_fields = ('city__id', 'is_active')
+    filter_fields = ('city__id',)
+
+    # def dispatch(self, *args, **kwargs):
+    #     from django.db import connection
+    #
+    #     response = super().dispatch(*args, **kwargs)
+    #     print('Queries Counted: {}'.format(len(connection.queries)))
+    #     return response

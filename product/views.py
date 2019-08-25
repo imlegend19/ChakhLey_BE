@@ -10,12 +10,19 @@ class CategoryListView(ListCreateAPIView):
     from .serializers import CategorySerializer
 
     permission_classes = (AllowAny,)
-    queryset = Category.objects.all()
+    queryset = Category.objects.select_related('restaurant')
     serializer_class = CategorySerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
     search_fields = ('name', 'restaurant__id')
     filter_fields = ('name', 'restaurant__id', 'id')
+
+    # def dispatch(self, *args, **kwargs):
+    #     from django.db import connection
+    #
+    #     response = super().dispatch(*args, **kwargs)
+    #     print('Queries Counted: {}'.format(len(connection.queries)))
+    #     return response
 
 
 class CategoryUpdateDestroyView(RetrieveUpdateDestroyAPIView):
@@ -38,7 +45,7 @@ class ProductListView(ListCreateAPIView):
     from .serializers import ProductSerializer
 
     permission_classes = (AllowAny,)
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related('category')
     serializer_class = ProductSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
@@ -52,6 +59,6 @@ class ProductUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     from .serializers import ProductSerializer
 
     permission_classes = (AllowAny,)
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related('category')
     serializer_class = ProductSerializer
 

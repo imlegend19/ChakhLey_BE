@@ -6,14 +6,16 @@ from business.serializers import BusinessSerializer
 class EmployeeSerializer(serializers.ModelSerializer):
     from drf_user.serializers import UserShowSerializer
 
-    business = BusinessSerializer(many=False, read_only=True)
-    user = UserShowSerializer(many=False, read_only=True)
+    business_id = serializers.IntegerField(source='business.id')
+    user_id = serializers.IntegerField(source='user.id')
+    user_name = serializers.CharField(source='user.name')
+    user_mobile = serializers.CharField(source='user.mobile')
 
     class Meta:
         from .models import Employee
 
         model = Employee
-        fields = ('id', 'user', 'designation', 'business', 'is_active', 'joined_on', 'left_on', 'salary')
+        fields = ('id', 'user_id', 'user_name', 'user_mobile', 'business_id', 'is_active')
         ordering = ['-id']
 
 

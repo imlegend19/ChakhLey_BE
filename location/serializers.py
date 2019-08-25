@@ -12,6 +12,12 @@ class CountrySerializer(serializers.ModelSerializer):
 class StateSerializer(serializers.ModelSerializer):
     country = CountrySerializer(many=False, read_only=True)
 
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ Perform necessary eager loading of data. """
+        queryset = queryset.prefetch_related('country')
+        return queryset
+
     class Meta:
         from .models import State
 
@@ -21,6 +27,12 @@ class StateSerializer(serializers.ModelSerializer):
 
 class CitySerializer(serializers.ModelSerializer):
     state = StateSerializer(many=False, read_only=True)
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ Perform necessary eager loading of data. """
+        queryset = queryset.prefetch_related('state')
+        return queryset
 
     class Meta:
         from .models import City
@@ -32,6 +44,12 @@ class CitySerializer(serializers.ModelSerializer):
 class AreaSerializer(serializers.ModelSerializer):
     city = CitySerializer(many=False, read_only=True)
 
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ Perform necessary eager loading of data. """
+        queryset = queryset.prefetch_related('city')
+        return queryset
+
     class Meta:
         from .models import Area
 
@@ -41,6 +59,12 @@ class AreaSerializer(serializers.ModelSerializer):
 
 class BuildingComplexSerializer(serializers.ModelSerializer):
     area = AreaSerializer(many=False, read_only=True)
+
+    @staticmethod
+    def setup_eager_loading(queryset):
+        """ Perform necessary eager loading of data. """
+        queryset = queryset.prefetch_related('area')
+        return queryset
 
     class Meta:
         from .models import BuildingComplex

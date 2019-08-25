@@ -2,8 +2,8 @@ from django.core.exceptions import ValidationError
 from django.utils.text import gettext_lazy as _
 from rest_framework import serializers
 
-from employee.serializers import EmployeeSerializer
-from product.serializers import ProductSerializer
+from employee.serializers import EmployeeOrderSerializer
+from product.serializers import ProductOrderSerializer
 
 
 class DeliverySerializer(serializers.ModelSerializer):
@@ -15,7 +15,7 @@ class DeliverySerializer(serializers.ModelSerializer):
 
 
 class SubOrderSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(many=False, read_only=True)
+    product = ProductOrderSerializer(many=False, read_only=True)
 
     class Meta:
         from .models import SubOrder
@@ -33,15 +33,16 @@ class OrderListSerializer(serializers.ModelSerializer):
 
     delivery = DeliverySerializer(many=False, read_only=True)
     suborder_set = SubOrderSerializer(many=True, read_only=True)
+    restaurant_id = serializers.IntegerField(source='restaurant.id')
+    restaurant_name = serializers.CharField(source='restaurant.name')
     status = serializers.CharField(source='get_status_display', read_only=True)
-    restaurant = RestaurantSerializer(many=False, read_only=True)
-    delivery_boy = EmployeeSerializer(many=False, read_only=True)
+    delivery_boy = EmployeeOrderSerializer(many=False, read_only=True)
 
     class Meta:
         from .models import Order
 
         model = Order
-        fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant', 'preparation_time',
+        fields = ('id', 'name', 'mobile', 'email', 'business', 'restaurant_id', 'restaurant_name', 'preparation_time',
                   'status', 'order_date', 'total', 'packaging_charge', 'payment_done', 'delivery', 'suborder_set',
                   'delivery_boy', 'has_delivery_boy')
 

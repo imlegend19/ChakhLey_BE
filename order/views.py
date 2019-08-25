@@ -11,11 +11,19 @@ class OrderListView(ListAPIView):
 
     permission_classes = (AllowAny,)
     serializer_class = OrderListSerializer
-    queryset = Order.objects.all()
+    queryset = Order.objects.prefetch_related('delivery', 'suborder_set', 'restaurant', 'delivery_boy',
+                                              'suborder_set__item')
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)
     search_fields = ('name', 'restaurant__id', 'mobile', 'status')
     filter_fields = ('name', 'restaurant__id', 'id', 'mobile', 'status', 'delivery_boy')
+
+    # def dispatch(self, *args, **kwargs):
+    #     from django.db import connection
+    #
+    #     response = super().dispatch(*args, **kwargs)
+    #     print('Queries Counted: {}'.format(len(connection.queries)))
+    #     return response
 
 
 class CreateOrderView(CreateAPIView):

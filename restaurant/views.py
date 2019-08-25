@@ -40,13 +40,20 @@ class RestaurantListView(ListCreateAPIView):
 
     permission_classes = (AllowAny,)
     serializer_class = RestaurantSerializer
-    queryset = Restaurant.objects.all()
+    queryset = Restaurant.objects.prefetch_related('business', 'area')
     pagination_class = CustomPagination
 
     filter_backends = (SearchFilter, DjangoFilterBackend,)
     filter_fields = ('id', 'name', 'commission', 'is_veg', 'business')
     search_fields = ('name', 'id')
     ordering = ['-discount']
+
+    def dispatch(self, *args, **kwargs):
+        from django.db import connection
+
+        response = super().dispatch(*args, **kwargs)
+        print('Queries Counted: {}'.format(len(connection.queries)))
+        return response
 
 
 class RetrieveRestaurantView(RetrieveUpdateAPIView):

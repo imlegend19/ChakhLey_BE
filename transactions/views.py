@@ -50,13 +50,13 @@ class TransactionDestroyView(DestroyAPIView):
 class AcceptTransactionView(CreateAPIView):
     from django_filters.rest_framework.backends import DjangoFilterBackend
 
-    from .serializers import OrderPaymentSerializer
+    from .serializers import AcceptOrderPaymentSerializer
     from .models import OrderPayment
 
     permission_classes = (AllowAny,)
 
     queryset = OrderPayment.objects.all()
-    serializer_class = OrderPaymentSerializer
+    serializer_class = AcceptOrderPaymentSerializer
 
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('order', 'payment_mode', 'payment_type', 'is_credit',

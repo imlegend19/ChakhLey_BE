@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from business.serializers import BusinessSerializer
 from location.serializers import AreaSerializer
 

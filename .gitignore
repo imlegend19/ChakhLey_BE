@@ -92,6 +92,8 @@ ENV/
 env.bak/
 venv.bak/
 
+images/
+
 user_rating/migrations
 transactions/migrations
 restaurant/migrations
@@ -101,6 +103,8 @@ location/migrations
 employee/migrations
 drf_user/migrations
 business/migrations
+
+images/
 
 zappa_settings.json
 chakhle-be-dev-1566201764.zip

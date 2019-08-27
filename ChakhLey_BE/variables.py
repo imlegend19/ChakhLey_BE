@@ -1,4 +1,5 @@
-HOST = '13.232.23.156'
+HOST = 'adminbeta.chakhley.co.in'
+# HOST = '13.232.23.156'
 
 COST_FOR_TWO = (
     ('$', '100'),

@@ -59,8 +59,8 @@ class UserShowSerializer(serializers.ModelSerializer):
         from .models import User
 
         model = User
-        fields = ('id', 'username', 'name', 'is_delivery_boy')
-        read_only_fields = ('username', 'name', 'is_delivery_boy')
+        fields = ('id', 'username', 'name', 'mobile', 'is_delivery_boy')
+        read_only_fields = ('username', 'name', 'mobile', 'is_delivery_boy')
 
 
 class OTPSerializer(serializers.Serializer):
@@ -186,6 +186,7 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
     mobile: Mobile of user
     email: Email of user (Not required)
     is_delivery_boy: Is Delivery Boy?
+    email: Email of the user (Not required)
     verify_otp: Required in step 2, OTP from user
     """
 

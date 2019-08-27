@@ -14,7 +14,7 @@ class ProductSerializer(serializers.ModelSerializer):
         from .models import Product
 
         model = Product
-        fields = ('id', 'name', 'category', 'is_veg', 'price', 'discount', 'inflation', 'restaurant', 'active',
+        fields = ('id', 'name', 'category', 'is_veg', 'price', 'discount', 'restaurant', 'active',
                   'recommended_product', 'image', 'display_price')
 
 
@@ -24,4 +24,4 @@ class ProductOrderSerializer(serializers.ModelSerializer):
         from .models import Product
 
         model = Product
-        fields = ('id', 'name', 'is_veg', 'price', 'discount', 'inflation', 'active', 'display_price')
+        fields = ('id', 'name', 'is_veg', 'price', 'discount', 'active', 'display_price')

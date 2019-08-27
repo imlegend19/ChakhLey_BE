@@ -81,27 +81,6 @@ def get_client_ip(request):
     return ip
 
 
-def validate_email(email):
-    """
-    Validates an email address
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
-    Parameters
-    ----------
-    email: str
-
-    Returns
-    -------
-    bool
-    """
-    from django.core.validators import validate_email
-    from django.core.exceptions import ValidationError
-    try:
-        validate_email(email)
-        return True
-    except ValidationError:
-        return False
-
-
 def get_mobile_number(mobile):
     """
     Returns a mobile number after removing blanks
@@ -215,71 +194,17 @@ def send_message(message: str, recip: list,
 
     sent = {'success': False, 'message': None}
 
-    # if not getattr(settings, 'EMAIL_HOST', None):
-    #     raise ValueError('EMAIL_HOST must be defined in django '
-    #                      'setting for sending mail.')
-    # if not getattr(settings, 'EMAIL_FROM', None):
-    #     raise ValueError('EMAIL_FROM must be defined in django setting '
-    #                      'for sending mail. Who is sending email?')
-    # if not getattr(settings, 'EMAIL_FROM', None):
-    #     raise ValueError('EMAIL_FROM must be defined in django setting '
-    #                      'for sending mail. Who is sending email?')
-
-    # Check if there is any recipient
     if not len(recip) > 0:
         raise ValueError('No recipient to send message.')
-    # Check if the value of recipient is valid (min length: a@b.c)
-    # elif len(recip[0]) < 5:
-    #     raise ValueError('Invalid recipient.')
-
-    # Check if all recipient in list are of same type
-    # is_email = validate_email(recip[0])
-    for ind in range(len(recip)):
-        if validate_email(recip[ind]) is not is_email:
-            raise ValueError('All recipient should be of same type.')
-        elif not is_email:
-            recip[ind] = get_mobile_number(recip[ind])
-
-    # Check if fallback email is indeed an email
-    # for rcp in recip_email:
-    #     if not validate_email(rcp):
-    #         raise ValueError('Invalid email provided: {}'.format(rcp))
 
     if isinstance(recip, str):
-        # For backsupport
         recip = [recip]
-    # if isinstance(recip_email, str):
-    #     # For backsupport
-    #     recip_email = [recip_email]
 
-    # if is_email:
-    #     try:
-    #         send_mail(subject=subject, message=message,
-    #                   html_message=html_message,
-    #                   from_email=settings.EMAIL_FROM, recipient_list=recip)
-    #     except smtplib.SMTPException as ex:
-    #         sent['message'] = 'Message sending failed!' + str(ex.args)
-    #         sent['success'] = False
-    #     else:
-    #         sent['message'] = 'Message sent successfully!'
-    #         sent['success'] = True
-
-    # else:
     try:
         api.send_sms(body=message, to=recip, from_phone=None)
-
-        # Django SendSMS doesn't provide an output of success/failure.
-        # Send mail either ways, just to ensure delivery.
-        # send_message(message=message, subject=subject, recip=recip_email,
-        #              recip_email=recip_email,
-        #              html_message=html_message)
     except Exception as ex:
         sent['message'] = 'Message sending Failed!' + str(ex.args)
         sent['success'] = False
-        # send_message(message=message, subject=subject,
-        #              recip=recip_email,
-        #              recip_email=recip_email,
-        #              html_message=html_message)
     else:
         sent['message'] = 'Message sent successfully!'
         sent['success'] = True

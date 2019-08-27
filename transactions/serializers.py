@@ -12,3 +12,12 @@ class OrderPaymentSerializer(serializers.ModelSerializer):
         model = OrderPayment
         fields = ('id', 'order', 'amount', 'is_credit', 'payment_type',
                   'payment_mode', 'accepted_by')
+
+
+class AcceptOrderPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        from .models import OrderPayment
+
+        model = OrderPayment
+        fields = ('id', 'order', 'amount', 'is_credit', 'payment_type',
+                  'payment_mode', 'accepted_by')

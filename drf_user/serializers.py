@@ -196,11 +196,7 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
     verify_otp = serializers.CharField(default=None, required=False)
     is_delivery_boy = serializers.BooleanField(default=False, required=False)
     mobile = serializers.CharField(required=True)
-<<<<<<< HEAD
-    email = serializers.EmailField(required=False)
-=======
     email = serializers.CharField(default=None, required=False)
->>>>>>> develop
 
     @staticmethod
     def get_user(mobile: str, is_delivery_boy: bool):

@@ -11,7 +11,7 @@ class BusinessView(ListAPIView):
     from .serializers import BusinessSerializer
 
     permission_classes = (AllowAny,)
-    queryset = Business.objects.prefetch_related('city')
+    queryset = Business.objects.prefetch_related('city', 'city__state', 'city__state__country')
     serializer_class = BusinessSerializer
 
     filter_backends = (DjangoFilterBackend, SearchFilter,)

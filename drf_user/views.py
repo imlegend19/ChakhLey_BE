@@ -329,7 +329,7 @@ class OTPLoginView(APIView):
                 if not user:
                     if email == "":
                         user = User.objects.create_user(
-                            name=name, mobile=mobile, username=mobile,
+                            name=name, mobile=mobile, username=mobile, email=email,
                             password=User.objects.make_random_password()
                         )
                     else:

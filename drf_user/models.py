@@ -31,7 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     username = models.CharField(verbose_name=_('Unique UserName'),
                                 max_length=254, unique=True)
-    email = models.EmailField(verbose_name=_('Email Address'), unique=True, null=True, blank=True)
+    email = models.EmailField(verbose_name=_('Email Address'), null=True, blank=True)
     mobile = models.CharField(verbose_name=_('Mobile Number'), max_length=150,
                               unique=True)
     name = models.CharField(verbose_name=_('Full Name'), max_length=254,

@@ -327,16 +327,10 @@ class OTPLoginView(APIView):
         if verify_otp:
             if validate_otp(mobile, verify_otp):
                 if not user:
-                    if email == "":
-                        user = User.objects.create_user(
-                            name=name, mobile=mobile, username=mobile, email=email,
-                            password=User.objects.make_random_password()
-                        )
-                    else:
-                        user = User.objects.create_user(
-                            name=name, mobile=mobile, username=mobile, email=email,
-                            password=User.objects.make_random_password()
-                        )
+                    user = User.objects.create_user(
+                        name=name, mobile=mobile, username=mobile, email=email,
+                        password=User.objects.make_random_password()
+                    )
 
                     user.is_active = True
                     user.save()

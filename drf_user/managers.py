@@ -17,13 +17,6 @@ class UserManager(BaseUserManager):
 
     def _create_user(self, username, email, password, fullname, mobile,
                      **extra_fields):
-        """
-        Creates and saves a User with the given email and password
-
-        Author: Himanshu Shankar (https://himanshus.com)
-        """
-        if not email:
-            raise ValueError('The given email must be set')
         email = self.normalize_email(email)
         user = self.model(username=username, email=email, name=fullname,
                           mobile=mobile, **extra_fields)

@@ -98,7 +98,8 @@ class OTPSerializer(serializers.Serializer):
     verify_otp = serializers.CharField(required=False)
     destination = serializers.CharField(required=True)
 
-    def get_user(self, prop: str, destination: str) -> User:
+    @staticmethod
+    def get_user(prop: str, destination: str) -> User:
         """
         Provides current user on the basis of property and destination
         provided.

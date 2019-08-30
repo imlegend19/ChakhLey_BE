@@ -6,6 +6,12 @@ from ChakhLey_BE.variables import BUSINESS
 
 
 class Business(models.Model):
+    """
+    Represents business i.e entity owning restaurants
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
+
     from location.models import City
 
     name = models.CharField(verbose_name=_('Name'), max_length=255)

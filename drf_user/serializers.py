@@ -201,6 +201,12 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
 
     @staticmethod
     def get_user(mobile: str, is_delivery_boy: bool):
+        """
+
+        @param mobile:
+        @param is_delivery_boy:
+        @return:
+        """
         try:
             user = User.objects.get(mobile=mobile, is_delivery_boy=is_delivery_boy)
         except User.DoesNotExist:
@@ -209,6 +215,11 @@ class OTPLoginRegisterSerializer(serializers.Serializer):
         return user
 
     def validate(self, attrs: dict) -> dict:
+        """
+
+        @param attrs:
+        @return:
+        """
         attrs['user'] = self.get_user(
             mobile=attrs.get('mobile'),
             is_delivery_boy=attrs.get('is_delivery_boy'))

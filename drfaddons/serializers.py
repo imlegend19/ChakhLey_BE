@@ -1,7 +1,7 @@
 """
 Custom serializers
 
-Author: Himanshu Shankar (https://himanshus.com)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 
 from rest_framework import serializers
@@ -14,6 +14,11 @@ class ByOwnerSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault())
 
     def validate(self, attrs):
+        """
+
+        @param attrs:
+        @return:
+        """
         model = self.Meta.model
 
         if model.objects.filter(

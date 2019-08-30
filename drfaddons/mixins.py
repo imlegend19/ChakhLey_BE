@@ -1,7 +1,7 @@
 """
 Custom Mixins for future use cases.
 
-Author: Himanshu Shankar (https://himanshus.com)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 
 from __future__ import unicode_literals
@@ -13,7 +13,7 @@ class OwnerCreateModelMixin(CreateModelMixin):
     """
     Create a CreateUpdateModel based model instance.
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
 
     def perform_create(self, serializer):

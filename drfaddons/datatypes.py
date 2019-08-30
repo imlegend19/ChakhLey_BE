@@ -1,7 +1,7 @@
 """
 Custom datatypes that are used in models.py
 
-Author: Himanshu Shankar (https://himanshus.com)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 
 from django.db import models

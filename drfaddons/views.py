@@ -1,7 +1,7 @@
 """
 Contains custom coded views.
 
-Author: Himanshu Shankar (https://himanshus.com/)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 
 from rest_framework.views import APIView
@@ -15,7 +15,7 @@ class ValidateAndPerformView(APIView):
     Was created by me not knowing about GenericAPIView.
     May be labelled as deprecated and get removed in future versions.
 
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
+    Source: Mahen Gandhi (https://github.com/imlegend19)
     """
     from django.views.decorators.csrf import csrf_exempt
     from rest_framework.permissions import AllowAny
@@ -57,6 +57,11 @@ class ValidateAndPerformView(APIView):
 
     @csrf_exempt
     def post(self, request):
+        """
+
+        @param request:
+        @return:
+        """
         from .utils import JsonResponse
         from rest_framework import status
 
@@ -79,7 +84,7 @@ class AddObjectView(ValidateAndPerformView):
     Was created by me not knowing about GenericAPIView.
     May be labelled as deprecated and get removed in future versions.
 
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
+    Source: Mahen Gandhi (https://github.com/imlegend19)
     """
     from django.views.decorators.csrf import csrf_exempt
     from rest_framework.permissions import IsAuthenticated
@@ -87,6 +92,13 @@ class AddObjectView(ValidateAndPerformView):
     permission_classes = (IsAuthenticated,)
 
     def validated(self, serialized_data, *args, **kwargs):
+        """
+
+        @param serialized_data:
+        @param args:
+        @param kwargs:
+        @return:
+        """
         from rest_framework import status
 
         serialized_data = self.show_serializer(serialized_data.save(
@@ -95,6 +107,11 @@ class AddObjectView(ValidateAndPerformView):
 
     @csrf_exempt
     def post(self, request):
+        """
+
+        @param request:
+        @return:
+        """
         from .utils import JsonResponse
         from rest_framework import status
 
@@ -125,16 +142,27 @@ class PaginatedSearchView(ValidateAndPerformView):
     Was created by me not knowing about GenericAPIView.
     May be labelled as deprecated and get removed in future versions.
 
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
+    Source: Mahen Gandhi (https://github.com/imlegend19)
     """
     from rest_framework.permissions import IsAuthenticated
 
     permission_classes = (IsAuthenticated, )
 
     def fetch_data(self, serialized_data):
+        """
+
+        @param serialized_data:
+        """
         raise NotImplementedError('Implement Fetch Data')
 
     def validated(self, serialized_data, *args, **kwargs):
+        """
+
+        @param serialized_data:
+        @param args:
+        @param kwargs:
+        @return:
+        """
         from .utils import paginate_data
         from rest_framework import status
 

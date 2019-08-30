@@ -55,19 +55,3 @@ class AreaSerializer(serializers.ModelSerializer):
 
         model = Area
         fields = ('id', 'name', 'city', 'pincode')
-
-
-class BuildingComplexSerializer(serializers.ModelSerializer):
-    area = AreaSerializer(many=False, read_only=True)
-
-    @staticmethod
-    def setup_eager_loading(queryset):
-        """ Perform necessary eager loading of data. """
-        queryset = queryset.prefetch_related('area')
-        return queryset
-
-    class Meta:
-        from .models import BuildingComplex
-
-        model = BuildingComplex
-        fields = ('id', 'building_name', 'area', 'flat_number')

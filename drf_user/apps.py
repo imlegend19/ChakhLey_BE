@@ -13,7 +13,7 @@ class DRFUserConfig(AppConfig):
         Returns
         -------
 
-        Author: Himanshu Shankar (https://himanshus.com)
+        @author: Mahen Gandhi (https://github.com/imlegend19)
         """
         from . import update_user_settings
         from .signals.handlers import post_register

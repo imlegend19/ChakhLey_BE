@@ -1,6 +1,6 @@
 """
 
-Author: Himanshu Shankar (https://himanshus.com)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 from django.contrib.auth.base_user import BaseUserManager
 
@@ -9,7 +9,7 @@ class UserManager(BaseUserManager):
     """
     UserManager class for Custom User Model
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     Source: Can't find link but the following solution is inspired
     from a solution provided on internet.
     """
@@ -41,7 +41,7 @@ class UserManager(BaseUserManager):
         Returns
         -------
         User Instance
-        Author: Himanshu Shankar (https://himanshus.com)
+        @author: Mahen Gandhi (https://github.com/imlegend19)
         """
 
         from . import update_user_settings
@@ -74,7 +74,7 @@ class UserManager(BaseUserManager):
         -------
         User Instance
 
-        Author: Himanshu Shankar (https://himanshus.com)
+        @author: Mahen Gandhi (https://github.com/imlegend19)
         """
         from . import update_user_settings
 

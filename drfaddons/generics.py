@@ -2,7 +2,7 @@
 Generic views that provide commonly needed behaviour for
 CreateUpdateModel.
 
-Author: Himanshu Shankar (https://himanshus.com)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 
 from __future__ import unicode_literals

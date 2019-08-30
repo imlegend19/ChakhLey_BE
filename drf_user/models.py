@@ -25,8 +25,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     name: Name of the user. Replaces last_name & first_name
     update_date: DateTime instance when the user was updated
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
+
     from .managers import UserManager
 
     username = models.CharField(verbose_name=_('Unique UserName'),
@@ -69,9 +70,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _('Users')
 
     def get_full_name(self):
+        """
+
+        @return:
+        """
         return self.name
 
     def get_short_name(self):
+        """
+
+        @return:
+        """
         return self.name
 
     def __str__(self):
@@ -83,7 +92,7 @@ class AuthTransaction(models.Model):
     Represents all authentication in the system that took place via
     REST API.
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     ip_address = models.GenericIPAddressField(blank=False, null=False)
     token = models.TextField(verbose_name=_('JWT Token passed'))

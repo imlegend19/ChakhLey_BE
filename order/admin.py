@@ -26,6 +26,11 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = (SubOrderInLine, DeliveryInLine)
 
     def get_changeform_initial_data(self, request):
+        """
+
+        @param request:
+        @return:
+        """
         from restaurant.models import Restaurant
 
         data = {}

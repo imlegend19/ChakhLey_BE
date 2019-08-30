@@ -37,12 +37,20 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def category_count(self):
+        """
+
+        @return:
+        """
         from product.models import Category
 
         return Category.objects.all().filter(restaurant_id=self.id).count()
 
     @property
     def open(self):
+        """
+
+        @return:
+        """
         import pytz
 
         tz = pytz.timezone('Asia/Kolkata')
@@ -58,6 +66,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def full_address(self):
+        """
+
+        @return:
+        """
         address = ''
 
         if self.unit:
@@ -79,6 +91,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def cuisine(self):
+        """
+
+        @return:
+        """
         from ChakhLey_BE.variables import CUISINES_DICT
         cuisine = []
 
@@ -89,6 +105,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def images(self):
+        """
+
+        @return:
+        """
         images = []
 
         for i in RestaurantImage.objects.filter(restaurant=self.id):
@@ -101,6 +121,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def total_income(self):
+        """
+
+        @return:
+        """
         from order.models import Order
 
         total = 0
@@ -111,6 +135,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def income_today(self):
+        """
+
+        @return:
+        """
         from order.models import Order
 
         total = 0
@@ -122,6 +150,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def income_month(self):
+        """
+
+        @return:
+        """
         from django.db import connection
 
         cursor = connection.cursor()
@@ -133,12 +165,20 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def total_orders(self):
+        """
+
+        @return:
+        """
         from order.models import Order
         return Order.objects.filter(restaurant=self.id) \
             .count()
 
     @property
     def orders_month(self):
+        """
+
+        @return:
+        """
         from django.db import connection
 
         cursor = connection.cursor()
@@ -148,6 +188,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def orders_today(self):
+        """
+
+        @return:
+        """
         from django.db import connection
 
         cursor = connection.cursor()
@@ -157,6 +201,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def most_liked_product(self):
+        """
+
+        @return:
+        """
         from product.models import Product
         from order.models import SubOrder
 
@@ -185,6 +233,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def top_10_products(self):
+        """
+
+        @return:
+        """
         from product.models import Product
         from order.models import SubOrder
 
@@ -224,6 +276,10 @@ class Restaurant(CreateUpdateModel):
 
     @property
     def amount_after_commission(self):
+        """
+
+        @return:
+        """
         from django.db import connection
 
         cursor = connection.cursor()

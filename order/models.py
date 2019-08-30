@@ -9,6 +9,11 @@ from ChakhLey_BE.variables import ORDER_STATUS, NEW, COMPLAINT, ORDER_FEEDBACK
 
 
 class Order(models.Model):
+    """
+    Represents all orders in the system.
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     from restaurant.models import Restaurant
 
     name = models.CharField(verbose_name=_("Buyer Name"), max_length=254)
@@ -24,11 +29,17 @@ class Order(models.Model):
 
     @property
     def packaging_charge(self) -> float:
+        """
+        @return: Restaurant default packaging charge rounded off 2 decimal places
+        """
         packaging_charge = float(self.restaurant.packaging_charge)
         return round(packaging_charge, 2)
 
     @property
     def has_delivery_boy(self) -> bool:
+        """
+        @return: delivery boy allotted ?
+        """
         if self.delivery_boy:
             return True
         else:
@@ -36,6 +47,11 @@ class Order(models.Model):
 
     @property
     def total(self) -> float:
+        """
+        Total amount for the order
+
+        @return: float --> Delivery Charge (amount) + Packaging charge + Suborder items charge
+        """
         total = float(Delivery.objects.get(order=self.id).amount) + self.packaging_charge
 
         for so in self.suborder_set.all():
@@ -45,6 +61,11 @@ class Order(models.Model):
 
     @property
     def payment_done(self) -> bool:
+        """
+        Payment done for order? Refers OrderPayment model to check whether total amount exists
+
+        @return: bool
+        """
         from django.db.models.aggregates import Sum
         from transactions.models import OrderPayment
 
@@ -69,6 +90,11 @@ class Order(models.Model):
 
 
 class SubOrder(models.Model):
+    """
+    Represent all suborder models in the system.
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     from product.models import Product
 
     order = models.ForeignKey(verbose_name=_('Order'), to=Order, on_delete=models.PROTECT)
@@ -77,10 +103,16 @@ class SubOrder(models.Model):
 
     @property
     def product(self):
+        """
+        @return: Item foreign key id
+        """
         return self.item
 
     @property
     def sub_total(self):
+        """
+        @return: Total price of an item in the suborder
+        """
         return self.item.display_price * self.quantity
 
     def __str__(self):
@@ -92,6 +124,12 @@ class SubOrder(models.Model):
 
 
 class Delivery(models.Model):
+    """
+    Delivery model to save the delivery address and fee in the system.
+
+    @requires order, location, amount
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     order = models.OneToOneField(to=Order, on_delete=models.PROTECT, verbose_name=_('Order'))
     location = models.CharField(verbose_name=_("Location"), max_length=255, default='NIIT University')
     unit_no = models.CharField(verbose_name=_("Unit Number / Floor"), max_length=100)
@@ -102,6 +140,10 @@ class Delivery(models.Model):
 
     @property
     def full_address(self):
+        """
+        Full Address = unit no. + address line 2 + location
+        @return: string
+        """
         address = ''
         if self.unit_no:
             address += str(self.unit_no)
@@ -119,19 +161,13 @@ class Delivery(models.Model):
         return self.order.name
 
 
-class DeliveryBoysOrder(models.Model):
-    deliver_boy = models.ForeignKey(verbose_name=_('Delivery Boy'), to=Employee, on_delete=models.PROTECT)
-    order = models.ForeignKey(verbose_name=_('Order'), to=Order, on_delete=models.PROTECT)
-
-    class Meta:
-        verbose_name = _('Delivery Boys Order Data')
-        verbose_name_plural = _('Delivery Boys Order Data')
-
-    def __str__(self):
-        return self.deliver_boy.name
-
-
 class OrderFeedback(models.Model):
+    """
+    Order Feedback model to save feedback's from user in the system
+
+    @requires order_id
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     order_id = models.ForeignKey(verbose_name=_("Order Id"), to=Order, on_delete=models.PROTECT)
     type = models.CharField(verbose_name=_("Type"), choices=ORDER_FEEDBACK, max_length=100, default=COMPLAINT)
     description = models.TextField(verbose_name=_("Description"))

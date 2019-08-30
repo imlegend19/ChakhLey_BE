@@ -7,6 +7,11 @@ class TransactionStaticVariableView(APIView):
 
     @staticmethod
     def get(request):
+        """
+
+        @param request:
+        @return:
+        """
         from ChakhLey_BE.variables import PAYMENT_MODE_CHOICES
         from ChakhLey_BE.variables import PAYMENT_TYPE_CHOICES
 

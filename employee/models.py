@@ -6,6 +6,19 @@ from ChakhLey_BE.variables import DESIGNATIONS
 
 
 class Employee(models.Model):
+    """
+    Represents employees in the system.
+    Valid designations for the employees:
+
+    1. Delivery Boy
+    2. Manager
+    3. Chief Executive Officer
+    4. Project Manager
+    5. Director
+    6. Delivery Manager
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     from business.models import Business
 
     user = models.ForeignKey(verbose_name=_("User"), to=User, on_delete=models.PROTECT)
@@ -25,6 +38,11 @@ class Employee(models.Model):
                                  decimal_places=2, max_digits=10)
 
     def clean(self, *args, **kwargs):
+        """
+
+        @param args:
+        @param kwargs:
+        """
         if self.designation == 'DB' and not self.user.is_delivery_boy:
             raise ValidationError('Not a valid delivery boy')
         super(Employee, self).clean()
@@ -39,6 +57,12 @@ class Employee(models.Model):
 
 
 class EmployeeDocument(CreateUpdateModel):
+    """
+    Represents employee documents in the system
+    At least 1 document should be maintained in the system.
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     from ChakhLey_BE.variables import EMPLOYEE_DOCUMENT_CHOICES
     from drf_user.models import User
 

@@ -1,7 +1,7 @@
 """
 Custom backends to facilitate authorizations
 
-Author: Himanshu Shankar (https://himanshus.com)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 from django.contrib.auth.backends import ModelBackend
 
@@ -69,7 +69,7 @@ def jwt_payload_handler(user):
     A custom JWT Payload Handler that adds certain extra data in
     payload such as: email, mobile, name
 
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
+    Source: Mahen Gandhi (https://github.com/imlegend19)
     Parameters
     ----------
     user: get_user_model()

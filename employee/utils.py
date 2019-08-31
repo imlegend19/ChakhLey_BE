@@ -2,6 +2,12 @@ from sendsms.backends.base import BaseSmsBackend
 
 
 def send_sms(message: str, mobile: str):
+    """
+
+    @param message:
+    @param mobile:
+    @return:
+    """
     import urllib.request  # Python URL functions
     import urllib.parse
 
@@ -38,6 +44,10 @@ def send_sms(message: str, mobile: str):
 
 class Msg91SmsBackend(BaseSmsBackend):
     def send_messages(self, messages):
+        """
+
+        @param messages:
+        """
         for message in messages:
             for to in message.to:
                 try:

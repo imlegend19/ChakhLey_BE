@@ -14,7 +14,7 @@ class JSONWebTokenAuthenticationQS(BaseJSONWebTokenAuthentication):
     Key is also changeable and can be set in Django settings as
     JWT_AUTH_KEY with default value of Authorization.
 
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
+    Source: Mahen Gandhi (https://github.com/imlegend19)
     """
     from rest_framework_jwt.settings import api_settings
     from django.conf import settings

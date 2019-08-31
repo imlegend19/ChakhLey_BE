@@ -1,8 +1,7 @@
 """
 Contains various utility functions that is commonly used.
 
-Author: Various different people from internet. Links included
-        in Source.
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 
 import json
@@ -16,6 +15,11 @@ class DateTimeEncoder(json.JSONEncoder):
     https://www.snip2code.com/Snippet/106599/]
     """
     def default(self, obj):
+        """
+
+        @param obj:
+        @return:
+        """
         from datetime import datetime
 
         if isinstance(obj, datetime):
@@ -85,7 +89,7 @@ def get_mobile_number(mobile):
     """
     Returns a mobile number after removing blanks
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     Parameters
     ----------
     mobile: str
@@ -105,7 +109,7 @@ def get_mobile_number(mobile):
 def validate_mobile(mobile):
     """
     Validates a mobile number
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
+    Source: Mahen Gandhi (https://github.com/imlegend19)
     Parameters
     ----------
     mobile: str
@@ -124,7 +128,7 @@ def validate_mobile(mobile):
 def paginate_data(searched_data, request_data):
     """
     Paginates the searched_data as per the request_data
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
+    Source: Mahen Gandhi (https://github.com/imlegend19)
     Parameters
     ----------
     searched_data: Serializer.data
@@ -172,7 +176,7 @@ def send_message(message: str, recip: list,
                  html_message: str = None):
     """
     Sends message to specified value.
-    Source: Himanshu Shankar (https://github.com/iamhssingh)
+    Source: Mahen Gandhi (https://github.com/imlegend19)
     Parameters
     ----------
     message: str

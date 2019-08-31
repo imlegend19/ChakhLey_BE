@@ -6,6 +6,11 @@ from rest_framework.response import Response
 class CustomPagination(pagination.PageNumberPagination):
 
     def get_paginated_response(self, data):
+        """
+
+        @param data:
+        @return:
+        """
         from django.db import connection
         from ChakhLey_BE.variables import CUISINES
 

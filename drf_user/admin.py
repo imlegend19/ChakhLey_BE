@@ -1,7 +1,7 @@
 """
 All Admin configuration related to drf_user
 
-Author: Himanshu Shankar (https://himanshus.com)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 from django.contrib import admin
 
@@ -17,7 +17,7 @@ class DRFUserAdmin(UserAdmin):
     Overrides UserAdmin to show fields name & mobile and remove fields:
     first_name, last_name
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     fieldsets = (
         (None, {'fields': ('username', 'password')}),

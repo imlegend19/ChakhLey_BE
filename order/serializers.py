@@ -7,6 +7,11 @@ from product.serializers import ProductOrderSerializer
 
 
 class DeliverySerializer(serializers.ModelSerializer):
+    """
+    Delivery Serializer for Delivery model
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     class Meta:
         from .models import Delivery
 
@@ -15,6 +20,15 @@ class DeliverySerializer(serializers.ModelSerializer):
 
 
 class SubOrderSerializer(serializers.ModelSerializer):
+    """
+    Suborder serializer for Suborder model.
+
+    Nested Serializer:
+        ProductOrderSerializer
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
+
     product = ProductOrderSerializer(many=False, read_only=True)
 
     class Meta:
@@ -29,6 +43,21 @@ class SubOrderSerializer(serializers.ModelSerializer):
 
 
 class OrderListSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Order model
+
+    Nested Serializers:
+        DeliverySerializer
+        SubOrderSerializer
+        EmployeeOrderSerializer
+
+    Serializer Fields:
+        @param restaurant_id -> IntegerField
+        @param status -> CharField
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
+
     from restaurant.serializers import RestaurantSerializer
 
     delivery = DeliverySerializer(many=False, read_only=True)
@@ -48,16 +77,40 @@ class OrderListSerializer(serializers.ModelSerializer):
 
 
 class OrderCreateSerializer(serializers.ModelSerializer):
+    """
+    Serializer mainly for order creation
+
+    Nested Serializers:
+        DeliverySerializer
+        SubOrderSerializer
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
+
     delivery = DeliverySerializer(many=False)
     suborder_set = SubOrderSerializer(many=True)
 
     @staticmethod
     def validate_suborder_set(value):
+        """
+        Checks whether suborder set is empty or not
+
+        @param value: suborder_set
+        @raise ValidationError: If suborder_set is empty
+
+        @return: value
+        """
         if len(value) is 0:
             raise serializers.ValidationError(_("Minimum 1 item required to place an order."))
         return value
 
     def create(self, validated_data):
+        """
+        This creates an order object in the system
+
+        @param validated_data: Calls .is_valid() on the object and inputs if successful
+        @return: instance -> Object of OrderCreateSerializer
+        """
         from .models import SubOrder, Delivery
 
         suborder_set = validated_data.pop('suborder_set')
@@ -90,6 +143,11 @@ class OrderCreateSerializer(serializers.ModelSerializer):
 
 
 class OrderUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for updating the order
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     from restaurant.serializers import RestaurantSerializer
 
     suborder_set = SubOrderSerializer(many=True)
@@ -98,6 +156,13 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
     # delivery_boy = EmployeeSerializer(many=False)
 
     def update(self, instance, validated_data):
+        """
+        This overrides the update method and instantiates a patch
+
+        @param instance: Instance of OrderUpdateSerializer
+        @param validated_data: inputs object if is_valid() successful
+        @return: OrderUpdateSerializer instance
+        """
         from django.utils import timezone
 
         if 'preparation_time' in validated_data:
@@ -134,6 +199,11 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
 
 
 class OrderFeedbackSerializer(serializers.ModelSerializer):
+    """
+    Serializer for OrderFeedback
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
     class Meta:
         from .models import OrderFeedback
 

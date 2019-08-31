@@ -12,8 +12,7 @@ class RegisterView(CreateAPIView):
     Register a new user to the system.
     The data required are username, name, password and mobile.
 
-    Author: Himanshu Shankar (https://himanshus.com)
-            Aditya Gupta (https://github.com/ag93999)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     from .serializers import UserSerializer
     from rest_framework.permissions import AllowAny
@@ -24,6 +23,10 @@ class RegisterView(CreateAPIView):
     serializer_class = UserSerializer
 
     def perform_create(self, serializer):
+        """
+
+        @param serializer:
+        """
         from .models import User
 
         user = User.objects.create_user(
@@ -44,8 +47,7 @@ class LoginView(APIView):
     username -- Either username or mobile
     password -- Password of the user.
 
-    Author: Himanshu Shankar (https://himanshus.com)
-            Aditya Gupta (https://github.com/ag93999)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     from rest_framework_jwt.serializers import JSONWebTokenSerializer
     from rest_framework.permissions import AllowAny
@@ -56,6 +58,13 @@ class LoginView(APIView):
     serializer_class = JSONWebTokenSerializer
 
     def validated(self, serialized_data, *args, **kwargs):
+        """
+
+        @param serialized_data:
+        @param args:
+        @param kwargs:
+        @return:
+        """
         from rest_framework_jwt.settings import api_settings
 
         from datetime import datetime
@@ -89,6 +98,11 @@ class LoginView(APIView):
         return response
 
     def post(self, request):
+        """
+
+        @param request:
+        @return:
+        """
         from drfaddons.utils import JsonResponse
 
         from rest_framework import status
@@ -110,8 +124,7 @@ class CheckUniqueView(APIView):
     'prop' -- A property to check for uniqueness (username/mobile)
     'value' -- Value against property which is to be checked for.
 
-     Author: Himanshu Shankar (https://himanshus.com)
-            Aditya Gupta (https://github.com/ag93999)
+     @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     from .serializers import CheckUniqueSerializer
     from rest_framework.permissions import AllowAny
@@ -121,7 +134,15 @@ class CheckUniqueView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = CheckUniqueSerializer
 
-    def validated(self, serialized_data, *args, **kwargs):
+    @staticmethod
+    def validated(serialized_data, *args, **kwargs):
+        """
+
+        @param serialized_data:
+        @param args:
+        @param kwargs:
+        @return:
+        """
         from .utils import check_unique
 
         from rest_framework import status
@@ -132,6 +153,11 @@ class CheckUniqueView(APIView):
             status.HTTP_200_OK)
 
     def post(self, request):
+        """
+
+        @param request:
+        @return:
+        """
         from drfaddons.utils import JsonResponse
         from rest_framework import status
 
@@ -191,6 +217,13 @@ class OTPView(APIView):
     serializer_class = OTPSerializer
 
     def post(self, request, *args, **kwargs):
+        """
+
+        @param request:
+        @param args:
+        @param kwargs:
+        @return:
+        """
         from rest_framework.response import Response
         from rest_framework import status
         from django.http import JsonResponse
@@ -263,9 +296,20 @@ class RetrieveUpdateUserAccountView(RetrieveUpdateAPIView):
     lookup_field = 'created_by'
 
     def get_object(self):
+        """
+
+        @return:
+        """
         return self.request.user
 
     def update(self, request, *args, **kwargs):
+        """
+
+        @param request:
+        @param args:
+        @param kwargs:
+        @return:
+        """
         if 'password' in request.data.keys():
             self.request.user.set_password(request.data.pop('password'))
             self.request.user.save()
@@ -303,6 +347,11 @@ class OTPLoginView(APIView):
     serializer_class = OTPLoginRegisterSerializer
 
     def post(self, request):
+        """
+
+        @param request:
+        @return:
+        """
         from rest_framework.response import Response
         from rest_framework import status
 

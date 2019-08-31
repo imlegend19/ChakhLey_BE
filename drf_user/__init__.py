@@ -37,7 +37,7 @@ def update_user_settings() -> dict:
     -------
     user_settings: dict
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     from django.conf import settings
 

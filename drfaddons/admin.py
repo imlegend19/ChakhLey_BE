@@ -9,7 +9,7 @@ InlineCreateUpdateAdminMixin: Takes care of inline formset where model
                             inherits CreateUpdateModel and has those
                             fields as readonly.
 
-Author: Himanshu Shankar (https://himanshus.com)
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 
 from django.contrib import admin
@@ -20,7 +20,7 @@ class HideModelAdminMixin:
     Hide a model from Application page but allows addition of object
     from inside of other models.
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
 
     def get_model_perms(self, request):
@@ -31,7 +31,7 @@ class InlineCreateUpdateAdminMixin:
     """
     An Inline mixin that takes care of CreateUpdateModel fields.
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
 
     def save_formset(self, request, form, formset, change):
@@ -63,7 +63,7 @@ class CreateUpdateAdmin(InlineCreateUpdateAdminMixin, admin.ModelAdmin):
     If `created_by` is readonly in the form, it sets its value to
     current logged in user.
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
 
     readonly_fields = ()
@@ -84,7 +84,7 @@ class CreateUpdateAdmin(InlineCreateUpdateAdminMixin, admin.ModelAdmin):
         """
         Add ownership info fields in fieldset with proper separation.
 
-        Author: Himanshu Shankar (https://himanshus.com)
+        @author: Mahen Gandhi (https://github.com/imlegend19)
         """
         fieldsets = list(super(CreateUpdateAdmin, self).get_fieldsets(
             request=request, obj=obj))
@@ -125,7 +125,7 @@ class CreateUpdateAdmin(InlineCreateUpdateAdminMixin, admin.ModelAdmin):
         Makes `created_by`, `create_date` & `update_date` readonly when
         editing.
 
-        Author: Himanshu Shankar (https://himanshus.com)
+        @author: Mahen Gandhi (https://github.com/imlegend19)
         """
 
         # Get read only fields from super
@@ -166,7 +166,7 @@ class CreateUpdateHiddenAdmin(HideModelAdminMixin, CreateUpdateAdmin):
     """
     Hidden mode of CreateUpdateAdmin
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     pass
 
@@ -176,7 +176,7 @@ class CreateUpdateReadOnlyInlineAdminMixin:
     Mixin to set read only fields in Inline Admin based on CreateUpdate
     Model
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     readonly_fields = ('created_by', 'create_date', 'update_date')
 
@@ -186,6 +186,6 @@ class CreateUpdateExcludeInlineAdminMixin:
     Mixin to exclude ownership fields in Inline Admin based on
     CreateUpdate Model
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     exclude = ('created_by', 'create_date', 'update_date')

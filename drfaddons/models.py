@@ -2,7 +2,7 @@
 Custom abstract models that provides various functionality and can be
 inherited for further use.
 
-Author: Himanshu Shankar
+@author: Mahen Gandhi (https://github.com/imlegend19)
 """
 
 from django.db import models
@@ -15,7 +15,7 @@ class CreateUpdateModel(models.Model):
     update_date: Sets up the last update date of any object
     created_by: Sets up the user ID of creator with the object
 
-    Author: Himanshu Shankar (https://himanshus.com)
+    @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     from django.contrib.auth import get_user_model
     from django.utils.text import gettext_lazy as _
@@ -39,9 +39,9 @@ class CreateUpdateModel(models.Model):
         -------
         bool
 
-        Author
+        @author
         ------
-        Himanshu Shankar (https://himanshus.com)
+        Mahen Gandhi (https://github.com/imlegend19)
         """
         if user.is_authenticated:
             return self.created_by.id == user.id
@@ -59,9 +59,9 @@ class CreateUpdateModel(models.Model):
         -------
         bool
 
-        Author
+        @author
         ------
-        Himanshu Shankar (https://himanshus.com)
+        Mahen Gandhi (https://github.com/imlegend19)
         """
         return self.is_owner(user)
 

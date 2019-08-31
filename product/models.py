@@ -12,10 +12,18 @@ class Category(models.Model):
 
     @property
     def product_count(self):
+        """
+
+        @return:
+        """
         return Product.objects.all().filter(category_id=self.id).count()
 
     @property
     def products(self) -> list:
+        """
+
+        @return:
+        """
         products = []
         for i in Product.objects.filter(category=self.id):
             x = {'id': i.id, 'name': i.name, 'category': i.category.id, 'is_veg': i.is_veg, 'price': i.price,
@@ -28,6 +36,10 @@ class Category(models.Model):
 
     @property
     def combos(self):
+        """
+
+        @return:
+        """
         from django.forms.models import model_to_dict
 
         combos = []
@@ -61,15 +73,27 @@ class Product(models.Model):
 
     @property
     def restaurant(self):
+        """
+
+        @return:
+        """
         return self.category.restaurant.id
 
     @property
     def image_url(self):
+        """
+
+        @return:
+        """
         if self.image:
             return URL + self.image.url
 
     @property
     def recommended_product(self):
+        """
+
+        @return:
+        """
         if self.image:
             return True
         else:
@@ -77,6 +101,10 @@ class Product(models.Model):
 
     @property
     def display_price(self):
+        """
+
+        @return:
+        """
         discounted_price = float(self.price) - (float(self.price) * (self.discount / 100))
         inflated_price = discounted_price + (discounted_price * (self.inflation / 100))
 
@@ -105,6 +133,10 @@ class ProductCombo(models.Model):
 
     @property
     def display_price(self):
+        """
+
+        @return:
+        """
         discounted_price = self.price - (self.price * (self.discount / 100))
         inflated_price = discounted_price + (discounted_price * (self.inflation / 100))
 
@@ -112,6 +144,10 @@ class ProductCombo(models.Model):
 
     @property
     def actual_price(self):
+        """
+
+        @return:
+        """
         tot = 0
 
         for i in self.products.all():
@@ -120,6 +156,11 @@ class ProductCombo(models.Model):
         return tot
 
     def save(self, *args, **kwargs):
+        """
+
+        @param args:
+        @param kwargs:
+        """
         is_new = self.id is None
         super(ProductCombo, self).save(force_insert=True, force_update=True)
         if is_new:

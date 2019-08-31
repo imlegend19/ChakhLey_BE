@@ -24,12 +24,13 @@ class EmployeeOrderSerializer(serializers.ModelSerializer):
 
     user_id = serializers.IntegerField(source='user.id')
     user_name = serializers.CharField(source='user.name')
+    user_mobile = serializers.CharField(source='user.mobile')
 
     class Meta:
         from .models import Employee
 
         model = Employee
-        fields = ('id', 'user_id', 'user_name', 'designation', 'is_active')
+        fields = ('id', 'user_id', 'user_name', 'designation', 'user_mobile', 'is_active')
         ordering = ['-id']
 
 

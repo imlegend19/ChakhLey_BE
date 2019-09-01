@@ -113,26 +113,24 @@ ORDER_FEEDBACK = (
 
 COMPLAINT = 'C'
 
+DISCOUNT = 'D'
+FREE_DELIVERY = 'F'
+DAY_COUPON = 'DC'
+
+OFFER_TYPE = (
+    (DISCOUNT, 'Discount'),
+    (FREE_DELIVERY, 'Free Delivery'),
+    (DAY_COUPON, 'Day Coupon')
+)
+
+DAYS = (
+    ('M', 'Monday'),
+    ('T', 'Tuesday'),
+    ('W', 'Wednesday'),
+    ('TH', 'Thursday'),
+    ('F', 'Friday'),
+    ('SA', 'Saturday'),
+    ('S',  'Sunday')
+)
+
 URL = "http://admin.chakhley.co.in/"
-
-# URL = "http://127.0.0.1:8000/"
-# URL = "http://13.233.179.130/"
-
-# taken = []
-#
-#
-# def check(st, a, b, c, d):
-#     string = st[a:b] + st[c:d]
-#     while string in taken:
-#         c += 1
-#         d += 1
-#         string = st[a:b] + st[c:d]
-#     taken.append(string)
-#     return string
-#
-#
-# for i in Order:
-#     s1 = check(i, 0, 1, 1, 2)
-#     ORDER_STATUS.append((s1, i))
-#
-# print(ORDER_STATUS)

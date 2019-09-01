@@ -38,6 +38,8 @@ class Employee(models.Model):
                                  decimal_places=2, max_digits=10)
 
     def clean(self, *args, **kwargs):
+        from django.core.exceptions import ValidationError
+
         """
 
         @param args:

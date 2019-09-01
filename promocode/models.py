@@ -1,18 +1,79 @@
 from django.db import models
 from drfaddons.models import CreateUpdateModel
 from django.utils.text import gettext_lazy as _
+from ChakhLey_BE.variables import *
 
 
-class PromoCode(CreateUpdateModel):
-    from .utils import PromoCodeField
-    name = PromoCodeField(verbose_name=_('PromoCode Name'), max_length=10)
+class Offer(CreateUpdateModel):
+    """
+    Represents general offers in the system.
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
+    from .utils import OfferField
+
+    code = OfferField(verbose_name=_('Offer Code'), max_length=10)
+    title = models.CharField(verbose_name=_('Title'), max_length=255)
+    type = models.CharField(verbose_name=_('Offer Type'), choices=OFFER_TYPE, max_length=255, default=DISCOUNT)
+    description = models.TextField(verbose_name=_('Description'))
+    valid_from = models.DateTimeField(verbose_name=_('Valid From'))
+    valid_till = models.DateTimeField(verbose_name=_('Valid Till'))
+    banner = models.TextField(verbose_name=_('Banner'))
+    free_delivery = models.BooleanField(verbose_name=_('Free Delivery'), default=False)
+    discount = models.IntegerField(verbose_name=_('Discount'), null=True, blank=True)
+    max_user_usage = models.IntegerField(verbose_name=_('Max User Usage'), default=1)
+    day = models.CharField(verbose_name=_('Offer Day'), choices=DAYS, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-id']
+        verbose_name = _('Offer')
+        verbose_name_plural = _('Offers')
+
+    def clean(self, *args, **kwargs):
+        from django.core.exceptions import ValidationError
+
+        if self.valid_till <= self.valid_from:
+            raise ValidationError('Valid Till should be more than Valid From.')
+
+        if self.type == DISCOUNT and self.discount is None:
+            if self.day is not None:
+                raise ValidationError("Warning: 'day' field has no effect on this offer.")
+            else:
+                raise ValidationError("'discount' field cannot be null.")
+
+        if self.type == FREE_DELIVERY and self.free_delivery is False:
+            if self.day is not None:
+                raise ValidationError("Warning: 'day' field has no effect on this offer.")
+            else:
+                raise ValidationError("'free_delivery' field should be True for this offer.")
+
+        if self.type == DAY_COUPON and self.day is None:
+            if self.discount is not None:
+                raise ValidationError("Warning: 'discount' field has no effect on this offer.")
+            else:
+                raise ValidationError("'day' cannot be null for this offer.")
+
+        super(PromoCode, self).clean()
+
+    @property
+    def expired(self) -> bool:
+        import pytz
+        import datetime
+
+        tz = pytz.timezone('Asia/Kolkata')
+        now = datetime.datetime.now().astimezone(tz)
+
+        if now <= self.valid_from or now >= self.valid_till:
+            return False
+        else:
+            return True
 
 
 class UserPromoCode(CreateUpdateModel):
     """
     Represents promo codes for a specific user
 
-    @author: Yugandhar Desai ("http://github.com/yugi1729")
+    @author: Yugandhar Desai ("https://github.com/yugi1729")
     """
     from .utils import PromoCodeField
     from drf_user.models import User

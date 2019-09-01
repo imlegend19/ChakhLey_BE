@@ -6,6 +6,12 @@ from ChakhLey_BE.variables import *
 
 
 class Restaurant(CreateUpdateModel):
+    """
+    Represents restaurants in the system.
+
+    @author: Mahen Gandhi (https://github.com/imlegend19)
+    """
+
     from location.models import Area
     from business.models import Business
 

@@ -103,8 +103,7 @@ location/migrations
 employee/migrations
 drf_user/migrations
 business/migrations
-
-images/
+promocode/migrations
 
 zappa_settings.json
 chakhle-be-dev-1566201764.zip

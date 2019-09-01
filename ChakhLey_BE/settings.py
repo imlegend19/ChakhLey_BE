@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user_rating',
     'employee',
     'transactions',
+    'promocode',
     'rest_framework_swagger',
 ]
 

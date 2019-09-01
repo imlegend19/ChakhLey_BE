@@ -1,10 +1,9 @@
 from django.db import models
-from drfaddons.models import CreateUpdateModel
 from django.utils.text import gettext_lazy as _
 from ChakhLey_BE.variables import *
 
 
-class Offer(CreateUpdateModel):
+class Offer(models.Model):
     """
     Represents general offers in the system.
 
@@ -16,13 +15,17 @@ class Offer(CreateUpdateModel):
     title = models.CharField(verbose_name=_('Title'), max_length=255)
     type = models.CharField(verbose_name=_('Offer Type'), choices=OFFER_TYPE, max_length=255, default=DISCOUNT)
     description = models.TextField(verbose_name=_('Description'))
+    create_date = models.DateTimeField(_('Create Date/Time'),
+                                       auto_now_add=True)
+    update_date = models.DateTimeField(_('Date/Time Modified'),
+                                       auto_now=True)
     valid_from = models.DateTimeField(verbose_name=_('Valid From'))
     valid_till = models.DateTimeField(verbose_name=_('Valid Till'))
     banner = models.TextField(verbose_name=_('Banner'))
     free_delivery = models.BooleanField(verbose_name=_('Free Delivery'), default=False)
     discount = models.IntegerField(verbose_name=_('Discount'), null=True, blank=True)
     max_user_usage = models.IntegerField(verbose_name=_('Max User Usage'), default=1)
-    day = models.CharField(verbose_name=_('Offer Day'), choices=DAYS, null=True, blank=True)
+    day = models.CharField(verbose_name=_('Offer Day'), choices=DAYS, max_length=255, null=True, blank=True)
 
     class Meta:
         ordering = ['-id']
@@ -69,7 +72,7 @@ class Offer(CreateUpdateModel):
             return True
 
 
-class UserPromoCode(CreateUpdateModel):
+class UserPromoCode(models.Model):
     """
     Represents promo codes for a specific user
 
@@ -82,6 +85,10 @@ class UserPromoCode(CreateUpdateModel):
     code = OfferField(verbose_name=_('User Promo code'), max_length=10)
     desc = models.TextField(verbose_name=_('Promo code description'), )
     user = models.ForeignKey(verbose_name=_('User'), to=User, on_delete=models.PROTECT)
+    create_date = models.DateTimeField(_('Create Date/Time'),
+                                       auto_now_add=True)
+    update_date = models.DateTimeField(_('Date/Time Modified'),
+                                       auto_now=True)
     discount = models.IntegerField(verbose_name=_('Discount'), null=True, blank=True)
     minimum_order = models.FloatField(verbose_name=_('Minimum order'), default=200,
                                       validators=[MinValueValidator(50.0)])
@@ -90,7 +97,6 @@ class UserPromoCode(CreateUpdateModel):
     max_uses = models.IntegerField(verbose_name=_('Maximum Uses'), default=1)
     uses = models.IntegerField(verbose_name=_('Number of uses'), default=0)
     free_delivery = models.BooleanField(verbose_name=_('free delivery status'), default=False)
-    date_created = models.DateField(verbose_name=_('Date created'))
     asset = models.ImageField(verbose_name=_('Promo Code Image'), upload_to='promo/')
 
     class Meta:

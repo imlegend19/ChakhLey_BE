@@ -75,14 +75,16 @@ class UserPromoCode(CreateUpdateModel):
 
     @author: Yugandhar Desai ("https://github.com/yugi1729")
     """
-    from .utils import PromoCodeField
+    from .utils import OfferField
     from drf_user.models import User
+    from django.core.validators import MinValueValidator
 
-    code = PromoCodeField(verbose_name=_('User Promo code'), max_length=10)
+    code = OfferField(verbose_name=_('User Promo code'), max_length=10)
     desc = models.TextField(verbose_name=_('Promo code description'), )
     user = models.ForeignKey(verbose_name=_('User'), to=User, on_delete=models.PROTECT)
     discount = models.IntegerField(verbose_name=_('Discount'), null=True, blank=True)
-    minimum_order = models.FloatField(verbose_name=_('Minimum order'), default=200, )
+    minimum_order = models.FloatField(verbose_name=_('Minimum order'), default=200,
+                                      validators=[MinValueValidator(50.0)])
     valid_from = models.DateTimeField(_('Valid from date'))
     valid_till = models.DateTimeField(_('Valid till date'))
     max_uses = models.IntegerField(verbose_name=_('Maximum Uses'), default=1)

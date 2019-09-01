@@ -53,7 +53,7 @@ class Offer(CreateUpdateModel):
             else:
                 raise ValidationError("'day' cannot be null for this offer.")
 
-        super(PromoCode, self).clean()
+        super(Offer, self).clean()
 
     @property
     def expired(self) -> bool:

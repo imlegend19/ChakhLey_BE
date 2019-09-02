@@ -14,6 +14,6 @@ class OfferView(ListCreateAPIView):
     queryset = Offer.objects.all()
 
     filter_backends = (SearchFilter, DjangoFilterBackend, )
-    filter_fields = ('id', )
-    search_fields = ('code', )
+    filter_fields = ('id', 'type', 'business', 'max_user_usage')
+    search_fields = ('id', 'code', 'business')
     ordering = ['-create_date']

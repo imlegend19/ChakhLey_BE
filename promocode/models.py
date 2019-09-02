@@ -10,6 +10,7 @@ class Offer(models.Model):
     @author: Mahen Gandhi (https://github.com/imlegend19)
     """
     from .utils import OfferField
+    from business.models import Business
 
     code = OfferField(verbose_name=_('Offer Code'), max_length=10)
     title = models.CharField(verbose_name=_('Title'), max_length=255)
@@ -26,6 +27,7 @@ class Offer(models.Model):
     discount = models.IntegerField(verbose_name=_('Discount'), null=True, blank=True)
     max_user_usage = models.IntegerField(verbose_name=_('Max User Usage'), default=1)
     day = models.CharField(verbose_name=_('Offer Day'), choices=DAYS, max_length=255, null=True, blank=True)
+    business = models.ForeignKey(verbose_name=_('Business'), to=Business, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['-id']
@@ -81,6 +83,7 @@ class UserPromoCode(models.Model):
     from .utils import OfferField
     from drf_user.models import User
     from django.core.validators import MinValueValidator
+    from business.models import Business
 
     code = OfferField(verbose_name=_('User Promo code'), max_length=10)
     desc = models.TextField(verbose_name=_('Promo code description'), )
@@ -98,6 +101,7 @@ class UserPromoCode(models.Model):
     uses = models.IntegerField(verbose_name=_('Number of uses'), default=0)
     free_delivery = models.BooleanField(verbose_name=_('free delivery status'), default=False)
     asset = models.ImageField(verbose_name=_('Promo Code Image'), upload_to='promo/')
+    business = models.ForeignKey(verbose_name=_('Business'), to=Business, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['-id']
@@ -133,7 +137,7 @@ class UserPromoCode(models.Model):
             return None
 
     @property
-    def is_valid(self) -> bool:
+    def expired(self) -> bool:
         import pytz
         import datetime
 

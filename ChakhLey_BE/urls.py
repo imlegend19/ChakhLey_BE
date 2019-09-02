@@ -52,6 +52,7 @@ urlpatterns = [
     path('api/employee/', include('employee.urls', namespace='employee')),
     path('api/user_rating/', include('user_rating.urls', namespace='user rating')),
     path('api/transactions/', include('transactions.urls', namespace='transactions')),
+    path('api/promocode/', include('promocode.urls', namespace='promocode')),
     path('', admin.site.urls),
     re_path(r'^swagger(?P<format>\.json|\.yaml)$',
             schema_view.without_ui(cache_timeout=0), name='schema-json'),

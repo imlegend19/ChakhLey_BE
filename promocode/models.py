@@ -86,7 +86,7 @@ class UserPromoCode(models.Model):
     from business.models import Business
 
     code = OfferField(verbose_name=_('User Promo code'), max_length=10)
-    desc = models.TextField(verbose_name=_('Promo code description'), )
+    description = models.TextField(verbose_name=_('Promo code description'), )
     user = models.ForeignKey(verbose_name=_('User'), to=User, on_delete=models.PROTECT)
     create_date = models.DateTimeField(_('Create Date/Time'),
                                        auto_now_add=True)
@@ -148,3 +148,5 @@ class UserPromoCode(models.Model):
             return False
         else:
             return True
+
+

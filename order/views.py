@@ -34,7 +34,7 @@ class CreateOrderView(CreateAPIView):
     queryset = Order.objects.all()
 
     def post(self, request, *args, **kwargs):
-        from promocode.models import UserOfferUsage
+        from promocode.models import UserOfferUsage, UserPromoCode
         from django.http import JsonResponse
 
         serializer = self.serializer_class(data=request.data)
@@ -44,8 +44,6 @@ class CreateOrderView(CreateAPIView):
         offer = serializer.validated_data.get('offer')
         user_promo_code = serializer.validated_data.get('user_promo_code')
 
-        # TODO (@yugi1729) : Add user_promo_code validations
-
         if offer is not None:
             if offer.expired:
                 return JsonResponse({'detail': "Offer has expired."}, status=400)
@@ -53,6 +51,18 @@ class CreateOrderView(CreateAPIView):
                 usage_count = UserOfferUsage.objects.filter(user__mobile=mobile, offer=offer).count()
                 if usage_count > offer.max_user_usage:
                     return JsonResponse({'detail': "Offer limit exceeded."}, status=400)
+
+            # TODO : Update usage count
+
+        if user_promo_code is not None:
+            if user_promo_code.expired:
+                return JsonResponse({'detail': "Promo Code has expired."}, status=400)
+            else:
+                obj = UserPromoCode.objects.get(user__mobile=mobile, id=user_promo_code)
+                if obj.uses == obj.max_uses:
+                    return JsonResponse({'detail': "Promo Code usage limit exceeded."})
+
+            # TODO: Update usage count
 
         return super().post(request, *args, **kwargs)
 

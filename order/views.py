@@ -33,6 +33,9 @@ class CreateOrderView(CreateAPIView):
     serializer_class = OrderCreateSerializer
     queryset = Order.objects.all()
 
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
 
 class RetrieveUpdateOrderView(RetrieveUpdateAPIView):
     from .serializers import OrderUpdateSerializer

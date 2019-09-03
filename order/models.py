@@ -13,8 +13,10 @@ class Order(models.Model):
     Represents all orders in the system.
 
     @author: Mahen Gandhi (https://github.com/imlegend19)
+    @author: Yugandhar Desai (https://github.com/yugi1729)
     """
     from restaurant.models import Restaurant
+    from promocode.models import Offer, UserPromoCode
 
     name = models.CharField(verbose_name=_("Buyer Name"), max_length=254)
     mobile = models.CharField(verbose_name=_("Mobile"), max_length=15)
@@ -26,6 +28,10 @@ class Order(models.Model):
     order_date = models.DateTimeField(verbose_name=_('Order Create Date'), auto_now_add=True)
     delivery_boy = models.ForeignKey(verbose_name=_("Delivery Boy"), to=Employee, on_delete=models.PROTECT, null=True,
                                      blank=True)
+    offer = models.ForeignKey(verbose_name=_('Offer'), to=Offer, on_delete=models.PROTECT,
+                              null=True, blank=True)
+    user_promo_code = models.ForeignKey(verbose_name=_('User Promo Code'), to=UserPromoCode, on_delete=models.PROTECT,
+                                        null=True, blank=True)
 
     @property
     def packaging_charge(self) -> float:

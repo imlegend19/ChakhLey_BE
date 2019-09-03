@@ -148,3 +148,23 @@ class UserPromoCode(models.Model):
             return False
         else:
             return True
+
+
+class UserOfferUsage(models.Model):
+    from drf_user.models import User
+
+    user = models.ForeignKey(verbose_name=_('User'), to=User, on_delete=models.PROTECT)
+    offer = models.ForeignKey(verbose_name=_('Offer'), to=Offer, on_delete=models.PROTECT)
+    usage = models.IntegerField(verbose_name=_('Usage'), default=0)
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        if self.usage > self.offer.max_user_usage:
+            raise ValidationError('User exceeded max usage of the offer.')
+
+        super(UserOfferUsage).clean()
+
+    class Meta:
+        verbose_name = _('User Offer Use')
+        verbose_name_plural = _('User Offer Usage')

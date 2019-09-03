@@ -216,12 +216,10 @@ class OTPView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = OTPSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         """
 
         @param request:
-        @param args:
-        @param kwargs:
         @return:
         """
         from rest_framework.response import Response

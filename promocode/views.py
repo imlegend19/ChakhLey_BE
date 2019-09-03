@@ -35,8 +35,3 @@ class UserPromoCodeView(ListCreateAPIView):
     filter_fields = ('id', 'code', 'user', 'user__mobile', 'business')
     search_fields = ('id', 'code', 'business')
     ordering = ['-create_date']
-
-
-
-
-

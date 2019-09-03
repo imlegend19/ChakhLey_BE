@@ -148,5 +148,3 @@ class UserPromoCode(models.Model):
             return False
         else:
             return True
-
-
